@@ -10,7 +10,23 @@ export class CreateInvoiceResolver {
 	@Mutation(() => Invoice)
 	@UseMiddleware(LoadUser)
 	async createInvoice(@Ctx() ctx: Context, @Arg('data') data: CreateInvoiceInput): Promise<Invoice> {
-		const invoice = ctx.invoiceRepository.create({ ...data, user: ctx.user })
+		const senderAddress = ctx.addressRepository.create(data.senderAddress)
+		const clientAddress = ctx.addressRepository.create(data.clientAddress)
+
+		const { paymentDue, paymentTerms, description, clientName, clientEmail, status } = data
+
+		const invoice = ctx.invoiceRepository.create({
+			user: ctx.user,
+			paymentDue,
+			paymentTerms,
+			description,
+			clientName,
+			clientEmail,
+			status,
+			clientAddress,
+			senderAddress
+		})
+
 		return ctx.invoiceRepository.save(invoice)
 	}
 }

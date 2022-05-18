@@ -1,7 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
 import { isProduction } from '../constants'
-import { Invoice } from '../modules/invoice'
+import { Invoice, Address } from '../modules/invoice'
 import { User } from '../modules/user'
 
 const dataSourceOptions = {
@@ -11,7 +11,7 @@ const dataSourceOptions = {
 	username: process.env.DB_USERNAME,
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_DATABASE || 'postgres',
-	entities: [User, Invoice],
+	entities: [User, Invoice, Address],
 	synchronize: !isProduction
 } as DataSourceOptions
 

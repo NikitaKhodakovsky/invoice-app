@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from 'typeorm'
 import { Field, ObjectType } from 'type-graphql'
 
 import { BaseEntity } from '../../../common/entities'
+import { Address } from './AddressEntity'
 import { Status } from '../enums'
 import { User } from '../../user'
 
@@ -39,8 +40,17 @@ export class Invoice extends BaseEntity {
 		default: Status.Pending
 	})
 	status: Status
-	// senderAdress: Adress
-	// clientAdress: Adress
+
+	@Field(() => Address)
+	@OneToOne(() => Address, { cascade: true, eager: true })
+	@JoinColumn()
+	senderAddress: Address
+
+	@Field(() => Address)
+	@OneToOne(() => Address, { cascade: true, eager: true })
+	@JoinColumn()
+	clientAddress: Address
+
 	// items: [Item]
 	// total: Int
 }

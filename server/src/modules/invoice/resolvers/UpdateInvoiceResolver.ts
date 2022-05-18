@@ -16,14 +16,13 @@ export class UpdateInvoiceResolver {
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (ctx.user.id !== invoice.user.id) throw new ForbiddenError()
 
-		const { paymentDue, description, paymentTerms, clientName, clientEmail } = data
+		const { clientAddress, senderAddress, ...other } = data
 
-		if (paymentDue) invoice.paymentDue = paymentDue
-		if (description) invoice.description = description
-		if (paymentTerms) invoice.paymentTerms = paymentTerms
-		if (clientName) invoice.clientName = clientName
-		if (clientEmail) invoice.clientEmail = clientEmail
+		const updatedInvoice = ctx.invoiceRepository.merge(invoice, other)
 
-		return ctx.invoiceRepository.save(invoice)
+		updatedInvoice.clientAddress = ctx.addressRepository.merge(invoice.clientAddress, clientAddress)
+		updatedInvoice.senderAddress = ctx.addressRepository.merge(invoice.senderAddress, senderAddress)
+
+		return ctx.invoiceRepository.save(updatedInvoice)
 	}
 }

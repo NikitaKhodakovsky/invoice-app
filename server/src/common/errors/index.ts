@@ -1,4 +1,5 @@
 export * from './InvoiceNotFoundError'
+export * from './AddressNotFoundError'
 export * from './AuthenticationError'
 export * from './UserNotFoundError'
 export * from './ForbiddenError'

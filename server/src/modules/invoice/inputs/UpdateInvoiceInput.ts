@@ -1,4 +1,5 @@
 import { Field, InputType } from 'type-graphql'
+import { UpdateAddressInput } from './UpdateAddressInput'
 
 @InputType()
 export class UpdateInvoiceInput {
@@ -16,4 +17,10 @@ export class UpdateInvoiceInput {
 
 	@Field({ nullable: true })
 	clientEmail?: string
+
+	@Field(() => UpdateAddressInput, { nullable: true })
+	senderAddress: UpdateAddressInput
+
+	@Field(() => UpdateAddressInput, { nullable: true })
+	clientAddress: UpdateAddressInput
 }
