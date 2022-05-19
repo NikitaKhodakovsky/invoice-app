@@ -1,7 +1,8 @@
 import { Arg, Ctx, ID, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 
-import { ForbiddenError, OrderItemNotFoundError } from '../../../common/errors'
+import { ForbiddenError } from '../../../common/errors'
 import { LoadUser } from '../../../common/middleware'
+import { OrderItemNotFoundError } from '../errors'
 import { UpdateOrderItemInput } from '../inputs'
 import { User } from '../../../modules/user'
 import { Context } from '../../../types'

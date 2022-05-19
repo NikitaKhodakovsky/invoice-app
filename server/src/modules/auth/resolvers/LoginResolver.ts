@@ -2,8 +2,8 @@ import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
 import argon2 from 'argon2'
 
 import { AuthenticationError } from '../../../common/errors'
-import { LoginInput } from '../inputs'
 import { Context } from '../../../types'
+import { LoginInput } from '../inputs'
 import { User } from '../../user'
 
 @Resolver()

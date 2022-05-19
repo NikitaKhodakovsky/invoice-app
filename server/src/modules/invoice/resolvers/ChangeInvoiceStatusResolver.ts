@@ -1,7 +1,8 @@
 import { Arg, Ctx, ID, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 
-import { ForbiddenError, InvoiceNotFoundError } from '../../../common/errors'
+import { ForbiddenError } from '../../../common/errors'
 import { LoadUser } from '../../../common/middleware'
+import { InvoiceNotFoundError } from '../errors'
 import { Context } from '../../../types'
 import { Invoice } from '../entities'
 import { Status } from '../enums'
