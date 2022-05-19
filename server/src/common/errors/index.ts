@@ -1,3 +1,4 @@
+export * from './OrderItemNotFoundError'
 export * from './InvoiceNotFoundError'
 export * from './AddressNotFoundError'
 export * from './AuthenticationError'

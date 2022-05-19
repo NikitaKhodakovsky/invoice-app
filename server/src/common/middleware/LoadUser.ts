@@ -1,9 +1,10 @@
 import { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql'
 import { UserNotFoundError, ForbiddenError } from '../errors'
+import { User } from '../../modules/user'
 import { Context } from '../../types'
 
 export class LoadUser implements MiddlewareInterface<Context> {
-	async use({ context }: ResolverData<Context>, next: NextFn) {
+	async use({ context }: ResolverData<Context<User>>, next: NextFn) {
 		const userId = context.req.session.userId
 
 		if (!userId) throw new ForbiddenError()

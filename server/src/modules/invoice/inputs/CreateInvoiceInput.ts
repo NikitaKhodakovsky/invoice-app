@@ -1,5 +1,6 @@
 import { Field, InputType } from 'type-graphql'
 
+import { CreateOrderItemInput } from './CreateOrderItemInput'
 import { CreateAddressInput } from './CreateAddressInput'
 import { Status } from '../enums'
 
@@ -28,4 +29,7 @@ export class CreateInvoiceInput {
 
 	@Field(() => CreateAddressInput)
 	clientAddress: CreateAddressInput
+
+	@Field(() => [CreateOrderItemInput])
+	orderItems: CreateOrderItemInput[]
 }

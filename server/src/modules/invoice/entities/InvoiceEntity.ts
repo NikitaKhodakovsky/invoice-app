@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
 import { Field, ObjectType } from 'type-graphql'
 
 import { BaseEntity } from '../../../common/entities'
+import { OrderItem } from './OrderItemEntity'
 import { Address } from './AddressEntity'
 import { Status } from '../enums'
 import { User } from '../../user'
@@ -51,6 +52,7 @@ export class Invoice extends BaseEntity {
 	@JoinColumn()
 	clientAddress: Address
 
-	// items: [Item]
-	// total: Int
+	@Field(() => [OrderItem])
+	@OneToMany(() => OrderItem, (orderItem) => orderItem.invoice, { cascade: true, eager: true })
+	orderItems: OrderItem[]
 }

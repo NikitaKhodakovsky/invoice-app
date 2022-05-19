@@ -5,6 +5,7 @@ import { LoadUser } from '../../../common/middleware'
 import { Context } from '../../../types'
 import { Invoice } from '../entities'
 import { Status } from '../enums'
+import { User } from '../../user'
 
 @Resolver()
 export class ChangeInvoiceStatusResolver {
@@ -13,7 +14,7 @@ export class ChangeInvoiceStatusResolver {
 	async changeInvoiceStatus(
 		@Arg('id', () => ID) id: number,
 		@Arg('status', () => Status) status: Status,
-		@Ctx() ctx: Context
+		@Ctx() ctx: Context<User>
 	): Promise<Invoice> {
 		const invoice = await ctx.invoiceRepository.findOne({ where: { id } })
 
