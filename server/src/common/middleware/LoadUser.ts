@@ -3,7 +3,7 @@ import { UserNotFoundError, ForbiddenError } from '../errors'
 import { User } from '../../modules/user'
 import { Context } from '../../types'
 
-export class LoadUser implements MiddlewareInterface<Context> {
+export class LoadUser implements MiddlewareInterface<Context<User>> {
 	async use({ context }: ResolverData<Context<User>>, next: NextFn) {
 		const userId = context.req.session.userId
 
