@@ -1,8 +1,6 @@
 import { Arg, Ctx, ID, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 
-import { ForbiddenError } from '../../../common/errors'
 import { LoadUser } from '../../../common/middleware'
-import { InvoiceNotFoundError } from '../errors'
 import { Context } from '../../../types'
 import { Invoice } from '../entities'
 import { Status } from '../enums'
@@ -17,13 +15,6 @@ export class ChangeInvoiceStatusResolver {
 		@Arg('status', () => Status) status: Status,
 		@Ctx() ctx: Context<User>
 	): Promise<Invoice> {
-		const invoice = await ctx.invoiceRepository.findOne({ where: { id } })
-
-		if (!invoice) throw new InvoiceNotFoundError()
-		if (ctx.user.id !== invoice.user.id) throw new ForbiddenError()
-
-		invoice.status = status
-
-		return ctx.invoiceRepository.save(invoice)
+		return ctx.invoiceService.changeStatus(ctx.user, id, status)
 	}
 }

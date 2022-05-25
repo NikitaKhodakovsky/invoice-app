@@ -143,13 +143,13 @@ describe('Invoice', () => {
 		expect(quantity).toBe(input.quantity)
 	})
 
-	// test('CI without OIs', async () => {
-	// 	expect.assertions(1)
+	test('CI without OIs', async () => {
+		expect.assertions(1)
 
-	// 	const input = CreateMockInvoiceInput()
+		const input = CreateMockInvoiceInput()
 
-	// 	input.orderItems = []
+		input.orderItems = []
 
-	// 	await CreateInvoiceMutation(qid, input).catch((e) => expect(e).toBeDefined())
-	// })
+		await CreateInvoiceMutation(qid, input).catch((e) => expect(e).toBeDefined())
+	})
 })

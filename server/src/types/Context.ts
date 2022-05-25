@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm'
 import { Request, Response } from 'express'
 
-import { Address, Invoice, OrderItem } from '../modules/invoice'
+import { Address, Invoice, OrderItem, InvoiceService } from '../modules/invoice'
 import { AuthService } from '../modules/auth'
 import { User } from '../modules/user'
 
@@ -10,9 +10,7 @@ export interface Context<TUser extends User | undefined = undefined> {
 	res: Response
 	dataSource: DataSource
 	authService: AuthService
-	addressRepository: Repository<Address>
-	invoiceRepository: Repository<Invoice>
-	orderItemRepository: Repository<OrderItem>
+	invoiceService: InvoiceService
 
 	//After LoadUser middleware
 	user: TUser

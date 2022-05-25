@@ -16,15 +16,7 @@ export class UpdateOrderItemResolver {
 		@Arg('data') data: UpdateOrderItemInput,
 		@Ctx() ctx: Context<User>
 	): Promise<boolean> {
-		const orderItem = await ctx.orderItemRepository.findOne({ where: { id }, relations: { invoice: true } })
-
-		if (!orderItem) throw new OrderItemNotFoundError()
-
-		if (ctx.user.id !== orderItem.invoice.user.id) throw new ForbiddenError()
-
-		const updatedOrderItem = ctx.orderItemRepository.merge(orderItem, data)
-
-		await ctx.orderItemRepository.save(updatedOrderItem)
+		await ctx.invoiceService.updateOrderItem(ctx.user, id, data)
 
 		return true
 	}
