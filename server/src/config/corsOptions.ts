@@ -1,19 +1,8 @@
 import { CorsOptions } from 'cors'
-import { red } from 'ansi-colors'
 
-function getWhiteList(origin?: string): string[] {
-	if (!origin) {
-		console.error(red('Invalid origin environment variable'))
-		return ['*']
-	}
+import { parseOrigins } from '../utils'
 
-	return origin
-		.split(' ')
-		.map((url) => url.trim())
-		.filter((i) => i.length > 1) //if origins divided by more than one space trim() creates empty strings
-}
-
-const whiteList: string[] = getWhiteList(process.env.ORIGIN)
+const whiteList: string[] = parseOrigins(process.env.ORIGIN)
 
 export const corsOptions: CorsOptions = {
 	credentials: true,
