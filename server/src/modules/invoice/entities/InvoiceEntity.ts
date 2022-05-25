@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 
 import { BaseEntity } from '../../../common/entities'
 import { OrderItem } from './OrderItemEntity'
@@ -22,7 +22,7 @@ export class Invoice extends BaseEntity {
 	@Column()
 	description: string
 
-	@Field()
+	@Field(() => Int)
 	@Column()
 	paymentTerms: number
 

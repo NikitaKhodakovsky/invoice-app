@@ -1,4 +1,4 @@
-import { Field, InputType } from 'type-graphql'
+import { Field, InputType, Int } from 'type-graphql'
 
 import { CreateOrderItemInput } from './CreateOrderItemInput'
 import { CreateAddressInput } from './CreateAddressInput'
@@ -12,7 +12,7 @@ export class CreateInvoiceInput {
 	@Field()
 	description: string
 
-	@Field()
+	@Field(() => Int)
 	paymentTerms: number
 
 	@Field()

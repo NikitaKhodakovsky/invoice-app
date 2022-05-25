@@ -1,13 +1,15 @@
-import { Field, InputType } from 'type-graphql'
+import { Field, InputType, Int } from 'type-graphql'
+
+import { CreateOrderItemInput } from './CreateOrderItemInput'
 
 @InputType()
-export class UpdateOrderItemInput {
+export class UpdateOrderItemInput implements Partial<CreateOrderItemInput> {
 	@Field({ nullable: true })
 	name?: string
 
-	@Field({ nullable: true })
+	@Field(() => Int, { nullable: true })
 	quantity?: number
 
-	@Field({ nullable: true })
+	@Field(() => Int, { nullable: true })
 	price?: number
 }

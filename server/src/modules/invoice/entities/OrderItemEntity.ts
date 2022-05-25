@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 import { Column, Entity, ManyToOne } from 'typeorm'
 
 import { BaseEntity } from '../../../common/entities'
@@ -14,11 +14,11 @@ export class OrderItem extends BaseEntity {
 	@Column()
 	name: string
 
-	@Field()
+	@Field(() => Int)
 	@Column()
 	quantity: number
 
-	@Field()
+	@Field(() => Int)
 	@Column()
 	price: number
 }
