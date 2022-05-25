@@ -7,7 +7,7 @@ import { Invoice } from './InvoiceEntity'
 @Entity()
 @ObjectType()
 export class OrderItem extends BaseEntity {
-	@ManyToOne(() => Invoice, (invoice) => invoice.orderItems)
+	@ManyToOne(() => Invoice, (invoice) => invoice.orderItems, { onDelete: 'CASCADE' })
 	invoice: Invoice
 
 	@Field()

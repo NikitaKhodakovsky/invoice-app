@@ -11,7 +11,7 @@ import { User } from '../../user'
 @ObjectType()
 export class Invoice extends BaseEntity {
 	@Field(() => User)
-	@ManyToOne(() => User, { eager: true })
+	@ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
 	user: User
 
 	@Field()

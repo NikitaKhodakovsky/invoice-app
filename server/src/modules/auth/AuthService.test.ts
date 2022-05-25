@@ -2,12 +2,12 @@ import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 import { UserInputError } from 'apollo-server-express'
 import { DataSource } from 'typeorm'
 
-import { inspectUser, testDataSourceOptions } from '../../../test'
+import { CreateMockCredentials } from '../../../test/mock'
 import { AuthenticationError } from '../../common/errors'
+import { testDataSourceOptions } from '../../../test'
 import { AuthService } from './AuthService'
 
-const username = 'username'
-const password = 'password'
+const { username, password } = CreateMockCredentials()
 
 const TestDataSource = new DataSource(testDataSourceOptions)
 
@@ -26,7 +26,7 @@ describe('AuthService', () => {
 
 			const user = await authRepository.register('username', 'password', 'password')
 
-			inspectUser(user)
+			expect(user).toBeDefined()
 		})
 
 		test("Should throw error when passwords don't match", async () => {
@@ -64,7 +64,7 @@ describe('AuthService', () => {
 
 			const user = await authRepository.login(username, password)
 
-			inspectUser(user)
+			expect(user).toBeDefined()
 		})
 
 		test('Should throw error when password is entered incorrectly', async () => {

@@ -1,4 +1,5 @@
 test/config.json
+e2e/config.json
 node_modules/
 schema.gql
 dist/
