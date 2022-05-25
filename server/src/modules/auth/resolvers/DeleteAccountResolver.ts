@@ -8,11 +8,7 @@ export class DeleteAccountResolver {
 	@UseMiddleware(LoadUser)
 	@Mutation(() => Boolean)
 	async deleteAccount(@Ctx() ctx: Context<User>): Promise<boolean> {
-		const user = await ctx.userRepository.findOne({ where: { id: ctx.user.id } })
-
-		if (!user) return false
-
-		await ctx.userRepository.remove(user)
+		await ctx.authService.deleteAccount(ctx.user)
 
 		await new Promise((res, rej) => {
 			ctx.req.session.destroy((e) => {

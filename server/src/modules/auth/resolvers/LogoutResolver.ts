@@ -1,9 +1,11 @@
-import { Resolver, Mutation, Ctx } from 'type-graphql'
+import { Resolver, Mutation, Ctx, UseMiddleware } from 'type-graphql'
+import { Authorized } from '../../../common/middleware'
 import { Context } from '../../../types'
 
 @Resolver()
 export class LogoutResolver {
 	@Mutation(() => Boolean)
+	@UseMiddleware(Authorized)
 	async logout(@Ctx() ctx: Context): Promise<boolean> {
 		return new Promise((res, rej) => {
 			ctx.req.session.destroy((e) => {

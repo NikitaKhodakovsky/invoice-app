@@ -9,7 +9,9 @@ export class LoadUser implements MiddlewareInterface<Context<User>> {
 
 		if (!userId) throw new ForbiddenError()
 
-		const user = await context.userRepository.findOne({ where: { id: userId } })
+		const userRepository = context.dataSource.getRepository(User)
+
+		const user = await userRepository.findOne({ where: { id: userId } })
 
 		if (!user) throw new UserNotFoundError()
 
