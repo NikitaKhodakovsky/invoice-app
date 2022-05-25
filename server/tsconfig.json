@@ -10,6 +10,7 @@
 		"outDir": "dist",
 		"baseUrl": ".",
 		"strict": true,
+		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"strictPropertyInitialization": false,
@@ -17,5 +18,6 @@
 			"*": ["node_modules/*", "src/types/*"]
 		}
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
 }
