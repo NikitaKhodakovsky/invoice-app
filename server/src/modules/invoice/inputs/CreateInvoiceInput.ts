@@ -22,7 +22,7 @@ export class CreateInvoiceInput {
 	clientEmail: string
 
 	@Field(() => Status, { nullable: true })
-	status: Status
+	status?: Status
 
 	@Field(() => CreateAddressInput)
 	senderAddress: CreateAddressInput

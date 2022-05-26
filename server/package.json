@@ -5,7 +5,7 @@
 		"start": "build && node ./dist/index",
 		"build": "npx tsc",
 		"dev": "ts-node-dev --respawn --transpile-only  src/index.ts",
-		"test": "jest --testPathIgnorePatterns=/e2e/",
+		"test": "jest --testPathIgnorePatterns=/e2e/ --runInBand",
 		"test:e2e": "jest --testPathIgnorePatterns=/src/"
 	},
 	"dependencies": {

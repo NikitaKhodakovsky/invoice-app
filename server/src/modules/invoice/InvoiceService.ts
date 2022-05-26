@@ -68,6 +68,8 @@ export class InvoiceService {
 		if (invoice.user.id !== user.id) throw new ForbiddenError()
 
 		await this.invoiceRepository.remove(invoice)
+		await this.addressRepository.remove(invoice.clientAddress)
+		await this.addressRepository.remove(invoice.senderAddress)
 	}
 
 	public async findById(user: User, invoiceId: number): Promise<Invoice | null> {
@@ -137,7 +139,6 @@ export class InvoiceService {
 
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (user.id !== invoice.user.id) throw new ForbiddenError()
-		if (invoice.orderItems.length <= 1) throw new Error('You cannot delete a sole Order Item')
 
 		const orderItemIds = ids.map((id) => +id)
 

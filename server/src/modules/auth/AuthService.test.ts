@@ -1,30 +1,27 @@
 import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 import { UserInputError } from 'apollo-server-express'
-import { DataSource } from 'typeorm'
 
 import { CreateMockCredentials } from '../../../test/mock'
 import { AuthenticationError } from '../../common/errors'
-import { testDataSourceOptions } from '../../../test'
+import { TestDataSource } from '../../../test'
 import { AuthService } from './AuthService'
 
 const { username, password } = CreateMockCredentials()
 
-const TestDataSource = new DataSource(testDataSourceOptions)
-
-beforeEach(async () => {
-	await TestDataSource.initialize()
-})
-
-afterEach(async () => {
-	await TestDataSource.destroy()
-})
-
 describe('AuthService', () => {
+	beforeEach(async () => {
+		await TestDataSource.initialize()
+	})
+
+	afterEach(async () => {
+		await TestDataSource.destroy()
+	})
+
 	describe('register', () => {
 		test('Should create a user', async () => {
 			const authRepository = new AuthService(TestDataSource)
 
-			const user = await authRepository.register('username', 'password', 'password')
+			const user = await authRepository.register(username, password, password)
 
 			expect(user).toBeDefined()
 		})
@@ -35,7 +32,7 @@ describe('AuthService', () => {
 			const authRepository = new AuthService(TestDataSource)
 
 			try {
-				await authRepository.register('username', 'password', 'hello world')
+				await authRepository.register(username, password, 'hello world')
 			} catch (e) {
 				expect(e).toBeInstanceOf(UserInputError)
 			}
