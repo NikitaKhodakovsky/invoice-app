@@ -2,6 +2,7 @@ import { beforeAll, describe, test, expect, afterAll } from '@jest/globals'
 
 import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../test/mock'
 import { DeleteAccountMutation, RegisterAndLogin } from '../graphql/auth'
+import { compareInvoices, compareOrderItems } from '../../test/utils'
 import { Status } from '../../../shared'
 
 import {
@@ -30,27 +31,11 @@ describe('Invoice', () => {
 	test('CI - UI', async () => {
 		const invoice = await CreateInvoiceMutation(qid)
 
-		expect(invoice).toBeDefined()
-
 		const { orderItems, status, ...input } = CreateMockInvoiceInput()
 
 		const updatedInvoice = await UpdateInvoiceMutation(qid, invoice.id, input)
 
-		expect(updatedInvoice.clientEmail).toBe(input.clientEmail)
-		expect(updatedInvoice.clientName).toBe(input.clientName)
-		expect(updatedInvoice.description).toBe(input.description)
-		//expect(updatedInvoice.paymentDue).toBe(input.paymentDue)
-		expect(updatedInvoice.paymentTerms).toBe(input.paymentTerms)
-
-		expect(updatedInvoice.clientAddress.city).toBe(input.clientAddress.city)
-		expect(updatedInvoice.clientAddress.street).toBe(input.clientAddress.street)
-		expect(updatedInvoice.clientAddress.country).toBe(input.clientAddress.country)
-		expect(updatedInvoice.clientAddress.postCode).toBe(input.clientAddress.postCode)
-
-		expect(updatedInvoice.senderAddress.city).toBe(input.senderAddress.city)
-		expect(updatedInvoice.senderAddress.street).toBe(input.senderAddress.street)
-		expect(updatedInvoice.senderAddress.country).toBe(input.senderAddress.country)
-		expect(updatedInvoice.senderAddress.postCode).toBe(input.senderAddress.postCode)
+		compareInvoices(updatedInvoice, input)
 	})
 
 	test('CI - UIS', async () => {
@@ -136,11 +121,7 @@ describe('Invoice', () => {
 
 		if (!updatedOrderItem) throw new Error()
 
-		const { name, quantity, price } = updatedOrderItem
-
-		expect(name).toBe(input.name)
-		expect(price).toBe(input.price)
-		expect(quantity).toBe(input.quantity)
+		compareOrderItems(updatedOrderItem, input)
 	})
 
 	test('CI without OIs', async () => {

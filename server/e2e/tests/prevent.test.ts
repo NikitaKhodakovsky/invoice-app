@@ -1,8 +1,17 @@
 import { beforeAll, describe, test, expect, afterAll } from '@jest/globals'
 
 import { DeleteAccountMutation, RegisterAndLogin, RegisterAndLoginResult } from '../graphql/auth'
-import { CreateInvoiceMutation, FindInvoiceByIdQuery } from '../graphql/invoice'
+import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../test/mock'
 import { Invoice } from '../../../shared'
+
+import {
+	AddOrderItemsMutation,
+	CreateInvoiceMutation,
+	DeleteOrderItemsMutation,
+	FindInvoiceByIdQuery,
+	UpdateInvoiceMutation,
+	UpdateOrderItemMutation
+} from '../graphql/invoice'
 
 let user: RegisterAndLoginResult
 let invoice: Invoice
@@ -27,8 +36,38 @@ describe('Scenarios', () => {
 
 		await FindInvoiceByIdQuery(intruder.qid, invoice.id).catch((e) => expect(e).toBeDefined())
 	})
-	// test('Update not your Invoice', async () => {})
-	// test('AOI to not your Invoice', async () => {})
-	// test('UOI in not your Invoice', async () => {})
-	// test('DOIs from not your Invoice', async () => {})
+	test('Update not your Invoice', async () => {
+		expect.assertions(1)
+
+		const { orderItems, status, ...input } = CreateMockInvoiceInput()
+
+		await UpdateInvoiceMutation(intruder.qid, invoice.id, input).catch((e) => expect(e).toBeDefined())
+	})
+
+	test('Add OI to not your Invoice', async () => {
+		expect.assertions(1)
+
+		const input = CreateMockOrderItemsInput(3)
+		await AddOrderItemsMutation(intruder.qid, invoice.id, input).catch((e) => expect(e).toBeDefined())
+	})
+
+	test('Update OI in not your Invoice', async () => {
+		expect.assertions(1)
+
+		const [input] = CreateMockOrderItemsInput(1)
+
+		await UpdateOrderItemMutation(intruder.qid, invoice.orderItems[0].id, input).catch((e) =>
+			expect(e).toBeDefined()
+		)
+	})
+
+	test('Delete OIs from not your Invoice', async () => {
+		expect.assertions(1)
+
+		const { orderItems } = invoice
+
+		const [orderItem] = orderItems
+
+		await DeleteOrderItemsMutation(intruder.qid, invoice.id, [orderItem.id]).catch((e) => expect(e).toBeDefined())
+	})
 })
