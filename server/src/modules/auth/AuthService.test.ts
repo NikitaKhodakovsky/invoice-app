@@ -3,10 +3,11 @@ import { UserInputError } from 'apollo-server-express'
 
 import { CreateMockCredentials } from '../../../test/mock'
 import { AuthenticationError } from '../../common/errors'
+import { inspectUser } from '../../../test/utils'
 import { TestDataSource } from '../../../test'
 import { AuthService } from './AuthService'
 
-const { username, password } = CreateMockCredentials()
+const credentials = CreateMockCredentials()
 
 describe('AuthService', () => {
 	beforeEach(async () => {
@@ -21,21 +22,9 @@ describe('AuthService', () => {
 		test('Should create a user', async () => {
 			const authRepository = new AuthService(TestDataSource)
 
-			const user = await authRepository.register(username, password, password)
+			const user = await authRepository.register(credentials)
 
 			expect(user).toBeDefined()
-		})
-
-		test("Should throw error when passwords don't match", async () => {
-			expect.assertions(1)
-
-			const authRepository = new AuthService(TestDataSource)
-
-			try {
-				await authRepository.register(username, password, 'hello world')
-			} catch (e) {
-				expect(e).toBeInstanceOf(UserInputError)
-			}
 		})
 
 		test('Should throw error when user with that username already exists', async () => {
@@ -43,13 +32,9 @@ describe('AuthService', () => {
 
 			const authRepository = new AuthService(TestDataSource)
 
-			await authRepository.register(username, password, password)
+			await authRepository.register(credentials)
 
-			try {
-				await authRepository.register(username, password, password)
-			} catch (e) {
-				expect(e).toBeInstanceOf(UserInputError)
-			}
+			await authRepository.register(credentials).catch((e) => expect(e).toBeInstanceOf(UserInputError))
 		})
 	})
 
@@ -57,11 +42,11 @@ describe('AuthService', () => {
 		test('Should login', async () => {
 			const authRepository = new AuthService(TestDataSource)
 
-			await authRepository.register(username, password, password)
+			await authRepository.register(credentials)
 
-			const user = await authRepository.login(username, password)
+			const user = await authRepository.login(credentials)
 
-			expect(user).toBeDefined()
+			inspectUser(user)
 		})
 
 		test('Should throw error when password is entered incorrectly', async () => {
@@ -69,13 +54,13 @@ describe('AuthService', () => {
 
 			const authRepository = new AuthService(TestDataSource)
 
-			await authRepository.register(username, password, password)
+			await authRepository.register(credentials)
 
-			try {
-				await authRepository.login(username, 'hello world')
-			} catch (e) {
-				expect(e).toBeInstanceOf(AuthenticationError)
-			}
+			const { username } = credentials
+
+			await authRepository
+				.login({ username, password: 'hello world' })
+				.catch((e) => expect(e).toBeInstanceOf(AuthenticationError))
 		})
 
 		test('Should throw error when user does not exist', async () => {
@@ -83,11 +68,7 @@ describe('AuthService', () => {
 
 			const authRepository = new AuthService(TestDataSource)
 
-			try {
-				await authRepository.login(username, password)
-			} catch (e) {
-				expect(e).toBeInstanceOf(AuthenticationError)
-			}
+			await authRepository.login(credentials).catch((e) => expect(e).toBeInstanceOf(AuthenticationError))
 		})
 	})
 })

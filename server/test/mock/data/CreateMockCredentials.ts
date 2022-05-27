@@ -1,11 +1,8 @@
 import { faker } from '@faker-js/faker'
 
-export interface Credentials {
-	username: string
-	password: string
-}
+import { CredentialsInput } from '../../../../shared'
 
-export function CreateMockCredentials(): Credentials {
+export function CreateMockCredentials(): CredentialsInput {
 	return {
 		username: faker.internet.userName(),
 		password: faker.internet.password()

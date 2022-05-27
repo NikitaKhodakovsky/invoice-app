@@ -92,14 +92,8 @@ export interface CreateOrderItemInput {
 	quantity: number
 }
 
-export interface LoginInput {
+export interface CredentialsInput {
 	password: string
-	username: string
-}
-
-export interface RegisterInput {
-	password: string
-	passwordConfirmation: string
 	username: string
 }
 
