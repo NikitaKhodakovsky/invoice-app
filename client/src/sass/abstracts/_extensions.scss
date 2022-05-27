@@ -1,0 +1,21 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+%container {
+	margin: 0 auto;
+	padding: 4.8rem 2.4rem;
+	max-width: 54rem;
+
+	@include breakpoint-up('small') {
+		padding: 7rem 2.4rem;
+	}
+
+	@include breakpoint-up('medium') {
+		padding: 7rem 0;
+	}
+}
+
+%heading {
+	line-height: 1.1;
+	font-weight: 700;
+}

@@ -1,0 +1,58 @@
+@use '../abstracts' as *;
+
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+}
+
+*::after,
+*::before {
+	display: inline-block;
+}
+
+a,
+a:visited,
+a:link {
+	color: inherit;
+	text-decoration: none;
+}
+
+li {
+	color: inherit;
+	list-style: none;
+}
+
+button {
+	display: block;
+	color: currentColor;
+	background: none;
+	border: none;
+	border-radius: 0;
+	cursor: pointer;
+}
+
+input {
+	border: none;
+	outline: none;
+	box-shadow: none;
+	color: currentColor;
+	caret-color: currentColor;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+svg {
+	// max-width: 100%;
+	// height: 100%;
+	fill: currentColor;
+}
+
+img {
+	width: 100%;
+	fill: currentColor;
+}
