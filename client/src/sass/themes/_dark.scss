@@ -1,12 +1,12 @@
 @use '../abstracts' as *;
 
 body.dark {
-	--bg: hsl(235, 21%, 11%);
-	--element-bg: hsl(235, 24%, 19%);
-	--text-main: hsl(234, 39%, 85%);
-	--text-secondary: hsl(234, 11%, 52%);
-	--text-disabled: hsl(233, 14%, 35%);
-	--divider: hsl(237, 14%, 26%);
+	--bg: hsl(231, 30%, 11%);
+	--element-bg: hsl(233, 31%, 17%);
+	--divider: hsl(231, 20%, 36%);
 
+	--text-main: hsl(0, 0%, 100%);
+	--text-secondary: hsl(231, 75%, 93%);
+	--header-bg: hsl(233, 31%, 17%);
 	--shadow: none;
 }

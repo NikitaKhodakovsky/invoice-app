@@ -1,3 +1,11 @@
+import { Header } from './Header'
+import { InvoiceList } from './InvoiceList'
+
 export function App() {
-	return <div>App</div>
+	return (
+		<div>
+			<Header />
+			<InvoiceList />
+		</div>
+	)
 }

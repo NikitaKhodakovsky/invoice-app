@@ -1,0 +1,9 @@
+@use '../abstracts' as *;
+
+.hide-for-mobile {
+	display: none;
+
+	@include breakpoint-up('small') {
+		display: inline;
+	}
+}

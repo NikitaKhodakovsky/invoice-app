@@ -1,0 +1,100 @@
+@use '../../sass/abstracts' as *;
+
+.wrap {
+	@include element;
+	color: var(--text-secondary);
+
+	width: 100%;
+
+	padding: 2.4rem;
+
+	display: grid;
+	row-gap: 2.4rem;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: min-content 1fr;
+
+	cursor: pointer;
+
+	border: 1px solid transparent;
+
+	&:hover {
+		border: 1px solid hsl(252, 94%, 67%);
+	}
+
+	@include breakpoint-up('medium') {
+		padding: 1.6rem 2.4rem;
+
+		grid-template-columns: minmax(4rem, 10rem) 1fr 1fr min-content min-content;
+		grid-template-rows: 1fr;
+		align-items: center;
+		row-gap: unset;
+	}
+
+	@include breakpoint-up('xlarge') {
+		padding-left: 3.2rem;
+	}
+}
+
+.id {
+	font-weight: 700;
+	color: var(--text-main);
+
+	span {
+		color: var(--text-secondary);
+	}
+}
+
+.date {
+	grid-column: 1 / 2;
+	grid-row: 2 / 3;
+	align-self: start;
+
+	@include breakpoint-up('medium') {
+		align-self: unset;
+		grid-column: unset;
+		grid-row: unset;
+	}
+}
+
+.price {
+	color: var(--text-main);
+	font-weight: 700;
+	font-size: 1.6rem;
+
+	grid-column: 1 / 2;
+	grid-row: 2 / 3;
+	align-self: end;
+
+	@include breakpoint-up('medium') {
+		grid-column: unset;
+		grid-row: unset;
+		align-self: unset;
+
+		margin-right: 4rem;
+	}
+}
+
+.name {
+	justify-self: end;
+
+	@include breakpoint-up('medium') {
+		justify-self: unset;
+	}
+}
+
+.status {
+	justify-self: end;
+
+	@include breakpoint-up('medium') {
+		justify-self: unset;
+
+		display: flex;
+		align-items: center;
+
+		&::after {
+			content: url('../../../public/icons/icon-arrow-right.svg');
+			height: 0.8rem;
+			margin-left: 2rem;
+		}
+	}
+}

@@ -1,0 +1,41 @@
+.status {
+	width: 10rem;
+	height: 4rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	letter-spacing: 1px;
+	font-weight: 700;
+
+	border-radius: 6px;
+
+	&::before {
+		content: '';
+
+		margin-right: 0.8rem;
+
+		width: 0.8rem;
+		height: 0.8rem;
+
+		border-radius: 50%;
+
+		background-color: currentColor;
+	}
+
+	&.Pending {
+		color: hsl(34, 100%, 50%);
+		background-color: rgba(255, 143, 3, 0.1);
+	}
+
+	&.Paid {
+		color: hsl(160, 67%, 52%);
+		background-color: rgba(51, 214, 159, 0.1);
+	}
+
+	&.Draft {
+		color: var(--text-secondary);
+		background-color: rgba(55, 59, 83, 0.1);
+	}
+}

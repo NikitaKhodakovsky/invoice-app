@@ -15,16 +15,8 @@
 }
 
 @mixin element {
+	border-radius: 8px;
+
 	box-shadow: var(--shadow);
-	font-size: 1.2rem;
 	background-color: var(--element-bg);
-	border-radius: var(--border-radius);
-
-	@include breakpoint-up('small') {
-		font-size: 1.4rem;
-	}
-
-	@include breakpoint-up('medium') {
-		font-size: 1.6rem;
-	}
 }

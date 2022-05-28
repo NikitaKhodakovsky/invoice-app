@@ -1,0 +1,26 @@
+@use '../../sass/abstracts' as *;
+
+.wrap {
+	max-width: 24rem;
+	margin: 0 auto;
+	margin-top: 10rem;
+
+	@include breakpoint-up('small') {
+		margin-top: 14rem;
+	}
+}
+
+.title {
+	margin-top: 4rem;
+
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--text-main);
+	text-align: center;
+}
+
+.message {
+	margin-top: 2.4rem;
+	color: var(--text-secondary);
+	text-align: center;
+}

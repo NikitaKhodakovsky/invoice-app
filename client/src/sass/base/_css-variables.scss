@@ -1,5 +1,7 @@
 @use '../abstracts' as *;
 
 body {
-	--text-active: hsl(220, 98%, 61%);
+	--divider: hsl(231, 20%, 36%);
+	--purple: hsl(252, 94%, 67%);
+	--purple-hover: hsla(252, 100%, 73%);
 }
