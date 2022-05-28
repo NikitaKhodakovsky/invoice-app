@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import { ThemeManager, ThemeProvider } from 'react-theme-lib'
+import { BrowserRouter } from 'react-router-dom'
 
 import './sass/index.scss'
 
@@ -12,7 +13,9 @@ const manager = new ThemeManager({
 })
 
 root.render(
-	<ThemeProvider manager={manager}>
-		<App />
-	</ThemeProvider>
+	<BrowserRouter>
+		<ThemeProvider manager={manager}>
+			<App />
+		</ThemeProvider>
+	</BrowserRouter>
 )
