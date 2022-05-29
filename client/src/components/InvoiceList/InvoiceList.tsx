@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Invoice, Status } from '../../types/graphql'
 import { InvoiceListItem } from '../InvoiceListItem'
 import { NotFound } from '../NotFound'
@@ -193,7 +194,7 @@ const invoices: Invoice[] = [
 
 export function InvoiceList() {
 	return (
-		<div className='container'>
+		<Fragment>
 			<div className={styles.wrap}>
 				<div>
 					<p className={styles.tittle}>Invoices</p>
@@ -221,6 +222,6 @@ export function InvoiceList() {
 					<InvoiceListItem invoice={i} key={i.id} />
 				))}
 			</div>
-		</div>
+		</Fragment>
 	)
 }
