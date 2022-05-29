@@ -12,19 +12,13 @@
 	color: var(--text-main);
 }
 
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
+.title {
 	margin-bottom: 2.4rem;
 
-	h3 {
-		font-size: 2.4rem;
+	font-size: 2.4rem;
 
-		@include breakpoint-up('medium') {
-			font-size: 3.2rem;
-		}
+	@include breakpoint-up('medium') {
+		font-size: 3.2rem;
 	}
 }
 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { ArrowButton } from '../ArrowButton'
 import { Input } from '../Input'
 import styles from './Login.module.scss'
@@ -7,10 +8,14 @@ export function Login() {
 		<div className={styles.wrap}>
 			<div className={styles.header}>
 				<h3>Login</h3>
-				<ArrowButton direction='right' message='Register' />
+				<Link to='/register'>
+					<ArrowButton direction='right' message='Register' />
+				</Link>
 			</div>
-			<Input label='Username' className={styles.username} />
-			<Input label='Password' className={styles.password} />
+			<div className={styles.form}>
+				<Input label='Username' />
+				<Input label='Password' type='password' />
+			</div>
 			<button className={styles.loginButton}>Login</button>
 		</div>
 	)
