@@ -21,6 +21,11 @@
 
 .message {
 	margin-top: 2.4rem;
-	color: var(--text-secondary);
+
+	display: flex;
+	justify-content: center;
+
 	text-align: center;
+
+	color: var(--text-secondary);
 }
