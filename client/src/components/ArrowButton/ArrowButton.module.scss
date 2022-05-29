@@ -1,0 +1,19 @@
+.button {
+	display: flex;
+	align-items: center;
+
+	font-weight: 700;
+	color: var(--text-main);
+}
+
+.left::before {
+	content: url('../../../public/icons/icon-arrow-left.svg');
+	margin-right: 2.4rem;
+	width: 0.5rem;
+}
+
+.right::after {
+	content: url('../../../public/icons/icon-arrow-right.svg');
+	margin-left: 2.4rem;
+	width: 0.5rem;
+}

@@ -7,6 +7,7 @@ import { InvoiceStatus } from '../InvoiceStatus'
 import { useNavigate } from 'react-router-dom'
 import { Id } from '../Id'
 import { Summary } from '../Summary'
+import { ArrowButton } from '../ArrowButton'
 
 const invoice = {
 	id: '4',
@@ -70,9 +71,12 @@ export function Invoice() {
 	return (
 		<div className='container'>
 			<div className={styles.wrap}>
-				<button className={styles.backButton} onClick={() => navigate(-1)}>
-					Go back
-				</button>
+				<ArrowButton
+					message='Go back'
+					direction='left'
+					className={styles.backButton}
+					onClick={() => navigate(-1)}
+				/>
 				<div className={styles.header}>
 					<p>Status</p>
 					<InvoiceStatus status={Status.Pending} className={styles.status} />
