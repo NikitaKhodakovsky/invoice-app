@@ -1,15 +1,8 @@
-import { Routes, Route, useParams } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import { InvoiceList } from './InvoiceList'
 import { Header } from './Header'
-
-function Invoice() {
-	const match = useParams()
-
-	console.log(match)
-
-	return <div className='container'>{`Invoice ${match.id}`}</div>
-}
+import { Invoice } from './Invoice'
 
 export function App() {
 	return (

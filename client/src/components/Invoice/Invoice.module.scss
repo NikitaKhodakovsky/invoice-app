@@ -1,0 +1,218 @@
+@use '../../sass/abstracts' as *;
+
+.wrap {
+	margin-top: 3.2rem;
+
+	padding-bottom: 15rem;
+
+	@include breakpoint-up('medium') {
+		margin-top: 4.8rem;
+	}
+
+	@include breakpoint-up('xlarge') {
+		margin-top: 6.4rem;
+	}
+}
+
+.backButton {
+	margin-bottom: 3.2rem;
+
+	display: flex;
+	align-items: center;
+
+	font-weight: 700;
+	color: var(--text-main);
+
+	&::before {
+		content: url('../../../public/icons/icon-arrow-left.svg');
+		margin-right: 2.4rem;
+		width: 0.5rem;
+	}
+}
+
+.header {
+	@include element;
+
+	width: 100%;
+
+	margin-bottom: 1.6rem;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 2.4rem;
+
+	@include breakpoint-up('medium') {
+		margin-bottom: 2.4rem;
+		padding: 2.4rem 3.2rem;
+	}
+}
+
+.status {
+	@include breakpoint-up('medium') {
+		margin-left: 1.6rem;
+		margin-right: auto;
+	}
+}
+
+.actions {
+	@include element;
+
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 2.2rem 2.4rem;
+
+	@include breakpoint-up('medium') {
+		position: unset;
+		padding: unset;
+
+		box-shadow: none;
+
+		display: grid;
+		grid-template-columns: repeat(3, max-content);
+		gap: 0.8rem;
+	}
+}
+
+.button {
+	padding: 1.6rem 2.4rem;
+	border-radius: 24px;
+
+	color: #fff;
+	font-weight: 700;
+}
+
+.edit {
+	color: var(--text-secondary);
+	background-color: var(--summary-bg);
+
+	&:hover {
+		color: #fff;
+		background-color: hsl(231, 36%, 63%);
+	}
+}
+
+.delete {
+	background-color: var(--red);
+
+	&:hover {
+		background-color: var(--red-hover);
+	}
+}
+
+.markAsPaid {
+	background-color: var(--purple);
+
+	&:hover {
+		background-color: var(--purple-hover);
+	}
+}
+
+.invoice {
+	@include element;
+
+	width: 100%;
+	padding: 2.4rem;
+
+	@include breakpoint-up('medium') {
+		padding: 4.8rem;
+	}
+}
+
+.data {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: min-content min-content 1fr min-content;
+	gap: 3rem;
+
+	margin-bottom: 4rem;
+
+	strong {
+		font-size: 1.5rem;
+	}
+
+	@include breakpoint-up('medium') {
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-rows: min-content min-content;
+		gap: 2rem;
+	}
+}
+
+.id {
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+
+	margin-bottom: 0.4rem;
+
+	@include breakpoint-up('medium') {
+		font-size: 1.6rem;
+		margin-bottom: 0.8rem;
+	}
+}
+
+.senderAddress {
+	grid-column: 1 / 2;
+	grid-row: 2 / 3;
+
+	@include breakpoint-up('medium') {
+		grid-column: 3 / 4;
+		grid-row: 1 / 2;
+		justify-self: end;
+		text-align: right;
+	}
+}
+
+.block1 {
+	grid-column: 1 / 2;
+	grid-row: 3 / 4;
+
+	@include breakpoint-up('medium') {
+		grid-column: 1 / 2;
+		grid-row: 2 / 3;
+	}
+}
+
+.invoiceDate {
+	margin-bottom: 3.2rem;
+}
+
+.billTo {
+	grid-column: 2 / 3;
+	grid-row: 3 / 4;
+
+	strong {
+		margin-bottom: 0.8rem;
+	}
+
+	@include breakpoint-up('medium') {
+		grid-column: 2 / 3;
+		grid-row: 2 / 3;
+	}
+}
+
+.sentTo {
+	grid-column: 1 / 3;
+	grid-row: 4 / 5;
+
+	@include breakpoint-up('medium') {
+		grid-column: 3 / 4;
+		grid-row: 2 / 3;
+	}
+}
+
+.subtitle {
+	margin-bottom: 1.2rem;
+}
+
+.address {
+	font-size: 1.1rem;
+	line-height: 1.8rem;
+}

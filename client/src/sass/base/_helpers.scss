@@ -4,6 +4,14 @@
 	display: none;
 
 	@include breakpoint-up('small') {
-		display: inline;
+		display: inline-block;
+	}
+}
+
+.hide-for-desktop {
+	display: inline-block;
+
+	@include breakpoint-up('small') {
+		display: none;
 	}
 }
