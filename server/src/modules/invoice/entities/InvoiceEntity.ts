@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, Float, Int, ObjectType } from 'type-graphql'
 
 import { BaseEntity } from '../../../common/entities'
 import { OrderItem } from './OrderItemEntity'
@@ -55,4 +55,9 @@ export class Invoice extends BaseEntity {
 	@Field(() => [OrderItem])
 	@OneToMany(() => OrderItem, (orderItem) => orderItem.invoice, { cascade: true, eager: true })
 	orderItems: OrderItem[]
+
+	@Field(() => Float)
+	total(): number {
+		return this.orderItems.reduce((prev, { price, quantity }) => prev + price * quantity, 0)
+	}
 }

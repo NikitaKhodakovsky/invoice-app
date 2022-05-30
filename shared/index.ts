@@ -47,6 +47,7 @@ export interface Invoice {
 	status: Status
 	updatedAt: Date
 	user: User
+	total: number
 }
 
 export interface Address {
