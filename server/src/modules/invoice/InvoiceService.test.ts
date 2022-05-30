@@ -191,7 +191,52 @@ describe('InoviceService', () => {
 	})
 
 	describe('findAll', () => {
-		test('Should return user Invoices', async () => {})
+		test('Should return user Invoices', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+			const stranger = await createUser(TestDataSource)
+
+			await createInvoice(TestDataSource, user)
+			await createInvoice(TestDataSource, user)
+			await createInvoice(TestDataSource, user)
+
+			const strangerInvoice = await createInvoice(TestDataSource, stranger)
+
+			const userInvoices = await invoiceService.findAll(user)
+
+			expect(userInvoices.length).toBe(3)
+			expect(userInvoices.find((i) => i.id === strangerInvoice.id)).toBeFalsy()
+		})
+
+		test('Should filter Invoices by status', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+			const stranger = await createUser(TestDataSource)
+
+			await createInvoice(TestDataSource, stranger, CreateMockInvoiceInput({ status: Status.Paid }))
+			await createInvoice(TestDataSource, stranger, CreateMockInvoiceInput({ status: Status.Draft }))
+			await createInvoice(TestDataSource, stranger, CreateMockInvoiceInput({ status: Status.Pending }))
+
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Paid }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Paid }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Draft }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Draft }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Draft }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
+			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
+
+			const paid = await invoiceService.findAll(user, Status.Paid)
+			const draft = await invoiceService.findAll(user, Status.Draft)
+			const pending = await invoiceService.findAll(user, Status.Pending)
+
+			expect(paid.length).toBe(2)
+			expect(draft.length).toBe(3)
+			expect(pending.length).toBe(4)
+		})
 	})
 
 	describe('changeStatus', () => {

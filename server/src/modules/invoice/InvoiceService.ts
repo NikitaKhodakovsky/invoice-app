@@ -82,8 +82,8 @@ export class InvoiceService {
 		return invoice
 	}
 
-	public async findAll(user: User, status: Status): Promise<Invoice[]> {
-		return this.invoiceRepository.find({ where: { user } })
+	public async findAll({ id }: User, status?: Status): Promise<Invoice[]> {
+		return this.invoiceRepository.find({ where: { user: { id }, status } })
 	}
 
 	public async changeStatus(user: User, invoiceId: number, status: Status): Promise<Invoice> {
