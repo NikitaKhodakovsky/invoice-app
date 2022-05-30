@@ -3,6 +3,7 @@
 export interface Query {
 	invoice: Invoice | null
 	invoices: Invoice[]
+	me: User
 }
 
 export interface Mutation {
