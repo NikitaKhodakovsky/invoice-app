@@ -7,7 +7,7 @@ body.dark {
 
 	--text-main: hsl(0, 0%, 100%);
 	--text-secondary: hsl(231, 75%, 93%);
-	--header-bg: hsl(233, 31%, 17%);
+	--header-bg: var(--element-bg);
 
 	--shadow: none;
 
@@ -15,4 +15,6 @@ body.dark {
 	--summary-total-bg: hsl(231, 28%, 7%);
 
 	--input-border: var(--summary-bg);
+
+	--checkbox-bg: var(--summary-total-bg);
 }
