@@ -1,10 +1,10 @@
 import { gql } from 'graphql-request'
 
-import { Mutation, RegisterInput } from '../../../../shared'
+import { Mutation, CredentialsInput } from '../../../../shared'
 import { client } from '../client'
 
 const RegisterMutationDocument = gql`
-	mutation ($data: RegisterInput!) {
+	mutation ($data: CredentialsInput!) {
 		register(data: $data) {
 			id
 			createdAt
@@ -14,8 +14,8 @@ const RegisterMutationDocument = gql`
 	}
 `
 
-export async function RegisterMutation(data: RegisterInput) {
-	const res = await client.rawRequest<{ register: Mutation['register'] }, { data: RegisterInput }>(
+export async function RegisterMutation(data: CredentialsInput) {
+	const res = await client.rawRequest<{ register: Mutation['register'] }, { data: CredentialsInput }>(
 		RegisterMutationDocument,
 		{
 			data

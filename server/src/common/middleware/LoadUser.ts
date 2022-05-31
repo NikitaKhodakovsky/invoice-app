@@ -1,5 +1,6 @@
 import { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql'
 import { UserNotFoundError, ForbiddenError } from '../errors'
+import { destroySession } from '../../utils'
 import { User } from '../../modules/user'
 import { Context } from '../../types'
 
@@ -13,7 +14,11 @@ export class LoadUser implements MiddlewareInterface<Context<User>> {
 
 		const user = await userRepository.findOne({ where: { id: userId } })
 
-		if (!user) throw new UserNotFoundError()
+		if (!user) {
+			await destroySession(context.req, context.res)
+
+			throw new UserNotFoundError()
+		}
 
 		context.user = user
 

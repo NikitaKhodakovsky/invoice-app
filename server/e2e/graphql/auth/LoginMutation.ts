@@ -1,11 +1,11 @@
 import { gql } from 'graphql-request'
 import cookie from 'cookie'
 
-import { LoginInput, Mutation } from '../../../../shared'
+import { CredentialsInput, Mutation } from '../../../../shared'
 import { client } from '../client'
 
 const LoginMutationDocument = gql`
-	mutation ($data: LoginInput!) {
+	mutation ($data: CredentialsInput!) {
 		login(data: $data) {
 			id
 			createdAt
@@ -15,10 +15,13 @@ const LoginMutationDocument = gql`
 	}
 `
 
-export async function LoginMutation(data: LoginInput) {
-	const res = await client.rawRequest<{ login: Mutation['login'] }, { data: LoginInput }>(LoginMutationDocument, {
-		data
-	})
+export async function LoginMutation(data: CredentialsInput) {
+	const res = await client.rawRequest<{ login: Mutation['login'] }, { data: CredentialsInput }>(
+		LoginMutationDocument,
+		{
+			data
+		}
+	)
 
 	const cookies = res.headers.get('Set-Cookie')
 

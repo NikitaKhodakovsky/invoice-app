@@ -1,26 +1,23 @@
-import { CreateMockCredentials, Credentials } from '../../../test/mock'
+import { User, CredentialsInput } from '../../../../shared'
+import { CreateMockCredentials } from '../../../test/mock'
 import { RegisterMutation } from './RegisterMutation'
 import { LoginMutation } from './LoginMutation'
-import { User } from '../../../../shared'
 
 export interface RegisterAndLoginResult {
-	credentils: Credentials
+	credentils: CredentialsInput
 	user: User
 	qid: string
 }
 
 export async function RegisterAndLogin(): Promise<RegisterAndLoginResult> {
-	const { username, password } = CreateMockCredentials()
+	const credentils = CreateMockCredentials()
 
-	await RegisterMutation({ username, password, passwordConfirmation: password })
+	await RegisterMutation(credentils)
 
-	const { qid, user } = await LoginMutation({ username, password })
+	const { qid, user } = await LoginMutation(credentils)
 
 	return {
-		credentils: {
-			username,
-			password
-		},
+		credentils,
 		user,
 		qid
 	}
