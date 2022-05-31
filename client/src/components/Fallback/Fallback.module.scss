@@ -1,0 +1,43 @@
+@use '../../sass/abstracts' as *;
+
+.wrap {
+	@include element;
+	width: 90%;
+
+	margin-top: 6rem;
+
+	padding: 4rem;
+
+	border-radius: 5px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	h3 {
+		text-align: center;
+		color: var(--text-main);
+		font-size: 2rem;
+		margin-bottom: 3rem;
+	}
+
+	@include breakpoint-up('small') {
+		padding: 5rem;
+
+		h3 {
+			font-size: 2.6rem;
+		}
+	}
+}
+
+.button {
+	color: var(--text-main);
+
+	padding: 1rem 2rem;
+	border: 1px solid var(--divider);
+	border-radius: 4px;
+
+	&:hover {
+		border: 1px solid var(--text-main);
+	}
+}
