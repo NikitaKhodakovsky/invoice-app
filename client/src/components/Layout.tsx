@@ -1,12 +1,15 @@
 import { Outlet } from 'react-router-dom'
+import { Fragment } from 'react'
 
 import { Header } from './Header'
 
 export function Layout() {
 	return (
-		<div className='container'>
+		<Fragment>
 			<Header />
-			<Outlet />
-		</div>
+			<div className='container'>
+				<Outlet />
+			</div>
+		</Fragment>
 	)
 }

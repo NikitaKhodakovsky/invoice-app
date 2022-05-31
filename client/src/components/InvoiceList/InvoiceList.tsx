@@ -3,6 +3,7 @@ import { useAllInvoicesQuery } from '../../graphql/queries'
 import { InvoiceListItem } from '../InvoiceListItem'
 import { Loader } from '../Loader'
 import { NotFound } from '../NotFound'
+import { StatusFilter } from '../StatusFilter'
 
 import styles from './InvoiceList.module.scss'
 
@@ -18,7 +19,7 @@ export function InvoiceList() {
 
 	if (!data?.invoices || error) return <div>Error!</div>
 
-	const invoices = data.invoices
+	const { invoices } = data
 
 	return (
 		<Fragment>
@@ -29,10 +30,7 @@ export function InvoiceList() {
 						{invoices.length > 0 ? `${invoices.length} Invoices` : 'No Invoices'}
 					</p>
 				</div>
-				<div className={styles.filter}>
-					Filter
-					<span className='hide-for-mobile'>&nbsp;by status</span>
-				</div>
+				<StatusFilter className={styles.statusFilter} />
 				<button className={styles.button}>
 					<span>
 						<img src='icons/icon-plus.svg' alt='+' />
