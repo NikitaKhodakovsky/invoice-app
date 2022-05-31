@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { useAllInvoicesQuery } from '../../graphql/queries'
 import { InvoiceListItem } from '../InvoiceListItem'
+import { Loader } from '../Loader'
 import { NotFound } from '../NotFound'
 
 import styles from './InvoiceList.module.scss'
@@ -8,7 +9,13 @@ import styles from './InvoiceList.module.scss'
 export function InvoiceList() {
 	const { data, loading, error } = useAllInvoicesQuery()
 
-	if (loading) return <div>Loading</div>
+	if (loading)
+		return (
+			<div className={styles.wrap}>
+				<Loader />
+			</div>
+		)
+
 	if (!data?.invoices || error) return <div>Error!</div>
 
 	const invoices = data.invoices

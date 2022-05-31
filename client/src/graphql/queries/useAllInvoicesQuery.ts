@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { Query, Status } from '../../types/graphql'
 
-const AllInvoicesQuery = gql`
+export const AllInvoicesQuery = gql`
 	query {
 		invoices {
 			id

@@ -10,7 +10,7 @@ export interface NotFoundProps {
 export function NotFound({ title, message }: NotFoundProps) {
 	return (
 		<div className={styles.wrap}>
-			<img src='img/illustration-empty.svg' alt='Not found' />
+			<img src='/img/illustration-empty.svg' alt='Not found' />
 			<div className={styles.title}>{title || 'There is nothing here'}</div>
 			<div className={styles.message}>{message}</div>
 		</div>

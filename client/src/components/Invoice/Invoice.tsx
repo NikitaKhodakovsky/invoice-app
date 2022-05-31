@@ -2,21 +2,25 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import styles from './Invoice.module.scss'
 
-import { useDeleteInvoiceMutation } from '../../graphql/mutations'
+import { useChangeInvoiceStatus, useDeleteInvoiceMutation } from '../../graphql/mutations'
 import { useInvoiceByIdQuery } from '../../graphql/queries'
+import { Status } from '../../types/graphql'
 import { styler as s } from '../../utils'
 
 import { InvoiceStatus } from '../InvoiceStatus'
-import { ArrowButton } from '../ArrowButton'
+import { BackButton } from '../BackButton'
 import { Summary } from '../Summary'
+import { Loader } from '../Loader'
 import { Id } from '../Id'
+import { NotFound } from '../NotFound'
 
 export function Invoice() {
 	const params = useParams()
 	const navigate = useNavigate()
 
-	const { data, loading } = useInvoiceByIdQuery(params.id as string)
 	const [deleteMutation] = useDeleteInvoiceMutation(params.id as string)
+	const [markAsPaid] = useChangeInvoiceStatus(params.id as string, Status.Paid)
+	const { data, loading } = useInvoiceByIdQuery(params.id as string)
 
 	async function deleteHandler() {
 		const decision = window.confirm(
@@ -29,20 +33,20 @@ export function Invoice() {
 		}
 	}
 
-	if (loading) return <div>Loading</div>
-	if (!data?.invoice) return <div>Invoice not found</div>
+	if (loading)
+		return (
+			<div className={styles.wrap}>
+				<Loader />
+			</div>
+		)
+	if (!data?.invoice) return <NotFound title='Invoice not found' message={<BackButton />} />
 
 	const { id, status, description, senderAddress, clientAddress, clientName, clientEmail, paymentDue, createdAt } =
 		data.invoice
 
 	return (
 		<div className={styles.wrap}>
-			<ArrowButton
-				message='Go back'
-				direction='left'
-				className={styles.backButton}
-				onClick={() => navigate(-1)}
-			/>
+			<BackButton className={styles.backButton} />
 			<div className={styles.header}>
 				<p>Status</p>
 				<InvoiceStatus status={status} className={styles.status} />
@@ -51,7 +55,9 @@ export function Invoice() {
 					<button className={s(styles, 'delete', 'button')} onClick={deleteHandler}>
 						Delete
 					</button>
-					<button className={s(styles, 'markAsPaid', 'button')}>Mark as Paid</button>
+					<button className={s(styles, 'markAsPaid', 'button')} onClick={() => markAsPaid()}>
+						Mark as Paid
+					</button>
 				</div>
 			</div>
 

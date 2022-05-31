@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { Query } from '../../types/graphql'
 
-const InvoiceByIdQuery = gql`
+export const InvoiceByIdQuery = gql`
 	query ($id: ID!) {
 		invoice(id: $id) {
 			id
