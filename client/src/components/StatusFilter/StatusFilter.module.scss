@@ -5,7 +5,7 @@
 }
 
 .title {
-	width: 14rem;
+	width: 12rem;
 	text-align: center;
 
 	color: var(--text-main);
@@ -17,9 +17,13 @@
 		margin-left: 1rem;
 		width: 0.9rem;
 
-		@include breakpoint-up('medium') {
+		@include breakpoint-up('small') {
 			margin-left: 1.4rem;
 		}
+	}
+
+	@include breakpoint-up('small') {
+		width: 16rem;
 	}
 
 	@include breakpoint-up('medium') {
@@ -43,11 +47,15 @@
 	display: grid;
 	gap: 1.6rem;
 
-	width: 14rem;
+	width: 12rem;
 
 	padding: 2.4rem;
 
 	border: 1px solid var(--input-border);
+
+	@include breakpoint-up('small') {
+		width: 16rem;
+	}
 
 	@include breakpoint-up('medium') {
 		width: 18rem;
