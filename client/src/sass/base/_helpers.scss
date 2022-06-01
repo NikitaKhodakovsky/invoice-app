@@ -4,7 +4,7 @@
 	display: none;
 
 	@include breakpoint-up('small') {
-		display: inline-block;
+		display: inline-block !important;
 	}
 }
 
@@ -12,6 +12,6 @@
 	display: inline-block;
 
 	@include breakpoint-up('small') {
-		display: none;
+		display: none !important;
 	}
 }

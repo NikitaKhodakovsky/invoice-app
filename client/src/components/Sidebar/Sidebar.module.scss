@@ -1,0 +1,74 @@
+@use '../../sass/abstracts' as *;
+
+.placeholder {
+	display: none;
+
+	position: absolute;
+
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+
+	z-index: 250;
+
+	background-color: #000;
+
+	opacity: 0.5;
+}
+
+.placeholder.open {
+	display: block;
+}
+
+.sidebar {
+	position: fixed;
+
+	//header
+	top: 7.2rem;
+
+	left: -100%;
+	bottom: 0;
+
+	width: 100%;
+
+	padding: 2.4rem;
+	padding-top: 3.2rem;
+
+	z-index: 500;
+
+	overflow: scroll;
+
+	background-color: var(--sidebar-bg);
+
+	transition: left 0.3s;
+
+	@include breakpoint-up('small') {
+		top: 8rem;
+		padding: 5.6rem;
+	}
+
+	@include breakpoint-up('medium') {
+		max-width: 62rem;
+
+		border-top-right-radius: 2rem;
+		border-bottom-right-radius: 2rem;
+	}
+
+	@include breakpoint-up('xlarge') {
+		//header
+		padding-left: 10rem + 5.6rem;
+
+		top: 0;
+	}
+}
+
+.sidebar.open {
+	left: 0;
+}
+
+.closeButton {
+	@include breakpoint-up('medium') {
+		display: none;
+	}
+}

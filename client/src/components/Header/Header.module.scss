@@ -1,7 +1,10 @@
 @use '../../sass/abstracts' as *;
 
 .wrap {
+	position: relative;
 	height: 7.2rem;
+
+	z-index: 1000;
 
 	display: grid;
 	grid-template-columns: 1fr max-content max-content;
