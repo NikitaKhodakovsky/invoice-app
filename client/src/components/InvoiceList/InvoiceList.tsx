@@ -31,7 +31,7 @@ export function InvoiceList() {
 					</p>
 				</div>
 				<StatusFilter className={styles.statusFilter} />
-				<button className={styles.button}>
+				<button className={`button purple ${styles.button}`}>
 					<span>
 						<img src='icons/icon-plus.svg' alt='+' />
 					</span>

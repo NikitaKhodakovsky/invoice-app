@@ -9,14 +9,14 @@ import { styler as s } from '../../utils'
 
 import { InvoiceStatus } from '../InvoiceStatus'
 import { BackButton } from '../BackButton'
+import { NotFound } from '../NotFound'
 import { Summary } from '../Summary'
 import { Loader } from '../Loader'
 import { Id } from '../Id'
-import { NotFound } from '../NotFound'
 
 export function Invoice() {
-	const params = useParams()
 	const navigate = useNavigate()
+	const params = useParams()
 
 	const [deleteMutation] = useDeleteInvoiceMutation(params.id as string)
 	const [markAsPaid] = useChangeInvoiceStatus(params.id as string, Status.Paid)
@@ -51,11 +51,11 @@ export function Invoice() {
 				<p>Status</p>
 				<InvoiceStatus status={status} className={styles.status} />
 				<div className={styles.actions}>
-					<button className={s(styles, 'edit', 'button')}>Edit</button>
-					<button className={s(styles, 'delete', 'button')} onClick={deleteHandler}>
+					<button className='button grey'>Edit</button>
+					<button className='button red' onClick={deleteHandler}>
 						Delete
 					</button>
-					<button className={s(styles, 'markAsPaid', 'button')} onClick={() => markAsPaid()}>
+					<button className='button purple' onClick={() => markAsPaid()}>
 						Mark as Paid
 					</button>
 				</div>

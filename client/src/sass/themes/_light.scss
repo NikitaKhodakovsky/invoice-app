@@ -16,4 +16,13 @@ body.light {
 	--input-border: hsl(231, 75%, 93%);
 
 	--checkbox-bg: hsl(231, 73%, 93%);
+
+	--sidebar-bg: var(--element-bg);
+
+	--button-black-text: hsl(231, 20%, 61%);
+	--button-black-bg-hover: hsl(231, 28%, 7%);
+
+	--button-gray-bg: hsl(231, 67%, 99%);
+	--button-gray-bg-hover: hsl(231, 73%, 93%);
+	--button-gray-text-hover: var(--text-secondary);
 }

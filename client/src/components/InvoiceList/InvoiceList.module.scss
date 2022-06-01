@@ -41,17 +41,8 @@
 	display: flex;
 	align-items: center;
 
-	font-weight: 700;
-
 	width: 9rem;
-	border-radius: 24px;
-
-	color: #fff;
-	background-color: var(--purple);
-
-	&:hover {
-		background-color: var(--purple-hover);
-	}
+	padding: 0;
 
 	@include breakpoint-up('small') {
 		width: 15rem;

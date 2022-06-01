@@ -17,4 +17,13 @@ body.dark {
 	--input-border: var(--summary-bg);
 
 	--checkbox-bg: var(--summary-total-bg);
+
+	--sidebar-bg: var(--bg);
+
+	--button-black-text: var(--text-secondary);
+	--button-black-bg-hover: var(--element-bg);
+
+	--button-gray-bg: hsl(233, 30%, 21%);
+	--button-gray-bg-hover: hsl(0, 0%, 100%);
+	--button-gray-text-hover: hsl(231, 36%, 63%);
 }
