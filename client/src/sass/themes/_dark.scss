@@ -9,7 +9,8 @@ body.dark {
 	--text-secondary: hsl(231, 75%, 93%);
 	--header-bg: var(--element-bg);
 
-	--shadow: none;
+	--shadow-sm: none;
+	--shadow-md: none;
 
 	--summary-bg: hsl(233, 30%, 21%);
 	--summary-total-bg: hsl(231, 28%, 7%);
@@ -26,4 +27,7 @@ body.dark {
 	--button-gray-bg: hsl(233, 30%, 21%);
 	--button-gray-bg-hover: hsl(0, 0%, 100%);
 	--button-gray-text-hover: hsl(231, 36%, 63%);
+
+	--dropdown-content-bg: var(--summary-bg);
+	--dropdown-content-divider: var(--element-bg);
 }

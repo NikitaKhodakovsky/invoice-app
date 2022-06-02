@@ -17,6 +17,6 @@
 @mixin element {
 	border-radius: 8px;
 
-	box-shadow: var(--shadow);
+	box-shadow: var(--shadow-sm);
 	background-color: var(--element-bg);
 }

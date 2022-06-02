@@ -8,7 +8,8 @@ body.light {
 	--text-secondary: hsl(231, 36%, 63%);
 	--header-bg: hsl(231, 20%, 27%);
 
-	--shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+	--shadow-sm: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+	--shadow-md: 0px 10px 20px rgba(72, 84, 159, 0.25);
 
 	--summary-bg: hsl(231, 67%, 99%);
 	--summary-total-bg: var(--header-bg);
@@ -25,4 +26,7 @@ body.light {
 	--button-gray-bg: hsl(231, 67%, 99%);
 	--button-gray-bg-hover: hsl(231, 73%, 93%);
 	--button-gray-text-hover: var(--text-secondary);
+
+	--dropdown-content-bg: var(--element-bg);
+	--dropdown-content-divider: var(--input-border);
 }
