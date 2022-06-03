@@ -7,6 +7,14 @@
 	color: #fff;
 	font-weight: 700;
 
+	&.mobile {
+		padding: 1.6rem;
+
+		@include breakpoint-up('medium') {
+			padding: 1.6rem 2.4rem;
+		}
+	}
+
 	&.large {
 		width: 100%;
 		display: flex;

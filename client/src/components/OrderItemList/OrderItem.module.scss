@@ -1,0 +1,36 @@
+@use '../../sass/abstracts' as *;
+
+.wrap {
+	display: grid;
+	grid-template-columns: 6.4rem 10rem 1fr max-content;
+	gap: 2.4rem 1.6rem;
+
+	button {
+		display: flex;
+		justify-items: center;
+		align-items: center;
+	}
+
+	@include breakpoint-up('medium') {
+		grid-template-columns: 1fr 4.6rem 8rem 8rem max-content;
+
+		label {
+			display: none !important;
+		}
+	}
+}
+
+.name {
+	grid-column: 1 / -1;
+
+	@include breakpoint-up('medium') {
+		grid-column: unset;
+	}
+}
+
+.total {
+	input {
+		background-color: transparent !important;
+		border: none !important;
+	}
+}
