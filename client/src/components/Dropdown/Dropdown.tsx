@@ -3,7 +3,6 @@ import { useState } from 'react'
 import styles from './Dropdown.module.scss'
 
 import { styler as s } from '../../utils'
-import { useField } from 'formik'
 
 export interface DropdownOption {
 	label: string
@@ -50,24 +49,4 @@ export function Dropdown({ label, options, value, onChange, className, error }: 
 			{isOpen && <ul className={styles.content}>{content}</ul>}
 		</div>
 	)
-}
-
-export interface FormikDropdownProps extends DropdownProps {
-	name: string
-}
-
-export function FormikDropdown({ name, ...props }: FormikDropdownProps) {
-	const [option, setOption] = useState()
-	const [{ value }, { error, touched }, { setValue }] = useField(name)
-
-	return <div></div>
-
-	// return (
-	// 	<Dropdown
-	// 		value={option}
-	// 		error={error && touched ? error : null}
-	// 		onChange={(v) => setValue(v.value)}
-	// 		{...props}
-	// 	/>
-	// )
 }

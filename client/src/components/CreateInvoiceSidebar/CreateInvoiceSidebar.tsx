@@ -44,7 +44,7 @@ const validationSchema = object({
 			price: number().required('required').min(1, ' '),
 			quantity: number().required('required').min(1, ' ')
 		})
-	).min(1)
+	).min(1, 'You can not create Invoice without items')
 })
 
 export interface FormValues {
