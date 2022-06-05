@@ -5,19 +5,17 @@
 	justify-content: space-between;
 	align-items: center;
 
-	margin-top: 3.2rem;
-	margin-bottom: 3.2rem;
+	padding: 3.2rem 0;
 
 	font-weight: 700;
 
 	@include breakpoint-up('small') {
-		margin-top: 5.6rem;
-		margin-bottom: 5.6rem;
+		padding: 5.6rem 0;
 	}
 
 	@include breakpoint-up('xlarge') {
-		margin-top: 7.2rem;
-		margin-bottom: 6.5rem;
+		padding-top: 7.2rem;
+		padding-bottom: 6.5rem;
 	}
 }
 

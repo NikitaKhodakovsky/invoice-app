@@ -1,13 +1,17 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
+
 import { useAllInvoicesQuery } from '../../graphql/queries'
-import { InvoiceListItem } from '../InvoiceListItem'
-import { Loader } from '../Loader'
-import { NotFound } from '../NotFound'
-import { StatusFilter } from '../StatusFilter'
 
 import styles from './InvoiceList.module.scss'
 
+import { CreateInvoiceSidebar } from '../CreateInvoiceSidebar'
+import { InvoiceListItem } from '../InvoiceListItem'
+import { StatusFilter } from '../StatusFilter'
+import { NotFound } from '../NotFound'
+import { Loader } from '../Loader'
+
 export function InvoiceList() {
+	const [isOpen, setIsOpen] = useState(false)
 	const { data, loading, error } = useAllInvoicesQuery()
 
 	if (loading)
@@ -23,6 +27,7 @@ export function InvoiceList() {
 
 	return (
 		<Fragment>
+			<CreateInvoiceSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 			<div className={styles.wrap}>
 				<div>
 					<p className={styles.tittle}>Invoices</p>
@@ -31,7 +36,7 @@ export function InvoiceList() {
 					</p>
 				</div>
 				<StatusFilter className={styles.statusFilter} />
-				<button className={`button purple ${styles.button}`}>
+				<button className={`button purple ${styles.button}`} onClick={() => setIsOpen(true)}>
 					<span>
 						<img src='icons/icon-plus.svg' alt='+' />
 					</span>

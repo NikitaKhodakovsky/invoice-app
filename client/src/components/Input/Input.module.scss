@@ -1,7 +1,8 @@
 @use '../../sass/abstracts' as *;
 
 .wrap {
-	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 
 	label {
 		color: var(--text-secondary);
@@ -9,6 +10,8 @@
 	}
 
 	input {
+		grid-column: 1 / -1;
+
 		width: 100%;
 		height: 4.8rem;
 
@@ -23,4 +26,19 @@
 
 		background-color: var(--element-bg);
 	}
+}
+
+.wrap.error {
+	input {
+		border: 1px solid var(--red);
+	}
+
+	label {
+		color: var(--red);
+	}
+}
+
+.message {
+	justify-self: end;
+	color: var(--red);
 }

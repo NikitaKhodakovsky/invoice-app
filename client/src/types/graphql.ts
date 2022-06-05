@@ -82,7 +82,7 @@ export interface CreateInvoiceInput {
 	clientName: string
 	description: string
 	orderItems: CreateOrderItemInput[]
-	paymentDue: Date
+	paymentDue: string
 	paymentTerms: number
 	senderAddress: CreateAddressInput
 	status?: Status
