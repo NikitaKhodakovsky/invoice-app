@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
+import { Fragment, ReactNode } from 'react'
 
 import styles from './Invoice.module.scss'
 
@@ -14,24 +15,77 @@ import { Summary } from '../Summary'
 import { Loader } from '../Loader'
 import { Id } from '../Id'
 
-export function Invoice() {
-	const navigate = useNavigate()
-	const params = useParams()
+interface ActionsProps {
+	status: Status
+	id: string
+}
 
-	const [deleteMutation] = useDeleteInvoiceMutation(params.id as string)
-	const [markAsPaid] = useChangeInvoiceStatus(params.id as string, Status.Paid)
-	const { data, loading } = useInvoiceByIdQuery(params.id as string)
+function Actions({ status, id }: ActionsProps) {
+	const [deleteMutation] = useDeleteInvoiceMutation(id)
+	const [markAsPaid] = useChangeInvoiceStatus(id, Status.Paid)
+	const [activate] = useChangeInvoiceStatus(id, Status.Pending)
+
+	const navigate = useNavigate()
 
 	async function deleteHandler() {
-		const decision = window.confirm(
-			`Are you sure you want to delete invoice #${params.id}? This action cannot be undone.`
-		)
+		const decision = window.confirm(`Are you sure you want to delete invoice #${id}? This action cannot be undone.`)
 
 		if (decision) {
 			await deleteMutation()
 			navigate('/', { replace: true })
 		}
 	}
+
+	let buttons: ReactNode
+
+	switch (status) {
+		case Status.Draft:
+			buttons = (
+				<Fragment>
+					<button className='button grey'>Edit</button>
+					<button className='button red' onClick={deleteHandler}>
+						Delete
+					</button>
+					<button className='button purple' onClick={() => activate()}>
+						Activate
+					</button>
+				</Fragment>
+			)
+
+			break
+
+		case Status.Pending:
+			buttons = (
+				<Fragment>
+					<button className='button grey'>Edit</button>
+					<button className='button red' onClick={deleteHandler}>
+						Delete
+					</button>
+					<button className='button purple' onClick={() => markAsPaid()}>
+						Mark as Paid
+					</button>
+				</Fragment>
+			)
+			break
+
+		case Status.Paid:
+			buttons = (
+				<Fragment>
+					<button className='button red' onClick={deleteHandler}>
+						Delete
+					</button>
+				</Fragment>
+			)
+			break
+	}
+
+	return <div className={styles.actions}>{buttons}</div>
+}
+
+export function Invoice() {
+	const params = useParams()
+
+	const { data, loading } = useInvoiceByIdQuery(params.id as string)
 
 	if (loading)
 		return (
@@ -50,15 +104,7 @@ export function Invoice() {
 			<div className={styles.header}>
 				<p>Status</p>
 				<InvoiceStatus status={status} className={styles.status} />
-				<div className={styles.actions}>
-					<button className='button grey'>Edit</button>
-					<button className='button red' onClick={deleteHandler}>
-						Delete
-					</button>
-					<button className='button purple' onClick={() => markAsPaid()}>
-						Mark as Paid
-					</button>
-				</div>
+				<Actions status={status} id={id} />
 			</div>
 
 			<div className={styles.invoice}>
