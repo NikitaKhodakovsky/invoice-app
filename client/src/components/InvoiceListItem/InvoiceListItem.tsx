@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import styles from './InvoiceListItem.module.scss'
 
 import { InvoiceStatus } from '../InvoiceStatus'
-import { Invoice } from '../../types/graphql'
 import { Id } from '../Id'
 
 export interface InvoiceListItemProps {

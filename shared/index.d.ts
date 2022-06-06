@@ -1,12 +1,12 @@
 /* -------- If declared as global, there is often a compilation error ------- */
 
-export interface Query {
+interface Query {
 	invoice: Invoice | null
 	invoices: Invoice[]
 	me: User
 }
 
-export interface Mutation {
+interface Mutation {
 	addOrderItems: boolean
 	changeInvoiceStatus: Invoice
 	createInvoice: Invoice
@@ -20,24 +20,18 @@ export interface Mutation {
 	updateOrderItem: boolean
 }
 
-export enum Status {
-	Draft = 'Draft',
-	Paid = 'Paid',
-	Pending = 'Pending'
-}
-
-export interface User {
-	createdAt: Date
+interface User {
+	createdAt: string
 	id: string
-	updatedAt: Date
+	updatedAt: string
 	username: string
 }
 
-export interface Invoice {
+interface Invoice {
 	clientAddress: Address
 	clientEmail: string
 	clientName: string
-	createdAt: Date
+	createdAt: string
 	description: string
 	id: string
 	orderItems: OrderItem[]
@@ -45,38 +39,34 @@ export interface Invoice {
 	paymentTerms: number
 	senderAddress: Address
 	status: Status
-	updatedAt: Date
+	updatedAt: string
 	user: User
 	total: number
 }
 
-export interface Address {
+interface Address {
 	city: string
 	country: string
-	createdAt: Date
 	id: string
 	postCode: string
 	street: string
-	updatedAt: Date
 }
 
-export interface OrderItem {
-	createdAt: Date
+interface OrderItem {
 	id: string
 	name: string
 	price: number
 	quantity: number
-	updatedAt: Date
 }
 
-export interface CreateAddressInput {
+interface CreateAddressInput {
 	city: string
 	country: string
 	postCode: string
 	street: string
 }
 
-export interface CreateInvoiceInput {
+interface CreateInvoiceInput {
 	clientAddress: CreateAddressInput
 	clientEmail: string
 	clientName: string
@@ -88,35 +78,35 @@ export interface CreateInvoiceInput {
 	status?: Status
 }
 
-export interface CreateOrderItemInput {
+interface CreateOrderItemInput {
 	name: string
 	price: number
 	quantity: number
 }
 
-export interface CredentialsInput {
+interface CredentialsInput {
 	password: string
 	username: string
 }
 
-export interface UpdateAddressInput {
+interface UpdateAddressInput {
 	city?: string
 	country?: string
 	postCode?: string
 	street?: string
 }
 
-export interface UpdateInvoiceInput {
+interface UpdateInvoiceInput {
 	clientAddress?: UpdateAddressInput
 	clientEmail?: string
 	clientName?: string
 	description?: string
-	paymentDue?: Date
+	paymentDue?: string
 	paymentTerms?: number
 	senderAddress?: UpdateAddressInput
 }
 
-export interface UpdateOrderItemInput {
+interface UpdateOrderItemInput {
 	name?: string
 	price?: number
 	quantity?: number

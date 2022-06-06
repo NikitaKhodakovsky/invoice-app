@@ -1,5 +1,4 @@
 import { gql, useMutation } from '@apollo/client'
-import { CredentialsInput, Mutation } from '../../types/graphql'
 
 const LoginMutation = gql`
 	mutation ($credentials: CredentialsInput!) {

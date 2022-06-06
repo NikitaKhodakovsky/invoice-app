@@ -26,6 +26,11 @@
 
 		background-color: var(--element-bg);
 	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0 1500px var(--element-bg) inset !important;
+		-webkit-text-fill-color: var(--text-main) !important;
+	}
 }
 
 .wrap.error {

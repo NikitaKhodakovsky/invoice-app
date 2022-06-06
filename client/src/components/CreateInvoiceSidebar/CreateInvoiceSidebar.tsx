@@ -4,8 +4,8 @@ import { useState } from 'react'
 
 import styles from './CreateInvoiceSidebar.module.scss'
 
-import { CreateInvoiceInput, CreateOrderItemInput, Status } from '../../types/graphql'
 import { useCreateInvoiceMutation } from '../../graphql/mutations'
+import { Status } from '../../enums'
 
 import { Sidebar, SidebarProps } from '../Sidebar'
 import { OrderItemList } from '../OrderItemList'

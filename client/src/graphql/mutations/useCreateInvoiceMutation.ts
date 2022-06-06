@@ -1,6 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
 
-import { CreateInvoiceInput, Mutation } from '../../types/graphql'
 import { AllInvoicesQuery } from '../queries'
 
 const CreateInvoiceMutation = gql`
@@ -23,17 +22,13 @@ const CreateInvoiceMutation = gql`
 			status
 			senderAddress {
 				id
-				createdAt
-				updatedAt
 				street
 				country
 				city
 				postCode
 			}
 			clientAddress {
-				createdAt
 				id
-				updatedAt
 				street
 				city
 				postCode
@@ -41,8 +36,6 @@ const CreateInvoiceMutation = gql`
 			}
 			orderItems {
 				id
-				createdAt
-				updatedAt
 				quantity
 				name
 				price

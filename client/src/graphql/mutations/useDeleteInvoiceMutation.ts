@@ -1,5 +1,4 @@
 import { gql, useMutation } from '@apollo/client'
-import { Mutation } from '../../types/graphql'
 
 const DeleteInvoiceMutation = gql`
 	mutation ($id: ID!) {

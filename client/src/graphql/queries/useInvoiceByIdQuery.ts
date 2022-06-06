@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client'
-import { Query } from '../../types/graphql'
 
 export const InvoiceByIdQuery = gql`
 	query ($id: ID!) {
@@ -22,8 +21,6 @@ export const InvoiceByIdQuery = gql`
 			total
 			senderAddress {
 				id
-				createdAt
-				updatedAt
 				city
 				street
 				postCode
@@ -31,8 +28,6 @@ export const InvoiceByIdQuery = gql`
 			}
 			clientAddress {
 				id
-				createdAt
-				updatedAt
 				street
 				city
 				postCode
@@ -40,8 +35,6 @@ export const InvoiceByIdQuery = gql`
 			}
 			orderItems {
 				id
-				createdAt
-				updatedAt
 				name
 				quantity
 				price

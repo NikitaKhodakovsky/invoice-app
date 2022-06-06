@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { Fragment, ReactNode } from 'react'
+import { Fragment, ReactNode, useState } from 'react'
 
 import styles from './Invoice.module.scss'
 
 import { useChangeInvoiceStatus, useDeleteInvoiceMutation } from '../../graphql/mutations'
 import { useInvoiceByIdQuery } from '../../graphql/queries'
-import { Status } from '../../types/graphql'
 import { styler as s } from '../../utils'
+import { Status } from '../../enums'
 
 import { InvoiceStatus } from '../InvoiceStatus'
 import { BackButton } from '../BackButton'
@@ -17,10 +17,11 @@ import { Id } from '../Id'
 
 interface ActionsProps {
 	status: Status
+	editHandler: () => any
 	id: string
 }
 
-function Actions({ status, id }: ActionsProps) {
+function Actions({ status, id, editHandler }: ActionsProps) {
 	const [deleteMutation] = useDeleteInvoiceMutation(id)
 	const [markAsPaid] = useChangeInvoiceStatus(id, Status.Paid)
 	const [activate] = useChangeInvoiceStatus(id, Status.Pending)
@@ -42,7 +43,9 @@ function Actions({ status, id }: ActionsProps) {
 		case Status.Draft:
 			buttons = (
 				<Fragment>
-					<button className='button grey'>Edit</button>
+					<button className='button grey' onClick={editHandler}>
+						Edit
+					</button>
 					<button className='button red' onClick={deleteHandler}>
 						Delete
 					</button>
@@ -57,7 +60,9 @@ function Actions({ status, id }: ActionsProps) {
 		case Status.Pending:
 			buttons = (
 				<Fragment>
-					<button className='button grey'>Edit</button>
+					<button className='button grey' onClick={editHandler}>
+						Edit
+					</button>
 					<button className='button red' onClick={deleteHandler}>
 						Delete
 					</button>
@@ -83,6 +88,8 @@ function Actions({ status, id }: ActionsProps) {
 }
 
 export function Invoice() {
+	const [isOpen, setIsOpen] = useState(false)
+
 	const params = useParams()
 
 	const { data, loading } = useInvoiceByIdQuery(params.id as string)
@@ -104,9 +111,9 @@ export function Invoice() {
 			<div className={styles.header}>
 				<p>Status</p>
 				<InvoiceStatus status={status} className={styles.status} />
-				<Actions status={status} id={id} />
+				<Actions status={status} id={id} editHandler={() => setIsOpen(true)} />
 			</div>
-
+			{/* <UpdateInvoiceSidebar isOpen={isOpen} setIsOpen={setIsOpen} invoice={data.invoice} /> */}
 			<div className={styles.invoice}>
 				<div className={styles.data}>
 					<div className={styles.id}>

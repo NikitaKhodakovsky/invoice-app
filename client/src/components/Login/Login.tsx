@@ -8,7 +8,6 @@ import styles from './Login.module.scss'
 
 import { passwordSchema, usernameSchema } from '../../utils/validation'
 import { useLoginMutation } from '../../graphql/mutations'
-import { CredentialsInput } from '../../types/graphql'
 import { useAuth } from '../../hooks'
 
 import { ArrowButton } from '../ArrowButton'

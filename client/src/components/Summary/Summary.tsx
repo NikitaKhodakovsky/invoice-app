@@ -1,7 +1,5 @@
 import styles from './Summary.module.scss'
 
-import { Invoice, OrderItem } from '../../types/graphql'
-
 export interface SummaryProps {
 	invoice: Invoice
 }

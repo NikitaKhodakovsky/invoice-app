@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { Query, Status } from '../../types/graphql'
+import { Status } from '../../enums'
 
 export const AllInvoicesQuery = gql`
 	query {
@@ -22,8 +22,6 @@ export const AllInvoicesQuery = gql`
 			total
 			senderAddress {
 				id
-				createdAt
-				updatedAt
 				city
 				street
 				postCode
@@ -31,8 +29,6 @@ export const AllInvoicesQuery = gql`
 			}
 			clientAddress {
 				id
-				createdAt
-				updatedAt
 				street
 				city
 				postCode
@@ -40,8 +36,6 @@ export const AllInvoicesQuery = gql`
 			}
 			orderItems {
 				id
-				createdAt
-				updatedAt
 				name
 				quantity
 				price

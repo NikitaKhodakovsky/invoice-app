@@ -1,7 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
 
-import { CredentialsInput, Mutation } from '../../types/graphql'
-
 const RegisterMutation = gql`
 	mutation ($credentials: CredentialsInput!) {
 		register(data: $credentials) {
