@@ -1,11 +1,13 @@
-import { Field, ObjectType } from 'type-graphql'
-import { Column, Entity } from 'typeorm'
-
-import { BaseEntity } from '../../../common/entities'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Field, ID, ObjectType } from 'type-graphql'
 
 @Entity()
 @ObjectType()
-export class Address extends BaseEntity {
+export class Address {
+	@Field(() => ID)
+	@PrimaryGeneratedColumn()
+	id: number
+
 	@Field()
 	@Column()
 	street: string

@@ -1,12 +1,15 @@
-import { Field, Int, ObjectType } from 'type-graphql'
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Field, ID, Int, ObjectType } from 'type-graphql'
 
-import { BaseEntity } from '../../../common/entities'
 import { Invoice } from './InvoiceEntity'
 
 @Entity()
 @ObjectType()
-export class OrderItem extends BaseEntity {
+export class OrderItem {
+	@Field(() => ID)
+	@PrimaryGeneratedColumn()
+	id: number
+
 	@ManyToOne(() => Invoice, (invoice) => invoice.orderItems, { onDelete: 'CASCADE' })
 	invoice: Invoice
 
