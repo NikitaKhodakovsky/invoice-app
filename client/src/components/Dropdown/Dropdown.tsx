@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import styles from './Dropdown.module.scss'
 
 import { styler as s } from '../../utils'
+import { useOutsideAlerter } from '../../hooks'
 
 export interface DropdownOption {
 	label: string
@@ -22,6 +23,8 @@ export interface DropdownProps {
 
 export function Dropdown({ label, options, value, onChange, className, error }: DropdownProps) {
 	const [isOpen, setIsOpen] = useState(false)
+	const ref = useRef(null)
+	useOutsideAlerter(ref, () => setIsOpen(false))
 
 	const handler = (value: DropdownOption) => {
 		onChange(value)
@@ -37,7 +40,7 @@ export function Dropdown({ label, options, value, onChange, className, error }: 
 	})
 
 	return (
-		<div className={`${styles.wrap} ${error ? styles.error : ''} ${className}`}>
+		<div ref={ref} className={`${styles.wrap} ${error ? styles.error : ''} ${className}`}>
 			<label>{label}</label>
 			{error && <p className={styles.message}>{error}</p>}
 			<div

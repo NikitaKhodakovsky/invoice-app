@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import styles from './StatusFilter.module.scss'
 
 import Checkbox from '../Checkbox/Checkbox'
 
+import { useOutsideAlerter } from '../../hooks'
 import { styler as s } from '../../utils'
 
 export interface StatusFilterProps {
@@ -12,9 +13,11 @@ export interface StatusFilterProps {
 
 export function StatusFilter({ className }: StatusFilterProps) {
 	const [isOpen, setIsOpen] = useState(false)
+	const ref = useRef(null)
+	useOutsideAlerter(ref, () => setIsOpen(false))
 
 	return (
-		<div className={`${styles.wrap} ${className}`}>
+		<div ref={ref} className={`${styles.wrap} ${className}`}>
 			<p className={s(styles, 'title', isOpen ? 'active' : '')} onClick={() => setIsOpen(!isOpen)}>
 				Filter
 				<span className='hide-for-mobile'>&nbsp;by status</span>
