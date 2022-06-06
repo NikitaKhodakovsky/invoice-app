@@ -64,9 +64,13 @@
 
 		box-shadow: none;
 
-		display: grid;
-		grid-template-columns: repeat(3, max-content);
-		gap: 0.8rem;
+		button {
+			margin-right: 0.8rem;
+		}
+
+		button:last-of-type {
+			margin-right: 0;
+		}
 	}
 }
 

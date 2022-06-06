@@ -1,21 +1,32 @@
-import { useEffect, FormEventHandler, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Form, Formik } from 'formik'
 import toast from 'react-hot-toast'
+import { useEffect } from 'react'
+import { object } from 'yup'
 
 import styles from './Login.module.scss'
 
+import { passwordSchema, usernameSchema } from '../../utils/validation'
 import { useLoginMutation } from '../../graphql/mutations'
+import { CredentialsInput } from '../../types/graphql'
 import { useAuth } from '../../hooks'
 
 import { ArrowButton } from '../ArrowButton'
-import { Input } from '../Input'
+import { FormikInput } from '../Input'
+
+const validationSchema = object({
+	username: usernameSchema,
+	password: passwordSchema
+})
+
+const initialValues = {
+	username: '',
+	password: ''
+}
 
 export function Login() {
 	const navigate = useNavigate()
 	const { auth, setAuth } = useAuth()
-
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
 
 	const [loginMutation] = useLoginMutation()
 
@@ -25,21 +36,16 @@ export function Login() {
 		}
 	}, [auth, navigate])
 
-	const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
-		e.preventDefault()
-
+	const submitHandler = async (credentials: CredentialsInput) => {
 		const res = await loginMutation({
 			variables: {
-				credentials: {
-					username,
-					password
-				}
+				credentials
 			}
 		}).catch((e) => {
 			toast(e?.message)
 		})
 
-		if (res?.data && res?.data?.login) {
+		if (res?.data && res.data.login) {
 			setAuth(true)
 			navigate('/')
 		}
@@ -53,20 +59,17 @@ export function Login() {
 					<ArrowButton direction='right' message='Register' />
 				</Link>
 			</div>
-			<form onSubmit={submitHandler}>
-				<div className={styles.form}>
-					<Input label='Username' value={username} onChange={(e) => setUsername(e.target.value)} />
-					<Input
-						label='Password'
-						type='password'
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-				</div>
-				<button type='submit' className={styles.button}>
-					Login
-				</button>
-			</form>
+			<Formik initialValues={initialValues} onSubmit={submitHandler} validationSchema={validationSchema}>
+				<Form>
+					<div className={styles.form}>
+						<FormikInput name='username' label='Username' />
+						<FormikInput name='password' label='Password' type='password' />
+					</div>
+					<button type='submit' className='button large element-bg'>
+						Login
+					</button>
+				</Form>
+			</Formik>
 		</div>
 	)
 }

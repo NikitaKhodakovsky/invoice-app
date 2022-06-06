@@ -57,4 +57,10 @@
 			background-color: var(--button-gray-bg-hover);
 		}
 	}
+
+	&.element-bg {
+		color: var(--text-main);
+		background-color: var(--element-bg);
+		border: 1px solid var(--input-border);
+	}
 }

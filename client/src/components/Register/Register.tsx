@@ -1,23 +1,43 @@
-import { FormEventHandler, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Form, Formik } from 'formik'
+import { object, string } from 'yup'
 import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 
 import styles from './Register.module.scss'
 
+import { passwordSchema, usernameSchema } from '../../utils/validation'
 import { useRegisterMutation } from '../../graphql/mutations'
+import { CredentialsInput } from '../../types/graphql'
 import { useAuth } from '../../hooks'
 
 import { ArrowButton } from '../ArrowButton'
-import { Input } from '../Input'
+import { FormikInput } from '../Input'
+
+interface FormValues extends CredentialsInput {
+	confirmation: string
+}
+
+const initialValues: FormValues = {
+	username: '',
+	password: '',
+	confirmation: ''
+}
+
+const validationSchema = object({
+	username: usernameSchema,
+	password: passwordSchema,
+	confirmation: string()
+		.required('required')
+		.test('confirmation', "Password's don't match", function (value) {
+			return this.parent.password === value
+		})
+})
 
 export function Register() {
 	const { auth } = useAuth()
 
 	const navigate = useNavigate()
-
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmation, setConfirmation] = useState('')
 
 	const [registerMutation] = useRegisterMutation()
 
@@ -27,25 +47,17 @@ export function Register() {
 		}
 	}, [auth, navigate])
 
-	const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
-		e.preventDefault()
-
-		if (password !== confirmation) {
-			return toast("Password's don't match")
-		}
-
+	const submitHandler = async ({ confirmation, ...credentials }: FormValues) => {
 		const res = await registerMutation({
 			variables: {
-				credentials: {
-					username,
-					password
-				}
+				credentials
 			}
 		}).catch((e) => {
 			toast(e?.message)
 		})
 
 		if (res?.data?.register) {
+			toast('User successfully created')
 			navigate('/login')
 		}
 	}
@@ -58,20 +70,18 @@ export function Register() {
 					<ArrowButton message='Login' direction='right' />
 				</Link>
 			</div>
-			<form onSubmit={submitHandler}>
-				<div className={styles.form}>
-					<Input label='Username' value={username} onChange={(e) => setUsername(e.target.value)} />
-					<Input label='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
-					<Input
-						label='Password Confirmation'
-						value={confirmation}
-						onChange={(e) => setConfirmation(e.target.value)}
-					/>
-				</div>
-				<button type='submit' className={styles.button}>
-					Register
-				</button>
-			</form>
+			<Formik initialValues={initialValues} onSubmit={submitHandler} validationSchema={validationSchema}>
+				<Form>
+					<div className={styles.form}>
+						<FormikInput name='username' label='Username' />
+						<FormikInput name='password' type='password' label='Password' />
+						<FormikInput name='confirmation' type='password' label='Password Confirmation' />
+					</div>
+					<button type='submit' className='button large element-bg'>
+						Register
+					</button>
+				</Form>
+			</Formik>
 		</div>
 	)
 }
