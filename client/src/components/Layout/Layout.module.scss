@@ -1,0 +1,13 @@
+@use '../../sass/abstracts' as *;
+
+.container {
+	padding-top: 7.2rem;
+
+	@include breakpoint-up('small') {
+		padding-top: 8rem;
+	}
+
+	@include breakpoint-up('xlarge') {
+		padding-top: 0;
+	}
+}
