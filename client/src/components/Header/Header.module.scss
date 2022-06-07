@@ -93,7 +93,7 @@
 	}
 }
 
-.avatar {
+.logout {
 	width: 8rem;
 	height: 100%;
 
@@ -103,19 +103,17 @@
 
 	border-left: 1px solid var(--divider);
 
-	img {
-		border-radius: 50%;
-		width: 3.2rem;
-		height: 3.2rem;
+	button::after {
+		content: '';
+		background-color: var(--icon-bg);
+		mask-image: url('../../../public/icons/icon-logout.svg');
+
+		width: 2rem;
+		height: 2rem;
 	}
 
 	@include breakpoint-up('small') {
 		width: 10rem;
-
-		img {
-			width: 4rem;
-			height: 4rem;
-		}
 	}
 
 	@include breakpoint-up('xlarge') {
