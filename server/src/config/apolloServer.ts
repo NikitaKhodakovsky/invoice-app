@@ -8,5 +8,6 @@ import { context } from './context'
 export const apolloServer = new ApolloServer({
 	schema,
 	context,
-	introspection: !isProduction
+	introspection: !isProduction,
+	csrfPrevention: true
 })
