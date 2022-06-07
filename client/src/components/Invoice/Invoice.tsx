@@ -1,91 +1,19 @@
-import { useNavigate, useParams } from 'react-router-dom'
-import { Fragment, ReactNode, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useState } from 'react'
 
 import styles from './Invoice.module.scss'
 
-import { useChangeInvoiceStatus, useDeleteInvoiceMutation } from '../../graphql/mutations'
 import { useInvoiceByIdQuery } from '../../graphql/queries'
 import { styler as s } from '../../utils'
-import { Status } from '../../enums'
 
+import { UpdateInvoiceSidebar } from '../UpdateInvoiceSidebar'
 import { InvoiceStatus } from '../InvoiceStatus'
 import { BackButton } from '../BackButton'
 import { NotFound } from '../NotFound'
 import { Summary } from '../Summary'
+import { Actions } from './Actions'
 import { Loader } from '../Loader'
 import { Id } from '../Id'
-
-interface ActionsProps {
-	status: Status
-	editHandler: () => any
-	id: string
-}
-
-function Actions({ status, id, editHandler }: ActionsProps) {
-	const [deleteMutation] = useDeleteInvoiceMutation(id)
-	const [markAsPaid] = useChangeInvoiceStatus(id, Status.Paid)
-	const [activate] = useChangeInvoiceStatus(id, Status.Pending)
-
-	const navigate = useNavigate()
-
-	async function deleteHandler() {
-		const decision = window.confirm(`Are you sure you want to delete invoice #${id}? This action cannot be undone.`)
-
-		if (decision) {
-			await deleteMutation()
-			navigate('/', { replace: true })
-		}
-	}
-
-	let buttons: ReactNode
-
-	switch (status) {
-		case Status.Draft:
-			buttons = (
-				<Fragment>
-					<button className='button grey' onClick={editHandler}>
-						Edit
-					</button>
-					<button className='button red' onClick={deleteHandler}>
-						Delete
-					</button>
-					<button className='button purple' onClick={() => activate()}>
-						Activate
-					</button>
-				</Fragment>
-			)
-
-			break
-
-		case Status.Pending:
-			buttons = (
-				<Fragment>
-					<button className='button grey' onClick={editHandler}>
-						Edit
-					</button>
-					<button className='button red' onClick={deleteHandler}>
-						Delete
-					</button>
-					<button className='button purple' onClick={() => markAsPaid()}>
-						Mark as Paid
-					</button>
-				</Fragment>
-			)
-			break
-
-		case Status.Paid:
-			buttons = (
-				<Fragment>
-					<button className='button red' onClick={deleteHandler}>
-						Delete
-					</button>
-				</Fragment>
-			)
-			break
-	}
-
-	return <div className={styles.actions}>{buttons}</div>
-}
 
 export function Invoice() {
 	const [isOpen, setIsOpen] = useState(false)
@@ -113,7 +41,7 @@ export function Invoice() {
 				<InvoiceStatus status={status} className={styles.status} />
 				<Actions status={status} id={id} editHandler={() => setIsOpen(true)} />
 			</div>
-			{/* <UpdateInvoiceSidebar isOpen={isOpen} setIsOpen={setIsOpen} invoice={data.invoice} /> */}
+			<UpdateInvoiceSidebar isOpen={isOpen} setIsOpen={setIsOpen} invoice={{ ...data.invoice }} />
 			<div className={styles.invoice}>
 				<div className={styles.data}>
 					<div className={styles.id}>

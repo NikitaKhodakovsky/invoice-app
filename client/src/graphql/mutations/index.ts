@@ -1,5 +1,6 @@
 export * from './useCreateInvoiceMutation'
 export * from './useDeleteInvoiceMutation'
+export * from './useUpdateInvoiceMutation'
 export * from './useChangeInvoiceStatus'
 export * from './useRegisterMutation'
 export * from './useLogoutMutation'

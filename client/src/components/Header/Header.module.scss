@@ -1,7 +1,10 @@
 @use '../../sass/abstracts' as *;
 
 .wrap {
-	position: relative;
+	position: fixed;
+	right: 0;
+	left: 0;
+
 	height: 7.2rem;
 
 	z-index: 1000;

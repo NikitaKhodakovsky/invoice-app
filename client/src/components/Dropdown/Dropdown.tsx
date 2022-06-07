@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react'
+import { useField, useFormikContext } from 'formik'
 
 import styles from './Dropdown.module.scss'
 
-import { styler as s } from '../../utils'
 import { useOutsideAlerter } from '../../hooks'
+import { styler as s } from '../../utils'
 
 export interface DropdownOption {
 	label: string
-	value: any
+	value: string | number
 }
 
 export interface DropdownProps {
@@ -17,39 +18,74 @@ export interface DropdownProps {
 
 	options: DropdownOption[]
 
-	value?: DropdownOption
-	onChange: (v: DropdownOption) => any
+	value: any
+	onChange: (value: any) => any
 }
 
-export function Dropdown({ label, options, value, onChange, className, error }: DropdownProps) {
+export function Dropdown({ label, options, className, error, value, onChange }: DropdownProps) {
 	const [isOpen, setIsOpen] = useState(false)
+
 	const ref = useRef(null)
 	useOutsideAlerter(ref, () => setIsOpen(false))
 
-	const handler = (value: DropdownOption) => {
-		onChange(value)
+	const handler = (v: string | number) => {
+		onChange(v)
 		setIsOpen(false)
 	}
 
-	const content = options.map((option) => {
-		return (
-			<li key={option.value} onClick={() => handler(option)}>
-				{option.label}
-			</li>
-		)
-	})
+	const currentOption = options.find((o) => o.value === value)
 
 	return (
 		<div ref={ref} className={`${styles.wrap} ${error ? styles.error : ''} ${className}`}>
 			<label>{label}</label>
-			{error && <p className={styles.message}>{error}</p>}
+			{error ? <p className={styles.message}>{error}</p> : null}
 			<div
 				className={s(styles, 'dropdown', isOpen ? 'active' : '', error ? 'error' : '')}
 				onClick={() => setIsOpen(!isOpen)}
 			>
-				<span>{value?.label || options[0].label}</span>
+				<span>{currentOption?.label || currentOption?.value || 'Choose option'}</span>
 			</div>
-			{isOpen && <ul className={styles.content}>{content}</ul>}
+			{isOpen && (
+				<ul className={styles.content}>
+					{options.map((option) => (
+						<li key={option.value} onClick={() => handler(option.value)}>
+							{option.label}
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
+	)
+}
+
+export interface FormikDropdownProps {
+	name: string
+
+	label?: string
+	className?: string
+
+	options: DropdownOption[]
+}
+
+export function FormikDropdown({ name, options, label, className }: FormikDropdownProps) {
+	const context = useFormikContext()
+	const [, { value, error, touched }, { setValue, setTouched }] = useField(name)
+
+	console.log(JSON.stringify({ values: context.values, touched: context.touched, errors: context.errors }, null, 2))
+
+	const onChange = (v: any) => {
+		setTouched(true)
+		setValue(v)
+	}
+
+	return (
+		<Dropdown
+			options={options}
+			label={label}
+			className={className}
+			value={value}
+			onChange={onChange}
+			error={touched && error ? error : null}
+		/>
 	)
 }

@@ -35,7 +35,7 @@ interface Invoice {
 	description: string
 	id: string
 	orderItems: OrderItem[]
-	paymentDue: Date
+	paymentDue: string
 	paymentTerms: number
 	senderAddress: Address
 	status: Status

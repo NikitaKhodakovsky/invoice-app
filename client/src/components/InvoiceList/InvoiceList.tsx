@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
 import { useAllInvoicesQuery } from '../../graphql/queries'
 
@@ -11,8 +11,8 @@ import { NotFound } from '../NotFound'
 import { Loader } from '../Loader'
 
 export function InvoiceList() {
-	const [isOpen, setIsOpen] = useState(false)
 	const { data, loading, error } = useAllInvoicesQuery()
+	const [isOpen, setIsOpen] = useState(false)
 
 	if (loading)
 		return (
@@ -26,9 +26,9 @@ export function InvoiceList() {
 	const { invoices } = data
 
 	return (
-		<Fragment>
+		<div className={styles.wrap}>
 			<CreateInvoiceSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-			<div className={styles.wrap}>
+			<div className={styles.header}>
 				<div>
 					<p className={styles.tittle}>Invoices</p>
 					<p className={styles.subtitle}>
@@ -52,6 +52,6 @@ export function InvoiceList() {
 					<InvoiceListItem invoice={i} key={i.id} />
 				))}
 			</div>
-		</Fragment>
+		</div>
 	)
 }

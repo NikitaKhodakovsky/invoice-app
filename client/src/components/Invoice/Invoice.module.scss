@@ -1,12 +1,12 @@
 @use '../../sass/abstracts' as *;
 
 .wrap {
-	padding-top: 3.2rem;
+	padding-top: 7.2rem + 3.2rem;
 
 	padding-bottom: 15rem;
 
-	@include breakpoint-up('medium') {
-		padding-top: 4.8rem;
+	@include breakpoint-up('small') {
+		padding-top: 7.2rem + 4.8rem;
 	}
 
 	@include breakpoint-up('xlarge') {

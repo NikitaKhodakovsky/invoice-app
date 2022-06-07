@@ -1,13 +1,12 @@
 import { FieldArray, useFormikContext } from 'formik'
+import { Fragment } from 'react'
 
 import styles from './OrderItemList.module.scss'
 
 import { OrderItem } from './OrderItem'
-import { Fragment } from 'react'
-import { FormValues } from '../CreateInvoiceSidebar'
 
 export function OrderItemList() {
-	const { values, errors } = useFormikContext<FormValues>()
+	const { values, errors } = useFormikContext<CreateInvoiceInput>()
 
 	return (
 		<div>

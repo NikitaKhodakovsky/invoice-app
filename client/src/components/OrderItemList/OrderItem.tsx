@@ -2,7 +2,6 @@ import { useFormikContext } from 'formik'
 
 import styles from './OrderItem.module.scss'
 
-import { FormValues } from '../CreateInvoiceSidebar'
 import { FormikInput, Input } from '../Input'
 
 export interface OrderItemProps {
@@ -11,7 +10,7 @@ export interface OrderItemProps {
 }
 
 export function OrderItem({ onDelete, index }: OrderItemProps) {
-	const { values } = useFormikContext<FormValues>()
+	const { values } = useFormikContext<CreateInvoiceInput>()
 
 	const item = values.orderItems[index]
 
