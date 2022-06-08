@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styles from './Invoice.module.scss'
 
 import { useChangeInvoiceStatus, useDeleteInvoiceMutation } from '../../graphql/mutations'
-import { Status } from '../../enums'
 
 export interface ActionsProps {
 	status: Status
@@ -13,8 +12,8 @@ export interface ActionsProps {
 }
 
 export function Actions({ status, id, editHandler }: ActionsProps) {
-	const [markAsPaid] = useChangeInvoiceStatus(id, Status.Paid)
-	const [activate] = useChangeInvoiceStatus(id, Status.Pending)
+	const [markAsPaid] = useChangeInvoiceStatus(id, 'Paid')
+	const [activate] = useChangeInvoiceStatus(id, 'Pending')
 	const [deleteMutation] = useDeleteInvoiceMutation(id)
 
 	const navigate = useNavigate()
@@ -31,7 +30,7 @@ export function Actions({ status, id, editHandler }: ActionsProps) {
 	let buttons: ReactNode
 
 	switch (status) {
-		case Status.Draft:
+		case 'Draft':
 			buttons = (
 				<Fragment>
 					<button className='button grey' onClick={editHandler}>
@@ -48,7 +47,7 @@ export function Actions({ status, id, editHandler }: ActionsProps) {
 
 			break
 
-		case Status.Pending:
+		case 'Pending':
 			buttons = (
 				<Fragment>
 					<button className='button grey' onClick={editHandler}>
@@ -64,7 +63,7 @@ export function Actions({ status, id, editHandler }: ActionsProps) {
 			)
 			break
 
-		case Status.Paid:
+		case 'Paid':
 			buttons = (
 				<Fragment>
 					<button className='button red' onClick={deleteHandler}>

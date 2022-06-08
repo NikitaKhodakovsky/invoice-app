@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client'
-import { Status } from '../../enums'
 
 export const AllInvoicesQuery = gql`
 	query {

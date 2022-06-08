@@ -5,7 +5,6 @@ import toast from 'react-hot-toast'
 import styles from './CreateInvoiceSidebar.module.scss'
 
 import { useCreateInvoiceMutation } from '../../graphql/mutations'
-import { Status } from '../../enums'
 
 import { InvoiceSidebar } from '../InvoiceSidebar'
 import { SidebarProps } from '../Sidebar'
@@ -75,7 +74,7 @@ export function CreateInvoiceSidebar(props: SidebarProps) {
 	const submitHandler = async (values: CreateInvoiceInput, { resetForm }: FormikHelpers<CreateInvoiceInput>) => {
 		const data: CreateInvoiceInput = {
 			...values,
-			status: asDraft ? Status.Draft : Status.Pending
+			status: asDraft ? 'Draft' : 'Pending'
 		}
 
 		await mutation({ variables: { data } })

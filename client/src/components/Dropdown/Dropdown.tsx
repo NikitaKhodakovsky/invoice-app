@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useField, useFormikContext } from 'formik'
+import { useField } from 'formik'
 
 import styles from './Dropdown.module.scss'
 
@@ -68,10 +68,7 @@ export interface FormikDropdownProps {
 }
 
 export function FormikDropdown({ name, options, label, className }: FormikDropdownProps) {
-	const context = useFormikContext()
 	const [, { value, error, touched }, { setValue, setTouched }] = useField(name)
-
-	console.log(JSON.stringify({ values: context.values, touched: context.touched, errors: context.errors }, null, 2))
 
 	const onChange = (v: any) => {
 		setTouched(true)

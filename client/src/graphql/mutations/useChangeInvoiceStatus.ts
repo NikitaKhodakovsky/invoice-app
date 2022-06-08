@@ -1,7 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
 
 import { AllInvoicesQuery, InvoiceByIdQuery } from '../queries'
-import { Status } from '../../enums'
 
 const ChangeInvoiceStatus = gql`
 	mutation ($status: Status!, $invoiceId: ID!) {
