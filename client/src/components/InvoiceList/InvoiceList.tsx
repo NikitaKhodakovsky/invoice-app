@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 
 import { useAllInvoicesQuery } from '../../graphql/queries'
@@ -11,7 +12,13 @@ import { NotFound } from '../NotFound'
 import { Loader } from '../Loader'
 
 export function InvoiceList() {
-	const { data, loading, error } = useAllInvoicesQuery()
+	const [searchParams] = useSearchParams()
+
+	const statuses: Status[] = searchParams
+		.getAll('status')
+		.filter((s) => s === 'Paid' || s === 'Pending' || s === 'Draft') as Status[]
+
+	const { data, loading, error } = useAllInvoicesQuery(statuses.length > 0 ? statuses : undefined)
 	const [isOpen, setIsOpen] = useState(false)
 
 	if (loading)

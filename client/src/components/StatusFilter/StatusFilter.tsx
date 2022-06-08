@@ -30,6 +30,10 @@ export function StatusFilter({ className }: StatusFilterProps) {
 		}
 	}
 
+	const isChecked = (v: string) => {
+		return searchParams.getAll('status').includes(v)
+	}
+
 	return (
 		<div ref={ref} className={`${styles.wrap} ${className}`}>
 			<p className={s(styles, 'title', isOpen ? 'active' : '')} onClick={() => setIsOpen(!isOpen)}>
@@ -37,9 +41,15 @@ export function StatusFilter({ className }: StatusFilterProps) {
 				<span className='hide-for-mobile'>&nbsp;by status</span>
 			</p>
 			<div className={s(styles, 'content', isOpen ? '' : 'hidden')}>
-				<Checkbox id='Draft' label='Draft' value='Draft' onChange={handler} />
-				<Checkbox id='Pending' label='Pending' value='Pending' onChange={handler} />
-				<Checkbox id='Paid' label='Paid' value='Paid' onChange={handler} />
+				<Checkbox id='Draft' label='Draft' value='Draft' onChange={handler} checked={isChecked('Draft')} />
+				<Checkbox
+					id='Pending'
+					label='Pending'
+					value='Pending'
+					onChange={handler}
+					checked={isChecked('Pending')}
+				/>
+				<Checkbox id='Paid' label='Paid' value='Paid' onChange={handler} checked={isChecked('Paid')} />
 			</div>
 		</div>
 	)

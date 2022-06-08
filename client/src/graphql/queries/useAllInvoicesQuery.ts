@@ -1,8 +1,8 @@
 import { gql, useQuery } from '@apollo/client'
 
 export const AllInvoicesQuery = gql`
-	query {
-		invoices {
+	query ($statuses: [Status!]) {
+		invoices(statuses: $statuses) {
 			id
 			createdAt
 			updatedAt
@@ -43,9 +43,9 @@ export const AllInvoicesQuery = gql`
 	}
 `
 
-export function useAllInvoicesQuery(status?: Status) {
-	return useQuery<{ invoices: Query['invoices'] }, { status?: Status }>(AllInvoicesQuery, {
-		variables: { status },
+export function useAllInvoicesQuery(statuses?: Status[]) {
+	return useQuery<{ invoices: Query['invoices'] }, { statuses?: Status[] }>(AllInvoicesQuery, {
+		variables: { statuses },
 		fetchPolicy: 'no-cache'
 	})
 }

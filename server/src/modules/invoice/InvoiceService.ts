@@ -85,11 +85,16 @@ export class InvoiceService {
 	public async findAll({ id }: User, statuses?: Status[]): Promise<Invoice[]> {
 		let builder: SelectQueryBuilder<Invoice> = this.invoiceRepository.createQueryBuilder('invoice')
 
-		if (statuses) {
+		if (statuses && statuses.length > 0) {
 			builder = builder.where('invoice.status IN (:...statuses)', { statuses })
 		}
 
-		return await builder.innerJoinAndSelect('invoice.user', 'user', 'user.id = :userId', { userId: id }).getMany()
+		return await builder
+			.innerJoinAndSelect('invoice.user', 'user', 'user.id = :userId', { userId: id })
+			.innerJoinAndSelect('invoice.senderAddress', 'senderAddress')
+			.innerJoinAndSelect('invoice.clientAddress', 'clientAddress')
+			.innerJoinAndSelect('invoice.orderItems', 'orderItems')
+			.getMany()
 	}
 
 	public async changeStatus(user: User, invoiceId: number, status: Status): Promise<Invoice> {
