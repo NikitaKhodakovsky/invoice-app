@@ -41,7 +41,22 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 	const [mutation] = useUpdateInvoiceMutation()
 
 	const submitHandler = async (values: CreateInvoiceInput) => {
-		const { clientEmail, clientName, description, paymentDue, paymentTerms, clientAddress, senderAddress } = values
+		const {
+			clientEmail,
+			clientName,
+			description,
+			paymentDue,
+			paymentTerms,
+			clientAddress,
+			senderAddress,
+			orderItems
+		} = values
+
+		const formattedOrderItems: CreateOrderItemInput[] = orderItems.map(({ name, price, quantity }) => ({
+			quantity,
+			price,
+			name
+		}))
 
 		const data: UpdateInvoiceInput = {
 			clientAddress: {
@@ -60,7 +75,8 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 			clientName,
 			description,
 			paymentDue,
-			paymentTerms
+			paymentTerms,
+			orderItems: formattedOrderItems
 		}
 
 		await mutation({
