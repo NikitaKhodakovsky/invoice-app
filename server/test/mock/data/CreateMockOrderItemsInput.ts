@@ -1,7 +1,5 @@
 import { faker } from '@faker-js/faker'
 
-import { CreateOrderItemInput } from '../../../../shared'
-
 export function CreateMockOrderItemsInput(count: number = 1): CreateOrderItemInput[] {
 	const items: CreateOrderItemInput[] = []
 

@@ -1,5 +1,5 @@
+import { DataSource, Repository, SelectQueryBuilder } from 'typeorm'
 import { UserInputError } from 'apollo-server-express'
-import { DataSource, Repository } from 'typeorm'
 
 import { CreateInvoiceInput, CreateOrderItemInput, UpdateInvoiceInput, UpdateOrderItemInput } from './inputs'
 import { InvoiceNotFoundError, OrderItemNotFoundError } from './errors'
@@ -82,8 +82,14 @@ export class InvoiceService {
 		return invoice
 	}
 
-	public async findAll({ id }: User, status?: Status): Promise<Invoice[]> {
-		return this.invoiceRepository.find({ where: { user: { id }, status } })
+	public async findAll({ id }: User, statuses?: Status[]): Promise<Invoice[]> {
+		let builder: SelectQueryBuilder<Invoice> = this.invoiceRepository.createQueryBuilder('invoice')
+
+		if (statuses) {
+			builder = builder.where('invoice.status IN (:...statuses)', { statuses })
+		}
+
+		return await builder.innerJoinAndSelect('invoice.user', 'user', 'user.id = :userId', { userId: id }).getMany()
 	}
 
 	public async changeStatus(user: User, invoiceId: number, status: Status): Promise<Invoice> {

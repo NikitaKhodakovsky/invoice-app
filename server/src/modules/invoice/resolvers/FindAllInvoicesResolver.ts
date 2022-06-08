@@ -11,9 +11,9 @@ export class FindAllInvoicesResolver {
 	@Query(() => [Invoice])
 	@UseMiddleware(LoadUser)
 	async invoices(
-		@Arg('status', () => Status, { nullable: true }) status: Status,
+		@Arg('statuses', () => [Status], { nullable: true }) statuses: Status[],
 		@Ctx() ctx: Context<User>
 	): Promise<Invoice[]> {
-		return ctx.invoiceService.findAll(ctx.user, status)
+		return ctx.invoiceService.findAll(ctx.user, statuses)
 	}
 }

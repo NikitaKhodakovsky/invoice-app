@@ -3,8 +3,8 @@ import { DataSource, Repository } from 'typeorm'
 import argon2 from 'argon2'
 
 import { AuthenticationError } from '../../common/errors'
-import { User } from '../user'
 import { CredentialsInput } from './inputs'
+import { User } from '../user'
 
 export class AuthService {
 	private userRepository: Repository<User>

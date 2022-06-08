@@ -18,6 +18,6 @@
 			"*": ["node_modules/*", "src/types/*"]
 		}
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "../shared"],
 	"exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
 }

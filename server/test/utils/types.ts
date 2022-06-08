@@ -1,5 +1,3 @@
-import { Address, Invoice, OrderItem, User } from '../../../shared'
-
 //'paymentDue'
 
 export type CheckableInvoice = Pick<Invoice, 'clientEmail' | 'clientName' | 'description' | 'paymentTerms'> & {

@@ -7,7 +7,7 @@ import { ForbiddenError } from '../../common/errors'
 import { InvoiceService } from './InvoiceService'
 import { Address, OrderItem } from './entities'
 import { TestDataSource } from '../../../test'
-import { Status } from '../../../../shared'
+import { Status } from './enums'
 
 describe('InoviceService', () => {
 	beforeEach(async () => {
@@ -61,6 +61,7 @@ describe('InoviceService', () => {
 
 			const { orderItems, ...updateData } = CreateMockInvoiceInput()
 
+			//@ts-ignore
 			const updatedInvoice = await invoiceService.updateInvoice(user, id, updateData)
 
 			compareInvoices(updateData, updatedInvoice)
@@ -76,6 +77,7 @@ describe('InoviceService', () => {
 			const { status, orderItems, ...updateData } = CreateMockInvoiceInput()
 
 			await invoiceService
+				//@ts-ignore
 				.updateInvoice(user, 1, updateData)
 				.catch((e) => expect(e).toBeInstanceOf(InvoiceNotFoundError))
 		})
@@ -162,7 +164,8 @@ describe('InoviceService', () => {
 
 			const invoice = await invoiceService.findById(user, id)
 
-			//@ts-ignore
+			if (!invoice) throw new Error()
+
 			inspectInvoice(invoice)
 		})
 
@@ -209,7 +212,7 @@ describe('InoviceService', () => {
 			expect(userInvoices.find((i) => i.id === strangerInvoice.id)).toBeFalsy()
 		})
 
-		test('Should filter Invoices by status', async () => {
+		test('Should filter Invoices by statuses', async () => {
 			const invoiceService = new InvoiceService(TestDataSource)
 
 			const user = await createUser(TestDataSource)
@@ -229,13 +232,19 @@ describe('InoviceService', () => {
 			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
 			await createInvoice(TestDataSource, user, CreateMockInvoiceInput({ status: Status.Pending }))
 
-			const paid = await invoiceService.findAll(user, Status.Paid)
-			const draft = await invoiceService.findAll(user, Status.Draft)
-			const pending = await invoiceService.findAll(user, Status.Pending)
+			const paid = await invoiceService.findAll(user, [Status.Paid])
+			const draft = await invoiceService.findAll(user, [Status.Draft])
+			const pending = await invoiceService.findAll(user, [Status.Pending])
+			const draftAndPaid = await invoiceService.findAll(user, [Status.Draft, Status.Paid])
+			const paidAndPending = await invoiceService.findAll(user, [Status.Paid, Status.Pending])
+			const draftAndPending = await invoiceService.findAll(user, [Status.Draft, Status.Pending])
 
 			expect(paid.length).toBe(2)
 			expect(draft.length).toBe(3)
 			expect(pending.length).toBe(4)
+			expect(draftAndPaid.length).toBe(5)
+			expect(paidAndPending.length).toBe(6)
+			expect(draftAndPending.length).toBe(7)
 		})
 	})
 

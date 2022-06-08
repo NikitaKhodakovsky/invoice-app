@@ -1,5 +1,7 @@
 /* -------- If declared as global, there is often a compilation error ------- */
 
+type Status = 'Draft' | 'Pending' | 'Paid'
+
 interface Query {
 	invoice: Invoice | null
 	invoices: Invoice[]

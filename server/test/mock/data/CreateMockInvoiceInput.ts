@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker'
 
-import { CreateInvoiceInput, CreateOrderItemInput, Status } from '../../../../shared'
+import { CreateInvoiceInput, CreateOrderItemInput } from '../../../src/modules/invoice/inputs'
 import { CreateMockOrderItemsInput } from './CreateMockOrderItemsInput'
 import { CreateMockAddressInput } from './CreateMockAddressInput'
+import { Status } from '../../../src/modules/invoice/enums'
 
 interface CreateMockInvoiceInputArgs {
 	status?: Status
