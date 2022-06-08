@@ -91,12 +91,7 @@ interface CredentialsInput {
 	username: string
 }
 
-interface UpdateAddressInput {
-	city?: string
-	country?: string
-	postCode?: string
-	street?: string
-}
+type UpdateAddressInput = Partial<CreateAddressInput>
 
 interface UpdateInvoiceInput {
 	clientAddress?: UpdateAddressInput
@@ -106,10 +101,7 @@ interface UpdateInvoiceInput {
 	paymentDue?: string
 	paymentTerms?: number
 	senderAddress?: UpdateAddressInput
+	orderItems?: CreateOrderItemInput[]
 }
 
-interface UpdateOrderItemInput {
-	name?: string
-	price?: number
-	quantity?: number
-}
+type UpdateOrderItemInput = Partial<CreateOrderItemInput>

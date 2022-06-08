@@ -1,10 +1,11 @@
 import { describe, test, beforeEach, afterEach, expect } from '@jest/globals'
+import { UserInputError } from 'apollo-server-express'
 
-import { compareInvoices, compareOrderItems, createInvoice, createUser, inspectInvoice } from '../../../test/utils'
+import { compareInvoices, createInvoice, createUser, inspectInvoice } from '../../../test/utils'
 import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../../test/mock'
-import { InvoiceNotFoundError, OrderItemNotFoundError } from './errors'
 import { ForbiddenError } from '../../common/errors'
 import { InvoiceService } from './InvoiceService'
+import { InvoiceNotFoundError } from './errors'
 import { Address, OrderItem } from './entities'
 import { TestDataSource } from '../../../test'
 import { Status } from './enums'
@@ -61,10 +62,55 @@ describe('InoviceService', () => {
 
 			const { orderItems, ...updateData } = CreateMockInvoiceInput()
 
-			//@ts-ignore
 			const updatedInvoice = await invoiceService.updateInvoice(user, id, updateData)
 
 			compareInvoices(updateData, updatedInvoice)
+		})
+
+		test('Should update OrderItems', async () => {
+			const orderItemRepository = TestDataSource.getRepository(OrderItem)
+
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			const invoice = await createInvoice(
+				TestDataSource,
+				user,
+				CreateMockInvoiceInput({ orderItems: CreateMockOrderItemsInput(3) })
+			)
+
+			const data = CreateMockInvoiceInput({ orderItems: CreateMockOrderItemsInput(5) })
+
+			const updatedInvoice = await invoiceService.updateInvoice(user, invoice.id, data)
+
+			expect(updatedInvoice.orderItems.length).toBe(data.orderItems.length)
+
+			const oldOrderItemsIds = invoice.orderItems.map((i) => i.id)
+
+			const orderItems = await Promise.all(
+				oldOrderItemsIds.map((id) => {
+					return orderItemRepository.findOne({ where: { id } })
+				})
+			)
+
+			orderItems.forEach((i) => expect(i).toBeNull())
+		})
+
+		test('Should throw Error when trying to delete all OrderItems', async () => {
+			expect.assertions(1)
+
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			const { id } = await createInvoice(TestDataSource, user)
+
+			const data = CreateMockInvoiceInput()
+
+			data.orderItems = []
+
+			await invoiceService.updateInvoice(user, id, data).catch((e) => expect(e).toBeInstanceOf(UserInputError))
 		})
 
 		test("Should throw Error when Invoice don't exist", async () => {
@@ -77,7 +123,6 @@ describe('InoviceService', () => {
 			const { status, orderItems, ...updateData } = CreateMockInvoiceInput()
 
 			await invoiceService
-				//@ts-ignore
 				.updateInvoice(user, 1, updateData)
 				.catch((e) => expect(e).toBeInstanceOf(InvoiceNotFoundError))
 		})
@@ -286,161 +331,6 @@ describe('InoviceService', () => {
 
 			await invoiceService
 				.changeStatus(intruder, id, Status.Paid)
-				.catch((e) => expect(e).toBeInstanceOf(ForbiddenError))
-		})
-	})
-
-	describe('addOrderItems', () => {
-		test('Should add OrderItems', async () => {
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const { id, orderItems } = await createInvoice(TestDataSource, user)
-
-			const data = CreateMockOrderItemsInput(3)
-
-			await invoiceService.addOrderItems(user, id, data)
-
-			const invoice = await invoiceService.findById(user, id)
-
-			if (!invoice) throw new Error()
-
-			expect(invoice.orderItems.length).toBe(orderItems.length + data.length)
-		})
-
-		test("Should throw Error when Invoice don't exist", async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-
-			const data = CreateMockOrderItemsInput(3)
-
-			await invoiceService
-				.addOrderItems(user, 1, data)
-				.catch((e) => expect(e).toBeInstanceOf(InvoiceNotFoundError))
-		})
-
-		test("Should throw Error when trying to add OrderItems to someone else's Invoice", async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const intruder = await createUser(TestDataSource)
-
-			const { id } = await createInvoice(TestDataSource, user)
-
-			const data = CreateMockOrderItemsInput(3)
-
-			await invoiceService
-				.addOrderItems(intruder, id, data)
-				.catch((e) => expect(e).toBeInstanceOf(ForbiddenError))
-		})
-	})
-
-	describe('updateOrderItem', () => {
-		test('Should update OrderItem', async () => {
-			const orderItemsRepository = TestDataSource.getRepository(OrderItem)
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const { orderItems } = await createInvoice(TestDataSource, user)
-
-			const [orderItem] = orderItems
-
-			const [data] = CreateMockOrderItemsInput(1)
-
-			await invoiceService.updateOrderItem(user, orderItem.id, data)
-
-			const result = await orderItemsRepository.findOne({ where: { id: orderItem.id } })
-
-			if (!result) throw new Error()
-
-			compareOrderItems(data, result)
-		})
-
-		test("Should throw Error when OrderItem don't exist", async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-
-			const [data] = CreateMockOrderItemsInput(1)
-
-			await invoiceService
-				.updateOrderItem(user, 1, data)
-				.catch((e) => expect(e).toBeInstanceOf(OrderItemNotFoundError))
-		})
-
-		test("Should throw Error when trying to update someone else's OrderItem", async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const intruder = await createUser(TestDataSource)
-
-			const { orderItems } = await createInvoice(TestDataSource, user)
-
-			const [data] = CreateMockOrderItemsInput(1)
-
-			await invoiceService
-				.updateOrderItem(intruder, orderItems[0].id, data)
-				.catch((e) => expect(e).toBeInstanceOf(ForbiddenError))
-		})
-	})
-
-	describe('deleteOrderItem', () => {
-		test('Should delete OrderItems', async () => {
-			const orderItemsRepository = TestDataSource.getRepository(OrderItem)
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const { id, orderItems } = await createInvoice(TestDataSource, user)
-
-			const [_, ...orderItemIds] = orderItems.map((i) => i.id)
-
-			await invoiceService.deleteOrderItems(user, id, orderItemIds)
-
-			const items = await Promise.all(
-				orderItemIds.map((id) => {
-					return orderItemsRepository.findOne({ where: { id } })
-				})
-			)
-
-			items.forEach((i) => expect(i).toBeNull())
-		})
-
-		test('Should throw Error when trying to delete all OrderItems', async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const { id, orderItems } = await createInvoice(TestDataSource, user)
-
-			const orderItemIds = orderItems.map((i) => i.id)
-
-			await invoiceService.deleteOrderItems(user, id, orderItemIds).catch((e) => expect(e).toBeDefined())
-		})
-
-		test("Should throw Error when trying to delete someone else's OrderItems", async () => {
-			expect.assertions(1)
-
-			const invoiceService = new InvoiceService(TestDataSource)
-
-			const user = await createUser(TestDataSource)
-			const intruder = await createUser(TestDataSource)
-
-			const { id, orderItems } = await createInvoice(TestDataSource, user)
-
-			const [orderItem] = orderItems
-
-			await invoiceService
-				.deleteOrderItems(intruder, id, [orderItem.id])
 				.catch((e) => expect(e).toBeInstanceOf(ForbiddenError))
 		})
 	})

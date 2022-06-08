@@ -12,7 +12,7 @@ interface CreateMockInvoiceInputArgs {
 
 export function CreateMockInvoiceInput({ status, orderItems }: CreateMockInvoiceInputArgs = {}): CreateInvoiceInput {
 	const paymentTerms: number = parseInt(faker.random.numeric(2))
-	const orderItemsCount: number = parseInt(faker.random.numeric(1))
+	const orderItemsCount: number = parseInt(faker.random.numeric(1, { bannedDigits: ['0'] }))
 
 	if (!orderItems) {
 		orderItems = CreateMockOrderItemsInput(orderItemsCount)

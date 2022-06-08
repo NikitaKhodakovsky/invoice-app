@@ -1,10 +1,10 @@
 import { DataSource, Repository, SelectQueryBuilder } from 'typeorm'
 import { UserInputError } from 'apollo-server-express'
 
-import { CreateInvoiceInput, CreateOrderItemInput, UpdateInvoiceInput, UpdateOrderItemInput } from './inputs'
-import { InvoiceNotFoundError, OrderItemNotFoundError } from './errors'
+import { CreateInvoiceInput, UpdateInvoiceInput } from './inputs'
 import { Address, Invoice, OrderItem } from './entities'
 import { ForbiddenError } from '../../common/errors'
+import { InvoiceNotFoundError } from './errors'
 import { Status } from './enums'
 import { User } from '../user'
 
@@ -51,12 +51,25 @@ export class InvoiceService {
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (user.id !== invoice.user.id) throw new ForbiddenError()
 
-		const { clientAddress, senderAddress, ...other } = data
+		const { clientAddress, senderAddress, orderItems, ...other } = data
 
 		const updatedInvoice = this.invoiceRepository.merge(invoice, other)
 
-		updatedInvoice.clientAddress = this.addressRepository.merge(invoice.clientAddress, clientAddress)
-		updatedInvoice.senderAddress = this.addressRepository.merge(invoice.senderAddress, senderAddress)
+		if (clientAddress) {
+			updatedInvoice.clientAddress = this.addressRepository.merge(invoice.clientAddress, clientAddress)
+		}
+
+		if (senderAddress) {
+			updatedInvoice.senderAddress = this.addressRepository.merge(invoice.senderAddress, senderAddress)
+		}
+
+		if (orderItems) {
+			if (orderItems.length < 1) throw new UserInputError("You cannot delete all Order Item's")
+
+			await this.orderItemRepository.remove(invoice.orderItems)
+
+			updatedInvoice.orderItems = orderItems.map((oi) => this.orderItemRepository.create(oi))
+		}
 
 		return this.invoiceRepository.save(updatedInvoice)
 	}
@@ -106,57 +119,5 @@ export class InvoiceService {
 		invoice.status = status
 
 		return this.invoiceRepository.save(invoice)
-	}
-
-	public async addOrderItems(user: User, invoiceId: number, data: CreateOrderItemInput[]) {
-		const invoice = await this.invoiceRepository.findOne({
-			where: { id: invoiceId },
-			relations: { user: true }
-		})
-
-		if (!invoice) throw new InvoiceNotFoundError()
-		if (user.id !== invoice.user.id) throw new ForbiddenError()
-
-		const orderItems: OrderItem[] = data.map((item) => {
-			return this.orderItemRepository.create({
-				...item,
-				invoice
-			})
-		})
-
-		await this.orderItemRepository.save(orderItems)
-	}
-
-	public async updateOrderItem(user: User, orderItemId: number, data: UpdateOrderItemInput) {
-		const orderItem = await this.orderItemRepository.findOne({
-			where: { id: orderItemId },
-			relations: { invoice: true }
-		})
-
-		if (!orderItem) throw new OrderItemNotFoundError()
-
-		if (user.id !== orderItem.invoice.user.id) throw new ForbiddenError()
-
-		const updatedOrderItem = this.orderItemRepository.merge(orderItem, data)
-
-		await this.orderItemRepository.save(updatedOrderItem)
-	}
-
-	public async deleteOrderItems(user: User, invoiceId: number, ids: (string | number)[]) {
-		const invoice = await this.invoiceRepository.findOne({
-			where: { id: invoiceId },
-			relations: { user: true, orderItems: true }
-		})
-
-		if (!invoice) throw new InvoiceNotFoundError()
-		if (user.id !== invoice.user.id) throw new ForbiddenError()
-
-		const orderItemIds = ids.map((id) => +id)
-
-		const orderItems: OrderItem[] = invoice.orderItems.filter((item) => orderItemIds.includes(item.id))
-
-		if (orderItems.length === invoice.orderItems.length) throw new Error("You cannot delete all Order Item's")
-
-		await this.orderItemRepository.remove(orderItems)
 	}
 }
