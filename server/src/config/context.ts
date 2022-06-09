@@ -1,12 +1,9 @@
-import { ExpressContext } from 'apollo-server-express'
-import { ContextFunction } from 'apollo-server-core'
-
-import { Address, Invoice, InvoiceService, OrderItem } from '../modules/invoice'
+import { InvoiceService } from '../modules/invoice'
+import { AuthService } from '../modules/auth'
 import { dataSource } from './dataSource'
 import { Context } from '../types'
-import { AuthService } from '../modules/auth'
 
-export const context: ContextFunction<ExpressContext, Context> = ({ req, res }) => {
+export function createContext(req: any, res: any): Context {
 	const invoiceService = new InvoiceService(dataSource)
 	const authService = new AuthService(dataSource)
 

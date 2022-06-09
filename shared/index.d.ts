@@ -9,17 +9,14 @@ interface Query {
 }
 
 interface Mutation {
-	addOrderItems: boolean
 	changeInvoiceStatus: Invoice
 	createInvoice: Invoice
 	deleteAccount: boolean
 	deleteInvoice: boolean
-	deleteOrderItems: boolean
 	login: User
 	logout: boolean
 	register: User
 	updateInvoice: Invoice
-	updateOrderItem: boolean
 }
 
 interface User {
@@ -61,11 +58,22 @@ interface OrderItem {
 	quantity: number
 }
 
+interface CredentialsInput {
+	password: string
+	username: string
+}
+
 interface CreateAddressInput {
 	city: string
 	country: string
 	postCode: string
 	street: string
+}
+
+interface CreateOrderItemInput {
+	name: string
+	price: number
+	quantity: number
 }
 
 interface CreateInvoiceInput {
@@ -78,17 +86,6 @@ interface CreateInvoiceInput {
 	paymentTerms: number
 	senderAddress: CreateAddressInput
 	status?: Status
-}
-
-interface CreateOrderItemInput {
-	name: string
-	price: number
-	quantity: number
-}
-
-interface CredentialsInput {
-	password: string
-	username: string
 }
 
 type UpdateAddressInput = Partial<CreateAddressInput>
