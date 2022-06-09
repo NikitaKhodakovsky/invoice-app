@@ -15,15 +15,17 @@ export interface SidebarProps {
 export function Sidebar({ children, isOpen, setIsOpen }: SidebarProps) {
 	return (
 		<Fragment>
-			<div className={s(styles, 'placeholder', isOpen ? 'open' : '')} onClick={() => setIsOpen(!isOpen)}></div>
+			{isOpen && <div className={styles.placeholder} onClick={() => setIsOpen(!isOpen)}></div>}
 			<div className={s(styles, 'sidebar', isOpen ? 'open' : '')}>
-				<ArrowButton
-					message='Go back'
-					direction='left'
-					onClick={() => setIsOpen(!isOpen)}
-					className={styles.closeButton}
-				/>
-				{children}
+				<div className={styles.content}>
+					<ArrowButton
+						message='Go back'
+						direction='left'
+						onClick={() => setIsOpen(!isOpen)}
+						className={styles.closeButton}
+					/>
+					{children}
+				</div>
 			</div>
 		</Fragment>
 	)

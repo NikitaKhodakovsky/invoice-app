@@ -1,9 +1,7 @@
 @use '../../sass/abstracts' as *;
 
 .placeholder {
-	display: none;
-
-	position: absolute;
+	position: fixed;
 
 	top: 0;
 	right: 0;
@@ -17,10 +15,6 @@
 	opacity: 0.5;
 }
 
-.placeholder.open {
-	display: block;
-}
-
 .sidebar {
 	position: fixed;
 
@@ -32,14 +26,9 @@
 
 	width: 100%;
 
-	padding: 2.4rem;
-	padding-top: 3.2rem;
-	padding-bottom: 0;
-
 	z-index: 500;
 
-	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow: hidden;
 
 	background-color: var(--sidebar-bg);
 
@@ -48,10 +37,6 @@
 	@include breakpoint-up('small') {
 		//header
 		top: 8rem;
-
-		padding: 5.6rem;
-
-		padding-bottom: 0;
 	}
 
 	@include breakpoint-up('medium') {
@@ -59,11 +44,13 @@
 
 		border-top-right-radius: 2rem;
 		border-bottom-right-radius: 2rem;
+
+		padding: 1.2rem 0.3rem;
 	}
 
 	@include breakpoint-up('xlarge') {
 		//header
-		padding-left: 10rem + 5.6rem;
+		padding-left: 10rem + 0.3rem;
 
 		top: 0;
 	}
@@ -76,5 +63,19 @@
 .closeButton {
 	@include breakpoint-up('medium') {
 		display: none;
+	}
+}
+
+.content {
+	overflow-y: scroll;
+	height: 100%;
+
+	padding: 2.4rem;
+	padding-top: 3.2rem;
+	padding-bottom: 0;
+
+	@include breakpoint-up('small') {
+		padding: 4rem;
+		padding-bottom: 0;
 	}
 }

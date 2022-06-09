@@ -40,8 +40,8 @@ const validationSchema = object({
 	orderItems: array(
 		object({
 			name: string().required(' '),
-			price: number().required('required').min(1, ' '),
-			quantity: number().required('required').min(1, ' ')
+			price: number().required(' ').min(1, ' '),
+			quantity: number().required(' ').min(1, ' ')
 		})
 	).min(1, 'You can not create Invoice without items')
 })
