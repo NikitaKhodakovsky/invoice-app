@@ -1,15 +1,32 @@
 import { expect } from '@jest/globals'
 
 import { inspectAddress } from './inspectAddress'
-import { CheckableInvoice } from './types'
+import { inspectOrderItems } from './inspectOrderItems'
 
-export function inspectInvoice(invoice: CheckableInvoice) {
+interface InvoiceRelations {
+	clientAddress?: true
+	senderAddress?: true
+	orderItems?: true
+}
+
+export function inspectInvoice(invoice: any, skipRelationsCheck?: InvoiceRelations) {
+	const { clientAddress, senderAddress, orderItems } = skipRelationsCheck || {}
+
 	expect(typeof invoice.clientEmail).toBe('string')
 	expect(typeof invoice.clientName).toBe('string')
 	expect(typeof invoice.description).toBe('string')
 	//expect(updatedInvoice.paymentDue).toBe(input.paymentDue)
 	expect(typeof invoice.paymentTerms).toBe('number')
 
-	inspectAddress(invoice.clientAddress)
-	inspectAddress(invoice.senderAddress)
+	if (!clientAddress) {
+		inspectAddress(invoice.clientAddress)
+	}
+
+	if (!senderAddress) {
+		inspectAddress(invoice.senderAddress)
+	}
+
+	if (!orderItems) {
+		inspectOrderItems(invoice.orderItems)
+	}
 }

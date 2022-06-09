@@ -43,17 +43,17 @@ export class Invoice extends BaseEntity {
 	status: Status
 
 	@Field(() => Address)
-	@OneToOne(() => Address, { cascade: true, eager: true })
+	@OneToOne(() => Address, { cascade: true })
 	@JoinColumn()
 	senderAddress: Address
 
 	@Field(() => Address)
-	@OneToOne(() => Address, { cascade: true, eager: true })
+	@OneToOne(() => Address, { cascade: true })
 	@JoinColumn()
 	clientAddress: Address
 
 	@Field(() => [OrderItem])
-	@OneToMany(() => OrderItem, (orderItem) => orderItem.invoice, { cascade: true, eager: true })
+	@OneToMany(() => OrderItem, (orderItem) => orderItem.invoice, { cascade: true })
 	orderItems: OrderItem[]
 
 	@Field(() => Float)

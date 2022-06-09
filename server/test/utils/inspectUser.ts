@@ -1,7 +1,5 @@
 import { expect } from '@jest/globals'
 
-import { CheckableUser } from './types'
-
-export function inspectUser(user: CheckableUser) {
+export function inspectUser(user: any) {
 	expect(typeof user.username).toBe('string')
 }

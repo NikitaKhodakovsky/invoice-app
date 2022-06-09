@@ -1,9 +1,10 @@
 import { expect } from '@jest/globals'
 
 import { compareAddresses } from './compareAddresses'
-import { CheckableInvoice } from './types'
 
-export function compareInvoices(a: CheckableInvoice, b: CheckableInvoice) {
+export function compareInvoices(a?: any, b?: any) {
+	if (!a || !b) throw new Error()
+
 	expect(a.clientEmail).toBe(b.clientEmail)
 	expect(a.clientName).toBe(b.clientName)
 	expect(a.description).toBe(b.description)

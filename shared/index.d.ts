@@ -9,7 +9,7 @@ interface Query {
 }
 
 interface Mutation {
-	changeInvoiceStatus: Invoice
+	changeInvoiceStatus: boolean
 	createInvoice: Invoice
 	deleteAccount: boolean
 	deleteInvoice: boolean

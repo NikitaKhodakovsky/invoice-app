@@ -1,12 +1,19 @@
 import { describe, test, beforeEach, afterEach, expect } from '@jest/globals'
 import { UserInputError } from 'apollo-server-express'
 
-import { compareInvoices, createInvoice, createUser, inspectInvoice } from '../../../test/utils'
+import {
+	compareInvoices,
+	createInvoice,
+	createUser,
+	inspectAddress,
+	inspectInvoice,
+	inspectOrderItems
+} from '../../../test/utils'
 import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../../test/mock'
 import { ForbiddenError } from '../../common/errors'
 import { InvoiceService } from './InvoiceService'
 import { InvoiceNotFoundError } from './errors'
-import { Address, OrderItem } from './entities'
+import { Address, Invoice, OrderItem } from './entities'
 import { TestDataSource } from '../../../test'
 import { Status } from './enums'
 
@@ -201,7 +208,24 @@ describe('InoviceService', () => {
 	})
 
 	describe('findById', () => {
-		test('Should return Invoice', async () => {
+		test('Should return Invoice with loaded relations', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+			const { id } = await createInvoice(TestDataSource, user)
+
+			const invoice = await invoiceService.findById(user, id, {
+				senderAddress: true,
+				clientAddress: true,
+				orderItems: true
+			})
+
+			if (!invoice) throw new Error()
+
+			inspectInvoice(invoice)
+		})
+
+		test('Should not load relations if relations object is not provided', async () => {
 			const invoiceService = new InvoiceService(TestDataSource)
 
 			const user = await createUser(TestDataSource)
@@ -211,7 +235,9 @@ describe('InoviceService', () => {
 
 			if (!invoice) throw new Error()
 
-			inspectInvoice(invoice)
+			expect(invoice.orderItems).toBeUndefined()
+			expect(invoice.clientAddress).toBeUndefined()
+			expect(invoice.senderAddress).toBeUndefined()
 		})
 
 		test("Should return null when Invoice don't exist", async () => {
@@ -257,6 +283,38 @@ describe('InoviceService', () => {
 			expect(userInvoices.find((i) => i.id === strangerInvoice.id)).toBeFalsy()
 		})
 
+		test('Should not load relations if relations object is not provided', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			await createInvoice(TestDataSource, user)
+
+			const [invoice] = await invoiceService.findAll(user)
+
+			expect(invoice.orderItems).toBeUndefined()
+			expect(invoice.clientAddress).toBeUndefined()
+			expect(invoice.senderAddress).toBeUndefined()
+		})
+
+		test('Should load relations if relations object is provided', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			await createInvoice(TestDataSource, user)
+
+			const [invoice] = await invoiceService.findAll(user, undefined, {
+				orderItems: true,
+				clientAddress: true,
+				senderAddress: true
+			})
+
+			inspectOrderItems(invoice.orderItems)
+			inspectAddress(invoice.clientAddress)
+			inspectAddress(invoice.senderAddress)
+		})
+
 		test('Should filter Invoices by statuses', async () => {
 			const invoiceService = new InvoiceService(TestDataSource)
 
@@ -295,6 +353,8 @@ describe('InoviceService', () => {
 
 	describe('changeStatus', () => {
 		test('Should update Invoice Status', async () => {
+			const invoiceRepository = TestDataSource.getRepository(Invoice)
+
 			const invoiceService = new InvoiceService(TestDataSource)
 
 			const user = await createUser(TestDataSource)
@@ -302,7 +362,11 @@ describe('InoviceService', () => {
 
 			expect(status).toBe(Status.Pending)
 
-			const result = await invoiceService.changeStatus(user, id, Status.Paid)
+			await invoiceService.changeStatus(user, id, Status.Paid)
+
+			const result = await invoiceRepository.findOne({ where: { id } })
+
+			if (!result) throw new Error()
 
 			expect(result.status).toBe(Status.Paid)
 		})

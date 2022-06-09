@@ -1,4 +1,4 @@
-import { DataSource, Repository, SelectQueryBuilder } from 'typeorm'
+import { DataSource, FindOptionsRelations, Repository, SelectQueryBuilder } from 'typeorm'
 import { UserInputError } from 'apollo-server-express'
 
 import { CreateInvoiceInput, UpdateInvoiceInput } from './inputs'
@@ -19,7 +19,7 @@ export class InvoiceService {
 		this.invoiceRepository = dataSource.getRepository(Invoice)
 	}
 
-	public async createInvoice(user: User, data: CreateInvoiceInput) {
+	public async createInvoice(user: User, data: CreateInvoiceInput): Promise<Invoice> {
 		const senderAddress = this.addressRepository.create(data.senderAddress)
 		const clientAddress = this.addressRepository.create(data.clientAddress)
 
@@ -46,7 +46,10 @@ export class InvoiceService {
 	}
 
 	public async updateInvoice(user: User, invoiceId: number, data: UpdateInvoiceInput) {
-		const invoice = await this.invoiceRepository.findOne({ where: { id: invoiceId } })
+		const invoice = await this.invoiceRepository.findOne({
+			where: { id: invoiceId },
+			relations: { clientAddress: true, senderAddress: true, orderItems: true }
+		})
 
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (user.id !== invoice.user.id) throw new ForbiddenError()
@@ -74,8 +77,11 @@ export class InvoiceService {
 		return this.invoiceRepository.save(updatedInvoice)
 	}
 
-	public async deleteInvoice(user: User, invoiceId: number) {
-		const invoice = await this.invoiceRepository.findOne({ where: { id: invoiceId } })
+	public async deleteInvoice(user: User, invoiceId: number): Promise<void> {
+		const invoice = await this.invoiceRepository.findOne({
+			where: { id: invoiceId },
+			relations: { clientAddress: true, senderAddress: true }
+		})
 
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (invoice.user.id !== user.id) throw new ForbiddenError()
@@ -85,8 +91,15 @@ export class InvoiceService {
 		await this.addressRepository.remove(invoice.senderAddress)
 	}
 
-	public async findById(user: User, invoiceId: number): Promise<Invoice | null> {
-		const invoice = await this.invoiceRepository.findOne({ where: { id: invoiceId } })
+	public async findById(
+		user: User,
+		invoiceId: number,
+		relations?: FindOptionsRelations<Invoice>
+	): Promise<Invoice | null> {
+		const invoice = await this.invoiceRepository.findOne({
+			where: { id: invoiceId },
+			relations
+		})
 
 		if (!invoice) return null
 
@@ -95,22 +108,39 @@ export class InvoiceService {
 		return invoice
 	}
 
-	public async findAll({ id }: User, statuses?: Status[]): Promise<Invoice[]> {
-		let builder: SelectQueryBuilder<Invoice> = this.invoiceRepository.createQueryBuilder('invoice')
+	public async findAll(
+		{ id }: User,
+		statuses?: Status[],
+		relations?: FindOptionsRelations<Invoice>
+	): Promise<Invoice[]> {
+		let builder: SelectQueryBuilder<Invoice> = this.invoiceRepository
+			.createQueryBuilder('invoice')
+			.where('invoice.user = :userId', { userId: id })
 
 		if (statuses && statuses.length > 0) {
-			builder = builder.where('invoice.status IN (:...statuses)', { statuses })
+			builder = builder.andWhere('invoice.status IN (:...statuses)', { statuses })
 		}
 
-		return await builder
-			.innerJoinAndSelect('invoice.user', 'user', 'user.id = :userId', { userId: id })
-			.innerJoinAndSelect('invoice.senderAddress', 'senderAddress')
-			.innerJoinAndSelect('invoice.clientAddress', 'clientAddress')
-			.innerJoinAndSelect('invoice.orderItems', 'orderItems')
-			.getMany()
+		if (relations?.clientAddress) {
+			builder = builder.innerJoinAndSelect('invoice.clientAddress', 'clientAddress')
+		}
+
+		if (relations?.senderAddress) {
+			builder = builder.innerJoinAndSelect('invoice.senderAddress', 'senderAddress')
+		}
+
+		if (relations?.orderItems) {
+			builder = builder.innerJoinAndSelect('invoice.orderItems', 'orderItems')
+		}
+
+		if (relations?.user) {
+			builder = builder.innerJoinAndSelect('invoice.user', 'user')
+		}
+
+		return await builder.getMany()
 	}
 
-	public async changeStatus(user: User, invoiceId: number, status: Status): Promise<Invoice> {
+	public async changeStatus(user: User, invoiceId: number, status: Status): Promise<void> {
 		const invoice = await this.invoiceRepository.findOne({ where: { id: invoiceId } })
 
 		if (!invoice) throw new InvoiceNotFoundError()
@@ -118,6 +148,6 @@ export class InvoiceService {
 
 		invoice.status = status
 
-		return this.invoiceRepository.save(invoice)
+		await this.invoiceRepository.save(invoice)
 	}
 }
