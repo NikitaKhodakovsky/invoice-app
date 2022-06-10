@@ -406,6 +406,26 @@ describe('InoviceService', () => {
 				.catch((e) => expect(e).toBeInstanceOf(InvoiceNotFoundError))
 		})
 
+		test('Should throw an error when you try to change the status of an Invoice already paid for', async () => {
+			expect.assertions(2)
+
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			const { id, status } = await createInvoice(
+				TestDataSource,
+				user,
+				CreateMockInvoiceInput({ status: Status.Paid })
+			)
+
+			expect(status).toBe(Status.Paid)
+
+			await invoiceService
+				.changeStatus(user, id, Status.Pending)
+				.catch((e) => expect(e).toBeInstanceOf(UserInputError))
+		})
+
 		test("Should throw Error when trying to update someone else's Invoice Status", async () => {
 			expect.assertions(1)
 

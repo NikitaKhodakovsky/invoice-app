@@ -153,6 +153,8 @@ export class InvoiceService {
 
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (user.id !== invoice.user.id) throw new ForbiddenError()
+		if (invoice.status === Status.Paid)
+			throw new UserInputError('You cannot change the status of an Invoice already paid for')
 
 		invoice.status = status
 
