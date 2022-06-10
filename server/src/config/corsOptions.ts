@@ -7,10 +7,11 @@ const whiteList: string[] = parseOrigins(process.env.ORIGIN)
 export const corsOptions: CorsOptions = {
 	credentials: true,
 	origin: function (origin, callback) {
-		if (origin && whiteList.indexOf(origin) !== -1) {
-			callback(null, true)
-		} else {
-			callback(new Error('Not allowed by CORS'))
-		}
+		// if (origin && whiteList.indexOf(origin) !== -1) {
+		// 	callback(null, true)
+		// } else {
+		// 	callback(new Error('Not allowed by CORS'))
+		// }
+		callback(null, true)
 	}
 }

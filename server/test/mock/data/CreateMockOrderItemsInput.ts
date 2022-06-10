@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker'
 
+import { CreateOrderItemInput } from '../../../src/modules/invoice/inputs'
+
 export function CreateMockOrderItemsInput(count: number = 1): CreateOrderItemInput[] {
 	const items: CreateOrderItemInput[] = []
 
