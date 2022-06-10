@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 
 export const InvoiceByIdQuery = gql`
-	query ($id: ID!) {
+	query InvoiceById($id: ID!) {
 		invoice(id: $id) {
 			id
 			createdAt
@@ -44,5 +44,5 @@ export const InvoiceByIdQuery = gql`
 `
 
 export function useInvoiceByIdQuery(id: string) {
-	return useQuery<{ invoice: Query['invoice'] }, { id: string }>(InvoiceByIdQuery, { variables: { id } })
+	return useQuery<InvoiceByIdQuery, InvoiceByIdQueryVariables>(InvoiceByIdQuery, { variables: { id } })
 }

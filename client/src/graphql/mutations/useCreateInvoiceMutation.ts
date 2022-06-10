@@ -3,17 +3,11 @@ import { gql, useMutation } from '@apollo/client'
 import { AllInvoicesQuery } from '../queries'
 
 const CreateInvoiceMutation = gql`
-	mutation ($data: CreateInvoiceInput!) {
+	mutation CreateInvoice($data: CreateInvoiceInput!) {
 		createInvoice(data: $data) {
 			id
 			createdAt
 			updatedAt
-			user {
-				createdAt
-				id
-				updatedAt
-				username
-			}
 			paymentDue
 			description
 			paymentTerms
@@ -46,10 +40,7 @@ const CreateInvoiceMutation = gql`
 `
 
 export function useCreateInvoiceMutation() {
-	return useMutation<{ createInvoice: Mutation['createInvoice'] }, { data: CreateInvoiceInput }>(
-		CreateInvoiceMutation,
-		{
-			refetchQueries: [AllInvoicesQuery]
-		}
-	)
+	return useMutation<CreateInvoiceMutation, MutationCreateInvoiceArgs>(CreateInvoiceMutation, {
+		refetchQueries: [AllInvoicesQuery]
+	})
 }

@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client'
 
 const RegisterMutation = gql`
-	mutation ($credentials: CredentialsInput!) {
+	mutation Register($credentials: CredentialsInput!) {
 		register(data: $credentials) {
 			id
 			createdAt
@@ -12,5 +12,5 @@ const RegisterMutation = gql`
 `
 
 export function useRegisterMutation() {
-	return useMutation<{ register: Mutation['register'] }, { credentials: CredentialsInput }>(RegisterMutation)
+	return useMutation<RegisterMutation, RegisterMutationVariables>(RegisterMutation)
 }

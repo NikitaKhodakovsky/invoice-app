@@ -1,0 +1,13 @@
+schema: http://localhost:4200/graphql
+documents: 'src/graphql/**/!(*.d).{ts,tsx}'
+generates:
+    ./__generated__/types.d.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+        config:
+            declarationKind: 'interface'
+            enumsAsTypes: true
+            noExport: true
+            skipTypename: true
+            preResolveTypes: false

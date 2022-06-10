@@ -1,11 +1,11 @@
 import { gql, useMutation } from '@apollo/client'
 
 export const LogoutMutation = gql`
-	mutation {
+	mutation Logout {
 		logout
 	}
 `
 
 export function useLogoutMutation() {
-	return useMutation<{ logout: Mutation['logout'] }>(LogoutMutation)
+	return useMutation<LogoutMutation, LogoutMutationVariables>(LogoutMutation)
 }

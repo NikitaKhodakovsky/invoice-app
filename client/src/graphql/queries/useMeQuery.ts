@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 
 export const MeQuery = gql`
-	query {
+	query Me {
 		me {
 			id
 			createdAt
@@ -12,7 +12,7 @@ export const MeQuery = gql`
 `
 
 export function useMeQuery() {
-	return useQuery<{ me: Query['me'] }>(MeQuery, {
+	return useQuery<MeQuery, MeQueryVariables>(MeQuery, {
 		fetchPolicy: 'no-cache'
 	})
 }

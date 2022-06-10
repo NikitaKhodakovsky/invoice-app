@@ -16,5 +16,5 @@
 		"noEmit": true,
 		"jsx": "preserve"
 	},
-	"include": ["src", "../shared"]
+	"include": ["src", "__generated__"]
 }
