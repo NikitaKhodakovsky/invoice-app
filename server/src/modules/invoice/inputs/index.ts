@@ -1,5 +1,4 @@
 export * from './CreateOrderItemInput'
-export * from './UpdateOrderItemInput'
 export * from './CreateInvoiceInput'
 export * from './UpdateInvoiceInput'
 export * from './CreateAddressInput'

@@ -7,9 +7,6 @@ import { Status } from '../enums'
 @InputType()
 export class CreateInvoiceInput {
 	@Field()
-	paymentDue: Date
-
-	@Field()
 	description: string
 
 	@Field(() => Int)

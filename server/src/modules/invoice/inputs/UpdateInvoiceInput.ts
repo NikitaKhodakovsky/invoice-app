@@ -6,9 +6,6 @@ import { UpdateAddressInput } from './UpdateAddressInput'
 @InputType()
 export class UpdateInvoiceInput {
 	@Field({ nullable: true })
-	paymentDue?: Date
-
-	@Field({ nullable: true })
 	description?: string
 
 	@Field(() => Int, { nullable: true })

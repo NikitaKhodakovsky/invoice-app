@@ -5,6 +5,7 @@ import { CreateInvoiceInput, UpdateInvoiceInput } from './inputs'
 import { Address, Invoice, OrderItem } from './entities'
 import { ForbiddenError } from '../../common/errors'
 import { InvoiceNotFoundError } from './errors'
+import { addDays } from '../../utils'
 import { Status } from './enums'
 import { User } from '../user'
 
@@ -23,11 +24,13 @@ export class InvoiceService {
 		const senderAddress = this.addressRepository.create(data.senderAddress)
 		const clientAddress = this.addressRepository.create(data.clientAddress)
 
-		const { paymentDue, paymentTerms, description, clientName, clientEmail, status } = data
+		const { paymentTerms, description, clientName, clientEmail, status } = data
 
 		if (data.orderItems.length < 1) throw new UserInputError('You cannot create an Invoice without OrderItems')
 
 		const orderItems: OrderItem[] = data.orderItems.map((oi) => this.orderItemRepository.create(oi))
+
+		const paymentDue = addDays(new Date(), paymentTerms)
 
 		const invoice = this.invoiceRepository.create({
 			paymentDue,
@@ -54,9 +57,14 @@ export class InvoiceService {
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (user.id !== invoice.user.id) throw new ForbiddenError()
 
-		const { clientAddress, senderAddress, orderItems, ...other } = data
+		const { clientAddress, senderAddress, orderItems, paymentTerms, ...other } = data
 
 		const updatedInvoice = this.invoiceRepository.merge(invoice, other)
+
+		if (paymentTerms) {
+			updatedInvoice.paymentTerms = paymentTerms
+			updatedInvoice.paymentDue = addDays(invoice.createdAt, paymentTerms)
+		}
 
 		if (clientAddress) {
 			updatedInvoice.clientAddress = this.addressRepository.merge(invoice.clientAddress, clientAddress)

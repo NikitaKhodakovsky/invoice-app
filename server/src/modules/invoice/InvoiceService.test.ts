@@ -1,21 +1,22 @@
 import { describe, test, beforeEach, afterEach, expect } from '@jest/globals'
 import { UserInputError } from 'apollo-server-express'
 
-import {
-	compareInvoices,
-	createInvoice,
-	createUser,
-	inspectAddress,
-	inspectInvoice,
-	inspectOrderItems
-} from '../../../test/utils'
 import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../../test/mock'
+import { Address, Invoice, OrderItem } from './entities'
 import { ForbiddenError } from '../../common/errors'
 import { InvoiceService } from './InvoiceService'
 import { InvoiceNotFoundError } from './errors'
-import { Address, Invoice, OrderItem } from './entities'
 import { TestDataSource } from '../../../test'
 import { Status } from './enums'
+import {
+	inspectOrderItems,
+	compareInvoices,
+	inspectAddress,
+	inspectInvoice,
+	createInvoice,
+	createUser,
+	inspectPaymentDue
+} from '../../../test/utils'
 
 describe('InoviceService', () => {
 	beforeEach(async () => {
@@ -33,6 +34,14 @@ describe('InoviceService', () => {
 			const invoice = await createInvoice(TestDataSource, user)
 
 			inspectInvoice(invoice)
+		})
+
+		test('Should add proper paymentDue', async () => {
+			const user = await createUser(TestDataSource)
+
+			const invoice = await createInvoice(TestDataSource, user)
+
+			inspectPaymentDue(invoice)
 		})
 
 		test('Should set default Status', async () => {
@@ -67,11 +76,25 @@ describe('InoviceService', () => {
 
 			const { id } = await createInvoice(TestDataSource, user)
 
-			const { orderItems, ...updateData } = CreateMockInvoiceInput()
+			const data = CreateMockInvoiceInput()
 
-			const updatedInvoice = await invoiceService.updateInvoice(user, id, updateData)
+			const updatedInvoice = await invoiceService.updateInvoice(user, id, data)
 
-			compareInvoices(updateData, updatedInvoice)
+			compareInvoices(data, updatedInvoice)
+		})
+
+		test('Should compute proper paymentDue', async () => {
+			const invoiceService = new InvoiceService(TestDataSource)
+
+			const user = await createUser(TestDataSource)
+
+			const { id } = await createInvoice(TestDataSource, user)
+
+			const data = CreateMockInvoiceInput()
+
+			const updatedInvoice = await invoiceService.updateInvoice(user, id, data)
+
+			inspectPaymentDue(updatedInvoice)
 		})
 
 		test('Should update OrderItems', async () => {

@@ -24,7 +24,6 @@ export function CreateMockInvoiceInput({ status, orderItems }: CreateMockInvoice
 		clientEmail: faker.internet.email(),
 		clientName: faker.name.findName(),
 		description: faker.commerce.productDescription(),
-		paymentDue: faker.date.future(),
 		paymentTerms,
 		orderItems,
 		status
