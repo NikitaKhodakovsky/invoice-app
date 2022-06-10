@@ -1,0 +1,12 @@
+schema: schema.gql
+documents: 'e2e/graphql/**/!(*.d).{ts,tsx}'
+generates:
+    ./e2e/types.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+        config:
+            declarationKind: 'interface'
+            enumsAsTypes: true
+            skipTypename: true
+            preResolveTypes: false

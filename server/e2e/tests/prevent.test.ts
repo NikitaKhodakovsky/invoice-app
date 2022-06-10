@@ -1,73 +1,79 @@
-import { beforeAll, describe, test, expect, afterAll } from '@jest/globals'
+import { describe, test, expect } from '@jest/globals'
 
-import { DeleteAccountMutation, RegisterAndLogin, RegisterAndLoginResult } from '../graphql/auth'
-import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../test/mock'
-import { Invoice } from '../../../shared'
-
+import { meQuery, invoiceByIdQuery, allInvoicesQuery } from '../graphql/queries'
+import { unautorizedCheck, registerLoginCreateInvoice } from '../utils'
+import { CreateMockInvoiceInput } from '../../test/mock'
 import {
-	AddOrderItemsMutation,
-	CreateInvoiceMutation,
-	DeleteOrderItemsMutation,
-	FindInvoiceByIdQuery,
-	UpdateInvoiceMutation,
-	UpdateOrderItemMutation
-} from '../graphql/invoice'
+	changeInvoiceStatusMutation,
+	createInvoiceMutation,
+	deleteInvoiceMutation,
+	updateInvoiceMutation,
+	deleteAccountMutation,
+	logoutMutation
+} from '../graphql/mutations'
 
-let user: RegisterAndLoginResult
-let invoice: Invoice
+const invalidToken = 'hello world'
 
-let intruder: RegisterAndLoginResult
+describe('Prevent unauthorized access', () => {
+	describe('Query', () => {
+		test('invoices', async () => {
+			expect.assertions(1)
 
-beforeAll(async () => {
-	user = await RegisterAndLogin()
-	invoice = await CreateInvoiceMutation(user.qid)
+			await allInvoicesQuery(invalidToken).catch((e) => unautorizedCheck(e))
+		})
 
-	intruder = await RegisterAndLogin()
-})
+		test('invoice', async () => {
+			expect.assertions(1)
 
-afterAll(async () => {
-	await DeleteAccountMutation(user.qid)
-	await DeleteAccountMutation(intruder.qid)
-})
+			const { invoice } = await registerLoginCreateInvoice()
 
-describe('Scenarios', () => {
-	test('Access to not your Invoice', async () => {
-		expect.assertions(1)
+			await invoiceByIdQuery(invalidToken, invoice.id).catch((e) => unautorizedCheck(e))
+		})
 
-		await FindInvoiceByIdQuery(intruder.qid, invoice.id).catch((e) => expect(e).toBeDefined())
-	})
-	test('Update not your Invoice', async () => {
-		expect.assertions(1)
+		test('me', async () => {
+			expect.assertions(1)
 
-		const { orderItems, status, ...input } = CreateMockInvoiceInput()
-
-		await UpdateInvoiceMutation(intruder.qid, invoice.id, input).catch((e) => expect(e).toBeDefined())
+			await meQuery(invalidToken).catch((e) => unautorizedCheck(e))
+		})
 	})
 
-	test('Add OI to not your Invoice', async () => {
-		expect.assertions(1)
+	describe('Mutation', () => {
+		test('changeInvoiceStatus', async () => {
+			expect.assertions(1)
 
-		const input = CreateMockOrderItemsInput(3)
-		await AddOrderItemsMutation(intruder.qid, invoice.id, input).catch((e) => expect(e).toBeDefined())
-	})
+			const { invoice } = await registerLoginCreateInvoice()
 
-	test('Update OI in not your Invoice', async () => {
-		expect.assertions(1)
+			await changeInvoiceStatusMutation(invalidToken, invoice.id, 'Paid').catch((e) => unautorizedCheck(e))
+		})
 
-		const [input] = CreateMockOrderItemsInput(1)
+		test('createInvoice', async () => {
+			await createInvoiceMutation(invalidToken).catch((e) => unautorizedCheck(e))
+		})
 
-		await UpdateOrderItemMutation(intruder.qid, invoice.orderItems[0].id, input).catch((e) =>
-			expect(e).toBeDefined()
-		)
-	})
+		test('deleteInvoice', async () => {
+			expect.assertions(1)
 
-	test('Delete OIs from not your Invoice', async () => {
-		expect.assertions(1)
+			const { invoice } = await registerLoginCreateInvoice()
 
-		const { orderItems } = invoice
+			await deleteInvoiceMutation(invalidToken, invoice.id).catch((e) => unautorizedCheck(e))
+		})
 
-		const [orderItem] = orderItems
+		test('updateInvoice', async () => {
+			expect.assertions(1)
 
-		await DeleteOrderItemsMutation(intruder.qid, invoice.id, [orderItem.id]).catch((e) => expect(e).toBeDefined())
+			const { invoice } = await registerLoginCreateInvoice()
+
+			await updateInvoiceMutation(invalidToken, invoice.id, CreateMockInvoiceInput()).catch((e) =>
+				unautorizedCheck(e)
+			)
+		})
+
+		test('deleteAccount', async () => {
+			await deleteAccountMutation(invalidToken).catch((e) => unautorizedCheck(e))
+		})
+
+		test('logout', async () => {
+			await logoutMutation(invalidToken).catch((e) => unautorizedCheck(e))
+		})
 	})
 })

@@ -26,8 +26,7 @@ export function createApp() {
 
 			return {
 				schema,
-				context,
-				graphiql: true
+				context
 			}
 		})
 	)

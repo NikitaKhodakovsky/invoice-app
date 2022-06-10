@@ -1,17 +1,17 @@
 import { gql } from 'graphql-request'
 import { serialize } from 'cookie'
 
+import { DeleteInvoiceMutation, DeleteInvoiceMutationVariables } from '../../types'
 import { client } from '../client'
-import { Mutation } from '../../../../shared'
 
 const DeleteInvoiceMutationDocument = gql`
-	mutation ($invoiceId: ID!) {
+	mutation DeleteInvoice($invoiceId: ID!) {
 		deleteInvoice(id: $invoiceId)
 	}
 `
 
-export async function DeleteInvoiceMutation(qid: string, invoiceId: string) {
-	const res = await client.rawRequest<{ deleteInvoice: Mutation['deleteInvoice'] }>(
+export async function deleteInvoiceMutation(qid: string, invoiceId: string) {
+	const res = await client.rawRequest<DeleteInvoiceMutation, DeleteInvoiceMutationVariables>(
 		DeleteInvoiceMutationDocument,
 		{ invoiceId },
 		{
