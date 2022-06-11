@@ -6,7 +6,7 @@ import styles from './OrderItemList.module.scss'
 import { OrderItem } from './OrderItem'
 
 export function OrderItemList() {
-	const { values, errors } = useFormikContext<CreateInvoiceInput>()
+	const { values, errors, touched } = useFormikContext<CreateInvoiceInput>()
 
 	return (
 		<div>
@@ -35,7 +35,9 @@ export function OrderItemList() {
 					</Fragment>
 				)}
 			</FieldArray>
-			{typeof errors.orderItems === 'string' && <p className={styles.error}>{errors.orderItems}</p>}
+			{touched.orderItems && typeof errors.orderItems === 'string' && (
+				<p className={styles.error}>{errors.orderItems}</p>
+			)}
 		</div>
 	)
 }

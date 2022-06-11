@@ -25,7 +25,8 @@
 	&.red {
 		background-color: var(--red);
 
-		&:hover {
+		&:hover,
+		&:disabled {
 			background-color: var(--red-hover);
 		}
 	}
@@ -33,7 +34,8 @@
 	&.purple {
 		background-color: var(--purple);
 
-		&:hover {
+		&:hover,
+		&:disabled {
 			background-color: var(--purple-hover);
 		}
 	}
@@ -42,7 +44,8 @@
 		background-color: hsl(231, 20%, 27%);
 		color: var(--button-black-text);
 
-		&:hover {
+		&:hover,
+		&:disabled {
 			background-color: var(--button-black-bg-hover);
 		}
 	}
@@ -52,7 +55,8 @@
 		color: var(--text-secondary);
 		background-color: var(--button-gray-bg);
 
-		&:hover {
+		&:hover,
+		&:disabled {
 			color: var(--button-gray-text-hover);
 			background-color: var(--button-gray-bg-hover);
 		}

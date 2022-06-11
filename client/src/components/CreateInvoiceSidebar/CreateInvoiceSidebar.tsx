@@ -29,7 +29,6 @@ const initialValues: CreateInvoiceInput = {
 	description: '',
 
 	paymentTerms: 14,
-	paymentDue: new Date().toISOString(),
 
 	orderItems: []
 }
@@ -37,10 +36,11 @@ const initialValues: CreateInvoiceInput = {
 interface ActionsProps {
 	setIsOpen: (v: boolean) => any
 	setAsDraft: (v: boolean) => any
+	asDraft: boolean
 }
 
-function Actions({ setIsOpen, setAsDraft }: ActionsProps) {
-	const { handleReset } = useFormikContext()
+function Actions({ setIsOpen, setAsDraft, asDraft }: ActionsProps) {
+	const { handleReset, isSubmitting } = useFormikContext()
 
 	return (
 		<Fragment>
@@ -55,13 +55,19 @@ function Actions({ setIsOpen, setAsDraft }: ActionsProps) {
 			</button>
 			<button
 				type='submit'
+				disabled={isSubmitting}
 				onClick={() => setAsDraft(true)}
 				className={`button mobile black ${styles.saveAsDraft}`}
 			>
-				Save as Draft
+				{asDraft && isSubmitting ? 'Saving...' : 'Save as Draft'}
 			</button>
-			<button type='submit' className='button mobile purple'>
-				Save & Send
+			<button
+				disabled={isSubmitting}
+				onClick={() => setAsDraft(false)}
+				type='submit'
+				className='button mobile purple'
+			>
+				{!asDraft && isSubmitting ? 'Saving...' : 'Save & Send'}
 			</button>
 		</Fragment>
 	)
@@ -91,7 +97,7 @@ export function CreateInvoiceSidebar(props: SidebarProps) {
 			title='New Invoice'
 			initialValues={initialValues}
 			onSubmit={submitHandler}
-			actions={<Actions setIsOpen={props.setIsOpen} setAsDraft={setAsDraft} />}
+			actions={<Actions setIsOpen={props.setIsOpen} setAsDraft={setAsDraft} asDraft={asDraft} />}
 			{...props}
 		/>
 	)

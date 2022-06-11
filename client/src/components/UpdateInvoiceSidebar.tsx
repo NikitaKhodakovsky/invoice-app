@@ -13,7 +13,7 @@ interface ActionsProps {
 }
 
 function Actions({ setIsOpen }: ActionsProps) {
-	const { handleReset } = useFormikContext()
+	const { handleReset, isSubmitting } = useFormikContext()
 
 	return (
 		<Fragment>
@@ -26,8 +26,8 @@ function Actions({ setIsOpen }: ActionsProps) {
 			>
 				Cancel
 			</button>
-			<button type='submit' className='button mobile purple'>
-				Save & Send
+			<button type='submit' disabled={isSubmitting} className='button mobile purple'>
+				{isSubmitting ? 'Saving...' : 'Save & Send'}
 			</button>
 		</Fragment>
 	)
@@ -41,16 +41,7 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 	const [mutation] = useUpdateInvoiceMutation()
 
 	const submitHandler = async (values: CreateInvoiceInput) => {
-		const {
-			clientEmail,
-			clientName,
-			description,
-			paymentDue,
-			paymentTerms,
-			clientAddress,
-			senderAddress,
-			orderItems
-		} = values
+		const { clientEmail, clientName, description, paymentTerms, clientAddress, senderAddress, orderItems } = values
 
 		const formattedOrderItems: CreateOrderItemInput[] = orderItems.map(({ name, price, quantity }) => ({
 			quantity,
@@ -74,7 +65,6 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 			clientEmail,
 			clientName,
 			description,
-			paymentDue,
 			paymentTerms,
 			orderItems: formattedOrderItems
 		}
