@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from 'graphql-hooks'
 
-const LoginMutation = gql`
+export const LoginMutation = /* GraphQL */ `
 	mutation Login($credentials: CredentialsInput!) {
 		login(data: $credentials) {
 			id

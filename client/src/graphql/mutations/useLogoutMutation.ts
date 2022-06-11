@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from 'graphql-hooks'
 
-export const LogoutMutation = gql`
+export const LogoutMutation = /* GraphQL */ `
 	mutation Logout {
 		logout
 	}

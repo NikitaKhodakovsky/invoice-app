@@ -1,8 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from 'graphql-hooks'
 
-import { AllInvoicesQuery, InvoiceByIdQuery } from '../queries'
-
-const UpdateInvoiceMutation = gql`
+export const UpdateInvoiceMutation = /* GraphQL */ `
 	mutation UpdateInvoice($data: UpdateInvoiceInput!, $invoiceId: ID!) {
 		updateInvoice(data: $data, id: $invoiceId) {
 			id
@@ -46,7 +44,5 @@ const UpdateInvoiceMutation = gql`
 `
 
 export function useUpdateInvoiceMutation() {
-	return useMutation<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>(UpdateInvoiceMutation, {
-		refetchQueries: [InvoiceByIdQuery, AllInvoicesQuery]
-	})
+	return useMutation<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>(UpdateInvoiceMutation)
 }

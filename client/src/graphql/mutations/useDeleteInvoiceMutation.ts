@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from 'graphql-hooks'
 
-const DeleteInvoiceMutation = gql`
+export const DeleteInvoiceMutation = /* GraphQL */ `
 	mutation DeleteInvoice($id: ID!) {
 		deleteInvoice(id: $id)
 	}

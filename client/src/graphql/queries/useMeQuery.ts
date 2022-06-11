@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from 'graphql-hooks'
 
-export const MeQuery = gql`
+export const MeQuery = /* GraphQL */ `
 	query Me {
 		me {
 			id
@@ -13,6 +13,6 @@ export const MeQuery = gql`
 
 export function useMeQuery() {
 	return useQuery<MeQuery, MeQueryVariables>(MeQuery, {
-		fetchPolicy: 'no-cache'
+		useCache: false
 	})
 }

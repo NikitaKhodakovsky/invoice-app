@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from 'graphql-hooks'
 
-const RegisterMutation = gql`
+export const RegisterMutation = /* GraphQL */ `
 	mutation Register($credentials: CredentialsInput!) {
 		register(data: $credentials) {
 			id

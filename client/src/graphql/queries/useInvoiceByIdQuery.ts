@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from 'graphql-hooks'
 
-export const InvoiceByIdQuery = gql`
+export const InvoiceByIdQuery = /* GraphQL */ `
 	query InvoiceById($id: ID!) {
 		invoice(id: $id) {
 			id
@@ -44,5 +44,8 @@ export const InvoiceByIdQuery = gql`
 `
 
 export function useInvoiceByIdQuery(id: string) {
-	return useQuery<InvoiceByIdQuery, InvoiceByIdQueryVariables>(InvoiceByIdQuery, { variables: { id } })
+	return useQuery<InvoiceByIdQuery, InvoiceByIdQueryVariables>(InvoiceByIdQuery, {
+		variables: { id },
+		useCache: false
+	})
 }

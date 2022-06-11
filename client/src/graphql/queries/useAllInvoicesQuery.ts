@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from 'graphql-hooks'
 
-export const AllInvoicesQuery = gql`
+export const AllInvoicesQuery = /* GraphQL */ `
 	query AllInvoices($statuses: [Status!]) {
 		invoices(statuses: $statuses) {
 			id
@@ -46,6 +46,6 @@ export const AllInvoicesQuery = gql`
 export function useAllInvoicesQuery(statuses?: Status[]) {
 	return useQuery<AllInvoicesQuery, AllInvoicesQueryVariables>(AllInvoicesQuery, {
 		variables: { statuses },
-		fetchPolicy: 'no-cache'
+		useCache: false
 	})
 }

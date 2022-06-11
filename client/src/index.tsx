@@ -1,6 +1,7 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client'
 import { ThemeManager, ThemeProvider } from 'react-theme-lib'
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
 import { BrowserRouter } from 'react-router-dom'
+import memCache from 'graphql-hooks-memcache'
 import ReactDOM from 'react-dom/client'
 
 import './sass/index.scss'
@@ -14,21 +15,19 @@ const manager = new ThemeManager({
 	htmlElement: document.getElementById('body') as HTMLElement
 })
 
-const link = createHttpLink({
-	credentials: 'include',
-	uri: 'http://localhost:4200/graphql',
+const client = new GraphQLClient({
+	url: 'http://localhost:4200/graphql',
+	cache: memCache(),
+	fetchOptions: {
+		credentials: 'include'
+	},
 	headers: {
 		'X-Forwarded-Proto': 'https'
 	}
 })
 
-const client = new ApolloClient({
-	cache: new InMemoryCache(),
-	link
-})
-
 root.render(
-	<ApolloProvider client={client}>
+	<ClientContext.Provider value={client}>
 		<BrowserRouter>
 			<AuthProvider>
 				<ThemeProvider manager={manager}>
@@ -36,5 +35,5 @@ root.render(
 				</ThemeProvider>
 			</AuthProvider>
 		</BrowserRouter>
-	</ApolloProvider>
+	</ClientContext.Provider>
 )

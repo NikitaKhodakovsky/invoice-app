@@ -75,7 +75,13 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 				data
 			}
 		})
-			.then(() => toast('Successfully updated'))
+			.then((r) => {
+				if (r.data?.updateInvoice) {
+					toast('Successfully updated')
+				} else if (r.error) {
+					toast('Something went wrong')
+				}
+			})
 			.catch((e) => toast(e.message))
 
 		props.setIsOpen(false)
