@@ -12,11 +12,13 @@ export class InvoiceService {
 	private orderItemRepository: Repository<OrderItem>
 	private addressRepository: Repository<Address>
 	private invoiceRepository: Repository<Invoice>
+	private dataSource: DataSource
 
 	constructor(dataSource: DataSource) {
 		this.orderItemRepository = dataSource.getRepository(OrderItem)
 		this.addressRepository = dataSource.getRepository(Address)
 		this.invoiceRepository = dataSource.getRepository(Invoice)
+		this.dataSource = dataSource
 	}
 
 	public async createInvoice(user: User, data: CreateInvoiceInput): Promise<Invoice> {
@@ -73,15 +75,17 @@ export class InvoiceService {
 			updatedInvoice.senderAddress = this.addressRepository.merge(invoice.senderAddress, senderAddress)
 		}
 
-		if (orderItems) {
-			if (orderItems.length < 1) throw new UserInputError("You cannot delete all Order Item's")
+		return await this.dataSource.transaction(async (manager) => {
+			if (orderItems) {
+				if (orderItems.length < 1) throw new UserInputError("You cannot delete all Order Item's")
 
-			await this.orderItemRepository.remove(invoice.orderItems)
+				await manager.remove(invoice.orderItems)
 
-			updatedInvoice.orderItems = orderItems.map((oi) => this.orderItemRepository.create(oi))
-		}
+				updatedInvoice.orderItems = orderItems.map((oi) => this.orderItemRepository.create(oi))
+			}
 
-		return this.invoiceRepository.save(updatedInvoice)
+			return manager.save(updatedInvoice)
+		})
 	}
 
 	public async deleteInvoice(user: User, invoiceId: number): Promise<void> {
@@ -93,9 +97,11 @@ export class InvoiceService {
 		if (!invoice) throw new InvoiceNotFoundError()
 		if (invoice.user.id !== user.id) throw new ForbiddenError()
 
-		await this.invoiceRepository.remove(invoice)
-		await this.addressRepository.remove(invoice.clientAddress)
-		await this.addressRepository.remove(invoice.senderAddress)
+		await this.dataSource.transaction(async (manager) => {
+			await manager.remove(invoice)
+			await manager.remove(invoice.clientAddress)
+			await manager.remove(invoice.senderAddress)
+		})
 	}
 
 	public async findById(
