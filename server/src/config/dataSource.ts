@@ -1,18 +1,18 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
+import { isProduction, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE } from '../constants'
 import { Invoice, Address, OrderItem } from '../modules/invoice'
-import { isProduction } from '../constants'
 import { User } from '../modules/user'
 
-const dataSourceOptions = {
+const dataSourceOptions: DataSourceOptions = {
 	type: 'postgres',
-	host: process.env.DB_HOST || 'localhost',
-	port: process.env.DB_PORT,
-	username: process.env.DB_USERNAME,
-	password: process.env.DB_PASSWORD,
-	database: process.env.DB_DATABASE || 'postgres',
+	host: DB_HOST,
+	port: DB_PORT,
+	username: DB_USERNAME,
+	password: DB_PASSWORD,
+	database: DB_DATABASE,
 	entities: [User, Invoice, Address, OrderItem],
 	synchronize: !isProduction
-} as DataSourceOptions
+}
 
 export const dataSource = new DataSource(dataSourceOptions)
