@@ -1,8 +1,7 @@
-import { UserInputError } from 'apollo-server-express'
 import { DataSource, Repository } from 'typeorm'
 import argon2 from 'argon2'
 
-import { AuthenticationError } from '../../common/errors'
+import { AuthenticationError, UserInputError } from '../../common/errors'
 import { CredentialsInput } from './inputs'
 import { User } from '../user'
 

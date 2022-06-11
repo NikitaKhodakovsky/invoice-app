@@ -1,9 +1,8 @@
 import { describe, test, beforeEach, afterEach, expect } from '@jest/globals'
-import { UserInputError } from 'apollo-server-express'
 
 import { CreateMockInvoiceInput, CreateMockOrderItemsInput } from '../../../test/mock'
+import { ForbiddenError, UserInputError } from '../../common/errors'
 import { Address, Invoice, OrderItem } from './entities'
-import { ForbiddenError } from '../../common/errors'
 import { InvoiceService } from './InvoiceService'
 import { InvoiceNotFoundError } from './errors'
 import { TestDataSource } from '../../../test'

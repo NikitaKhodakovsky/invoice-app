@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express'
+import { GraphQLError } from 'graphql'
 
-export class AuthenticationError extends ApolloError {
+export class AuthenticationError extends GraphQLError {
 	constructor(message?: string) {
-		super(message || 'Login or password entered incorrectly', 'UNAUTHENTICATED')
+		super(message || 'Login or password entered incorrectly')
 	}
 }

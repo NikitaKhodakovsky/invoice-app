@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express'
+import { GraphQLError } from 'graphql'
 
-export class UserNotFoundError extends ApolloError {
+export class UserNotFoundError extends GraphQLError {
 	constructor(message?: string) {
-		super(message || 'User not found', 'NOT_FOUND')
+		super(message || 'User not found')
 	}
 }

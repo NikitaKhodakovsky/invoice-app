@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express'
+import { GraphQLError } from 'graphql'
 
-export class InvoiceNotFoundError extends ApolloError {
+export class InvoiceNotFoundError extends GraphQLError {
 	constructor(message?: string) {
-		super(message || 'Invoice not found', 'NOT_FOUND')
+		super(message || 'Invoice not found')
 	}
 }

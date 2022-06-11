@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express'
+import { GraphQLError } from 'graphql'
 
-export class ForbiddenError extends ApolloError {
+export class ForbiddenError extends GraphQLError {
 	constructor(message?: string) {
-		super(message || 'Access denied', 'FORBIDDEN')
+		super(message || 'Access denied')
 	}
 }

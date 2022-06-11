@@ -1,8 +1,7 @@
 import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
-import { UserInputError } from 'apollo-server-express'
 
+import { AuthenticationError, UserInputError } from '../../common/errors'
 import { CreateMockCredentials } from '../../../test/mock'
-import { AuthenticationError } from '../../common/errors'
 import { inspectUser } from '../../../test/utils'
 import { TestDataSource } from '../../../test'
 import { AuthService } from './AuthService'
