@@ -1,15 +1,5 @@
 import { red, bold, yellow } from 'ansi-colors'
 
-function parseIntOrThrow(v?: string, name?: string) {
-	if (!v) throw new Error(`${name} variable is not provided`)
-
-	const result = parseInt(v)
-
-	if (isNaN(result)) throw new Error(`${name} variable has invalid value`)
-
-	return result
-}
-
 function setDefaultString(name: string, defaultValue: string, value?: string): string {
 	let result: string
 

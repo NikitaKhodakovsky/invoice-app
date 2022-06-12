@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import 'dotenv/config'
 
 import { dataSource, createApp } from './config'
-import { PORT } from './constants'
+import { PORT } from './constants/config'
 
 async function main() {
 	await dataSource

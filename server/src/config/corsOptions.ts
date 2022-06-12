@@ -1,7 +1,8 @@
 import { CorsOptions } from 'cors'
 
+import { ORIGIN } from '../constants/config'
+import { isProduction } from '../constants'
 import { parseOrigins } from '../utils'
-import { isProduction, ORIGIN } from '../constants'
 
 const whiteList: string[] = parseOrigins(ORIGIN)
 

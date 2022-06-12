@@ -1,7 +1,8 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
-import { isProduction, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE } from '../constants'
+import { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE } from '../constants/config'
 import { Invoice, Address, OrderItem } from '../modules/invoice'
+import { isProduction } from '../constants'
 import { User } from '../modules/user'
 
 const dataSourceOptions: DataSourceOptions = {

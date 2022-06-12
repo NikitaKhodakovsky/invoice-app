@@ -3,7 +3,7 @@ import connectRedis from 'connect-redis'
 import ms from 'milliseconds'
 import Redis from 'ioredis'
 
-import { REDIS_HOST, REDIS_PORT, SESSION_SECRET } from '../constants'
+import { REDIS_HOST, REDIS_PORT, SESSION_SECRET } from '../constants/config'
 
 const RedisStore = connectRedis(configSession)
 
