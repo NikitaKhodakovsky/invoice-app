@@ -2,7 +2,7 @@
 	"name": "server",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "build && node ./dist/index",
+		"start": "npm run build && node ./dist/index",
 		"build": "npx tsc",
 		"dev": "nodemon",
 		"test": "jest --testPathIgnorePatterns=/e2e/ --runInBand",
