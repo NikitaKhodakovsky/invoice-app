@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Form, Formik } from 'formik'
 import toast from 'react-hot-toast'
 import { useEffect } from 'react'
@@ -24,16 +24,20 @@ const initialValues = {
 }
 
 export function Login() {
+	const location = useLocation()
 	const navigate = useNavigate()
 	const { auth, setAuth } = useAuth()
 
 	const [loginMutation] = useLoginMutation()
 
+	//@ts-ignore
+	const prev: string = location.state?.prevPath || '/'
+
 	useEffect(() => {
 		if (auth) {
-			navigate('/')
+			navigate(prev)
 		}
-	}, [auth, navigate])
+	}, [auth, navigate, prev])
 
 	const submitHandler = async (credentials: CredentialsInput) => {
 		const res = await loginMutation({
@@ -46,7 +50,7 @@ export function Login() {
 
 		if (res?.data && res.data.login) {
 			setAuth(true)
-			navigate('/')
+			navigate(prev)
 		}
 	}
 

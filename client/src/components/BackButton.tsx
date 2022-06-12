@@ -1,6 +1,7 @@
 import { HTMLAttributes, MouseEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowButton } from '../ArrowButton'
+
+import { ArrowButton } from './ArrowButton'
 
 export interface BackButtonProps extends HTMLAttributes<HTMLButtonElement> {}
 
@@ -12,7 +13,7 @@ export function BackButton({ onClick, ...other }: BackButtonProps) {
 			onClick(e)
 		}
 
-		navigate(-1)
+		navigate('/')
 	}
 
 	return <ArrowButton message='Go back' direction='left' onClick={handler} {...other} />
