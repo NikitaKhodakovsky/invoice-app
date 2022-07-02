@@ -13,6 +13,6 @@ export const MeQuery = /* GraphQL */ `
 
 export function useMeQuery() {
 	return useQuery<MeQuery, MeQueryVariables>(MeQuery, {
-		useCache: false
+		useCache: false,
 	})
 }

@@ -1,5 +1,7 @@
 import { useQuery } from 'graphql-hooks'
 
+import { ChangeInvoiceStatusMutation, DeleteInvoiceMutation, UpdateInvoiceMutation } from '../mutations'
+
 export const InvoiceByIdQuery = /* GraphQL */ `
 	query InvoiceById($id: ID!) {
 		invoice(id: $id) {
@@ -46,6 +48,22 @@ export const InvoiceByIdQuery = /* GraphQL */ `
 export function useInvoiceByIdQuery(id: string) {
 	return useQuery<InvoiceByIdQuery, InvoiceByIdQueryVariables>(InvoiceByIdQuery, {
 		variables: { id },
-		useCache: false
+		refetchAfterMutations: [
+			{
+				mutation: ChangeInvoiceStatusMutation,
+				//@ts-ignore
+				filter: (v: ChangeInvoiceStatusMutationVariables) => v.invoiceId === id,
+			},
+			{
+				mutation: DeleteInvoiceMutation,
+				//@ts-ignore
+				filter: (v: DeleteInvoiceMutationVariables) => v.id === id,
+			},
+			{
+				mutation: UpdateInvoiceMutation,
+				//@ts-ignore
+				filter: (v: UpdateInvoiceMutationVariables) => v.invoiceId === id,
+			},
+		],
 	})
 }

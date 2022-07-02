@@ -30,6 +30,11 @@ export function StatusFilter({ className }: StatusFilterProps) {
 		}
 	}
 
+	const clearAllHandler = () => {
+		searchParams.delete('status')
+		setSearchParams(searchParams)
+	}
+
 	const isChecked = (v: string) => {
 		return searchParams.getAll('status').includes(v)
 	}
@@ -50,6 +55,7 @@ export function StatusFilter({ className }: StatusFilterProps) {
 					checked={isChecked('Pending')}
 				/>
 				<Checkbox id='Paid' label='Paid' value='Paid' onChange={handler} checked={isChecked('Paid')} />
+				<button onClick={clearAllHandler}>Clear All</button>
 			</div>
 		</div>
 	)

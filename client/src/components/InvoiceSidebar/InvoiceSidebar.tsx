@@ -7,7 +7,7 @@ import styles from './InvoiceSidebar.module.scss'
 import { Sidebar, SidebarProps } from '../Sidebar'
 import { OrderItemList } from '../OrderItemList'
 import { FormikDropdown } from '../Dropdown'
-import { FormikInput } from '../Input'
+import { FormikInput } from '../FormikInput'
 
 const options = [
 	{ label: 'Net 1 Day', value: 1 },
@@ -60,7 +60,7 @@ export function InvoiceSidebar({ title, onSubmit, initialValues, actions, ...pro
 			<Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
 				<Form autoComplete='off'>
 					<div className={styles.content}>
-						<h3 className='full-row'>Bill From</h3>
+						<h2 className='full-row'>Bill From</h2>
 						<div className={`${styles.addressWrap} ${styles.billFrom} full-row`}>
 							<FormikInput name='senderAddress.street' label='Street Address' className='full-row' />
 							<FormikInput name='senderAddress.city' label='City' />
@@ -71,7 +71,7 @@ export function InvoiceSidebar({ title, onSubmit, initialValues, actions, ...pro
 								className={styles.addressCountry}
 							/>
 						</div>
-						<h3 className='full-row'>Bill To</h3>
+						<h2 className='full-row'>Bill To</h2>
 						<FormikInput name='clientName' label='Client’s Name' className='full-row' />
 						<FormikInput name='clientEmail' label='Client’s Email' className='full-row' />
 						<div className={`${styles.addressWrap} full-row`}>

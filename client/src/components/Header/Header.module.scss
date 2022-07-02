@@ -49,6 +49,7 @@
 
 	img {
 		width: 2.8rem;
+		height: auto;
 	}
 
 	@include breakpoint-up('small') {

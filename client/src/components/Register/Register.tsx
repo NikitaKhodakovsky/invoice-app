@@ -8,10 +8,11 @@ import styles from './Register.module.scss'
 
 import { passwordSchema, usernameSchema } from '../../utils/validation'
 import { useRegisterMutation } from '../../graphql/mutations'
-import { useAuth } from '../../hooks'
+import { parseAndHandle } from '../../utils'
+import { useAuth } from '../../auth'
 
 import { ArrowButton } from '../ArrowButton'
-import { FormikInput } from '../Input'
+import { FormikInput } from '../FormikInput'
 
 interface FormValues extends CredentialsInput {
 	confirmation: string
@@ -51,9 +52,11 @@ export function Register() {
 			variables: {
 				credentials
 			}
-		}).catch((e) => {
-			toast(e?.message)
 		})
+
+		if (res.error) {
+			parseAndHandle(res.error)
+		}
 
 		if (res?.data?.register) {
 			toast('User successfully created')

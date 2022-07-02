@@ -12,6 +12,8 @@ body {
 	background-color: var(--bg);
 	overflow-x: hidden;
 	overflow-y: scroll;
+
+	transition: background-color .2s;
 }
 
 .container {

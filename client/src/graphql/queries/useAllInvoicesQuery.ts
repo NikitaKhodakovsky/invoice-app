@@ -1,5 +1,12 @@
 import { useQuery } from 'graphql-hooks'
 
+import {
+	ChangeInvoiceStatusMutation,
+	CreateInvoiceMutation,
+	DeleteInvoiceMutation,
+	UpdateInvoiceMutation,
+} from '../mutations'
+
 export const AllInvoicesQuery = /* GraphQL */ `
 	query AllInvoices($statuses: [Status!]) {
 		invoices(statuses: $statuses) {
@@ -46,6 +53,12 @@ export const AllInvoicesQuery = /* GraphQL */ `
 export function useAllInvoicesQuery(statuses?: Status[]) {
 	return useQuery<AllInvoicesQuery, AllInvoicesQueryVariables>(AllInvoicesQuery, {
 		variables: { statuses },
-		useCache: false
+		useCache: false,
+		refetchAfterMutations: [
+			ChangeInvoiceStatusMutation,
+			CreateInvoiceMutation,
+			UpdateInvoiceMutation,
+			DeleteInvoiceMutation,
+		],
 	})
 }

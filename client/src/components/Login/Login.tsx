@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Form, Formik } from 'formik'
-import toast from 'react-hot-toast'
 import { useEffect } from 'react'
 import { object } from 'yup'
 
@@ -8,10 +7,11 @@ import styles from './Login.module.scss'
 
 import { passwordSchema, usernameSchema } from '../../utils/validation'
 import { useLoginMutation } from '../../graphql/mutations'
-import { useAuth } from '../../hooks'
+import { parseAndHandle } from '../../utils'
+import { useAuth } from '../../auth'
 
 import { ArrowButton } from '../ArrowButton'
-import { FormikInput } from '../Input'
+import { FormikInput } from '../FormikInput'
 
 const validationSchema = object({
 	username: usernameSchema,
@@ -44,9 +44,11 @@ export function Login() {
 			variables: {
 				credentials
 			}
-		}).catch((e) => {
-			toast(e?.message)
 		})
+
+		if (res.error) {
+			parseAndHandle(res.error)
+		}
 
 		if (res?.data && res.data.login) {
 			setAuth(true)
