@@ -92,16 +92,10 @@ Navigate to directory with this repository
 cd invoice-app
 ```
 
-Then, you need to create .env file. For simplicity you can copy .env.example
-
-```console
-cp .env.example .env
-```
-
 Then you need to execute this command:
 
 ```console
-docker-compose up -d
+docker-compose --env-file ./.env.example up -d
 ```
 
 This command starts your application
