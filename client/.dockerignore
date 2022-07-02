@@ -1,0 +1,9 @@
+__generated__/
+/**/*.test.ts*
+/**/*.spec.ts*
+node_modules/
+Dockerfile*
+build/
+
+.dockerignore
+.gitignore

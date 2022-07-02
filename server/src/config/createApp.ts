@@ -1,4 +1,5 @@
 import { graphqlHTTP } from 'express-graphql'
+import { GraphQLError } from 'graphql'
 import express from 'express'
 import helmet from 'helmet'
 import cors from 'cors'
@@ -12,7 +13,7 @@ import { schema } from './schema'
 export function createApp() {
 	const app = express()
 
-	app.set('trust proxy', !isProduction)
+	app.set('trust proxy', true)
 
 	app.use(helmet())
 
@@ -25,9 +26,21 @@ export function createApp() {
 		graphqlHTTP(async (req, res) => {
 			const context = createContext(req, res)
 
+			function customFormatErrorFn(e: GraphQLError) {
+				switch (e.message) {
+					case 'Access denied':
+						res.statusCode = 403
+						break
+				}
+
+				return e
+			}
+
 			return {
+				graphiql: !isProduction,
+				customFormatErrorFn,
 				schema,
-				context
+				context,
 			}
 		})
 	)

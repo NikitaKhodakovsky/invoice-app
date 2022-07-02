@@ -1,0 +1,112 @@
+type Address {
+  city: String!
+  country: String!
+  id: ID!
+  postCode: String!
+  street: String!
+}
+
+input CreateAddressInput {
+  city: String!
+  country: String!
+  postCode: String!
+  street: String!
+}
+
+input CreateInvoiceInput {
+  clientAddress: CreateAddressInput!
+  clientEmail: String!
+  clientName: String!
+  description: String!
+  orderItems: [CreateOrderItemInput!]!
+  paymentTerms: Int!
+  senderAddress: CreateAddressInput!
+  status: Status
+}
+
+input CreateOrderItemInput {
+  name: String!
+  price: Int!
+  quantity: Int!
+}
+
+input CredentialsInput {
+  password: String!
+  username: String!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Invoice {
+  clientAddress: Address!
+  clientEmail: String!
+  clientName: String!
+  createdAt: DateTime!
+  description: String!
+  id: ID!
+  orderItems: [OrderItem!]!
+  paymentDue: DateTime!
+  paymentTerms: Int!
+  senderAddress: Address!
+  status: Status!
+  total: Float!
+  updatedAt: DateTime!
+  user: User!
+}
+
+type Mutation {
+  changeInvoiceStatus(id: ID!, status: Status!): Boolean!
+  createInvoice(data: CreateInvoiceInput!): Invoice!
+  deleteAccount: Boolean!
+  deleteInvoice(id: ID!): Boolean!
+  login(data: CredentialsInput!): User!
+  logout: Boolean!
+  register(data: CredentialsInput!): User!
+  updateInvoice(data: UpdateInvoiceInput!, id: ID!): Invoice!
+}
+
+type OrderItem {
+  id: ID!
+  name: String!
+  price: Int!
+  quantity: Int!
+}
+
+type Query {
+  invoice(id: ID!): Invoice
+  invoices(statuses: [Status!]): [Invoice!]!
+  me: User!
+}
+
+enum Status {
+  Draft
+  Paid
+  Pending
+}
+
+input UpdateAddressInput {
+  city: String
+  country: String
+  postCode: String
+  street: String
+}
+
+input UpdateInvoiceInput {
+  clientAddress: UpdateAddressInput
+  clientEmail: String
+  clientName: String
+  description: String
+  orderItems: [CreateOrderItemInput!]
+  paymentTerms: Int
+  senderAddress: UpdateAddressInput
+}
+
+type User {
+  createdAt: DateTime!
+  id: ID!
+  updatedAt: DateTime!
+  username: String!
+}

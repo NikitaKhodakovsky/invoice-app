@@ -12,16 +12,16 @@ const productionOptions: CorsOptions = {
 		if (origin && whiteList.indexOf(origin) !== -1) {
 			callback(null, true)
 		} else {
-			callback(new Error('Not allowed by CORS'))
+			callback(new Error(`Not allowed by CORS. Origin: ${origin}`))
 		}
-	}
+	},
 }
 
 const devOptions: CorsOptions = {
 	credentials: true,
 	origin: function (_, callback) {
 		callback(null, true)
-	}
+	},
 }
 
 export const corsOptions = isProduction ? productionOptions : devOptions

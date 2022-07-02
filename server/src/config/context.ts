@@ -15,6 +15,6 @@ export function createContext(req: any, res: any): Context {
 		dataSource,
 		user,
 		req,
-		res
+		res,
 	}
 }

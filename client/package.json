@@ -11,13 +11,14 @@
 		"react-hot-toast": "^2.2.0",
 		"react-router-dom": "^6.3.0",
 		"react-scripts": "5.0.1",
-		"react-theme-lib": "^1.0.1",
+		"react-theme-lib": "^1.0.3",
 		"sass": "^1.52.1",
 		"web-vitals": "^2.1.4",
 		"yup": "^0.32.11"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^2.6.2",
+		"@graphql-codegen/schema-ast": "^2.4.1",
 		"@graphql-codegen/typescript": "^2.5.0",
 		"@graphql-codegen/typescript-operations": "^2.4.1",
 		"@testing-library/jest-dom": "^5.16.4",
@@ -31,11 +32,12 @@
 		"typescript": "^4.7.2"
 	},
 	"scripts": {
-		"start": "npm run generate && react-scripts start",
-		"build": "npm run generate && react-scripts build",
+		"start": "PORT=80 react-scripts start",
+		"build": "npm run generate:types && react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"generate": "graphql-codegen"
+		"generate:types": "graphql-codegen --config ./codegen:types.yml",
+		"generate:schema": "graphql-codegen --config ./codegen:schema.yml"
 	},
 	"eslintConfig": {
 		"extends": [

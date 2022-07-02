@@ -1,0 +1,12 @@
+node_modules/
+/**/*.test.ts*
+/**/*.spec.ts*
+nodemon.json
+Dockerfile*
+schema.gql
+test/
+e2e/
+
+.dockerignore
+.gitignore
+.git

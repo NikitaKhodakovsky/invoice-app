@@ -1,0 +1,18 @@
+version: "3.4"
+services:
+  client:
+    build:
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+  server:
+    build:
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+  test-db:
+    image: postgres:14.4-alpine
+    environment:
+      - POSTGRES_PASSWORD=password

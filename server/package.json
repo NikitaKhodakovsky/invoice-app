@@ -3,11 +3,12 @@
 	"version": "1.0.0",
 	"scripts": {
 		"start": "npm run build && node ./dist/index",
-		"build": "npx tsc",
+		"build": "tsc",
 		"dev": "nodemon",
 		"test": "jest --testPathIgnorePatterns=/e2e/ --runInBand",
 		"test:e2e": "jest --testPathIgnorePatterns=/src/",
-		"generate": "npx ts-node src/config/schema.ts && npx graphql-codegen --config ./e2e/codegen.yml"
+		"generate": "ts-node src/config/schema.ts && npx graphql-codegen --config ./e2e/codegen.yml",
+		"typeorm": "typeorm-ts-node-esm -d ./src/config/dataSource.ts"
 	},
 	"dependencies": {
 		"ansi-colors": "^4.1.3",
