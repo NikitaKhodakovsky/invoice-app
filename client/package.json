@@ -36,8 +36,8 @@
 		"build": "npm run generate:types && react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"generate:types": "graphql-codegen --config ./codegen:types.yml",
-		"generate:schema": "graphql-codegen --config ./codegen:schema.yml"
+		"generate:types": "graphql-codegen --config ./codegen.types.yml",
+		"generate:schema": "graphql-codegen --config ./codegen.schema.yml"
 	},
 	"eslintConfig": {
 		"extends": [
