@@ -28,7 +28,7 @@ export function OrderItemList() {
 						<button
 							type='button'
 							className='button large gray'
-							onClick={() => push({ name: '', quantity: 0, price: 0 })}
+							onClick={() => push({ name: '', quantity: '', price: '' })}
 						>
 							Add New Item
 						</button>

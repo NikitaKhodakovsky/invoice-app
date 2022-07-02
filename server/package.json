@@ -8,7 +8,8 @@
 		"test": "jest --testPathIgnorePatterns=/e2e/ --runInBand",
 		"test:e2e": "jest --testPathIgnorePatterns=/src/",
 		"generate": "ts-node src/config/schema.ts && npx graphql-codegen --config ./e2e/codegen.yml",
-		"typeorm": "typeorm-ts-node-esm -d ./src/config/dataSource.ts"
+		"typeorm:dev": "typeorm-ts-node-esm -d ./src/config/dataSource.ts",
+		"typeorm:prod": "typeorm -d ./dist/config/dataSource.js"
 	},
 	"dependencies": {
 		"ansi-colors": "^4.1.3",

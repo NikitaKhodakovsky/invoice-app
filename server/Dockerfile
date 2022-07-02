@@ -20,6 +20,6 @@ COPY package*.json .npmrc ./
 
 RUN npm ci --omit=dev
 
-COPY --from=build /app/dist .
+COPY --from=build /app/dist ./dist
 
-CMD ["node", "index.js"]
+CMD ["node", "dist/index.js"]

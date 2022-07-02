@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import styles from './CreateInvoiceSidebar.module.scss'
 
 import { useCreateInvoiceMutation } from '../../graphql/mutations'
+import { parseAndHandle } from '../../utils'
 
 import { InvoiceSidebar } from '../InvoiceSidebar'
 import { SidebarProps } from '../Sidebar'
@@ -83,13 +84,20 @@ export function CreateInvoiceSidebar(props: SidebarProps) {
 			status: asDraft ? 'Draft' : 'Pending'
 		}
 
-		await mutation({ variables: { data } })
-			.then(() => toast('Successfully created'))
-			.catch((e) => toast(e?.message))
+		const res = await mutation({ variables: { data } })
 
-		resetForm(initialValues)
 
-		props.setIsOpen(false)
+		if (res.error) {
+			return parseAndHandle(res.error)
+		}
+
+		if (res.data?.createInvoice) {
+			toast('Successfully created')
+
+			resetForm(initialValues)
+
+			props.setIsOpen(false)
+		}
 	}
 
 	return (

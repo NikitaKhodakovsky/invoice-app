@@ -41,7 +41,7 @@ const validationSchema = object({
 		object({
 			name: string().required(' '),
 			price: number().required(' ').min(1, ' '),
-			quantity: number().required(' ').min(1, ' ')
+			quantity: number().integer(' ').required(' ').min(1, ' ')
 		})
 	).min(1, 'You can not create Invoice without items')
 })

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { Field, ID, Int, ObjectType } from 'type-graphql'
+import { Field, Float, ID, Int, ObjectType } from 'type-graphql'
 
 import { Invoice } from './InvoiceEntity'
 
@@ -21,7 +21,7 @@ export class OrderItem {
 	@Column()
 	quantity: number
 
-	@Field(() => Int)
-	@Column()
+	@Field(() => Float)
+	@Column({type: 'numeric'})
 	price: number
 }

@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from 'type-graphql'
+import { Field, Float, InputType, Int } from 'type-graphql'
 
 @InputType()
 export class CreateOrderItemInput {
@@ -8,6 +8,6 @@ export class CreateOrderItemInput {
 	@Field(() => Int)
 	quantity: number
 
-	@Field(() => Int)
+	@Field(() => Float)
 	price: number
 }

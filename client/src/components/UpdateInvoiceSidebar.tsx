@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { Fragment } from 'react'
 
 import { useUpdateInvoiceMutation } from '../graphql/mutations'
+import { parseAndHandle } from '../utils'
 
 import { InvoiceSidebar } from './InvoiceSidebar'
 import { SidebarProps } from './Sidebar'
@@ -69,22 +70,21 @@ export function UpdateInvoiceSidebar({ invoice, ...props }: UpdateInvoiceSidebar
 			orderItems: formattedOrderItems
 		}
 
-		await mutation({
+		const res = await mutation({
 			variables: {
 				invoiceId: invoice.id,
 				data
 			}
 		})
-			.then((r) => {
-				if (r.data?.updateInvoice) {
-					toast('Successfully updated')
-				} else if (r.error) {
-					toast('Something went wrong')
-				}
-			})
-			.catch((e) => toast(e.message))
 
-		props.setIsOpen(false)
+		if (res.error) {
+			return parseAndHandle(res.error)
+		}
+
+		if (res.data?.updateInvoice) {
+			toast('Successfully updated')
+			props.setIsOpen(false)
+		}
 	}
 
 	return (
