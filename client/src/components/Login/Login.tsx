@@ -34,6 +34,8 @@ export function Login() {
 	const prev: string = location.state?.prevPath || '/'
 
 	useEffect(() => {
+		document.title = 'Login'
+
 		if (auth) {
 			navigate(prev)
 		}

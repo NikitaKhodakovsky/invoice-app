@@ -42,6 +42,8 @@ export function Register() {
 	const [registerMutation] = useRegisterMutation()
 
 	useEffect(() => {
+		document.title = 'Register'
+
 		if (auth) {
 			navigate('/')
 		}

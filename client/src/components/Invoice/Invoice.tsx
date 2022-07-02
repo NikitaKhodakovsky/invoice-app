@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import styles from './Invoice.module.scss'
 
@@ -19,6 +19,10 @@ export function Invoice() {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const params = useParams()
+
+	useEffect(() => {
+		document.title = `Invoice ${params.id}`
+	}, [])
 
 	const { data, loading } = useInvoiceByIdQuery(params.id as string)
 

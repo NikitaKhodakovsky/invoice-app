@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAllInvoicesQuery } from '../../graphql/queries'
 
@@ -13,6 +13,10 @@ import { Loader } from '../Loader'
 
 export function InvoiceList() {
 	const [searchParams] = useSearchParams()
+
+	useEffect(() => {
+		document.title = 'Invoices'
+	}, [])
 
 	const statuses: Status[] = searchParams
 		.getAll('status')
