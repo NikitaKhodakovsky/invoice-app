@@ -127,3 +127,11 @@ exit
 ```
 
 The app is now available at http://localhost
+
+<br>
+
+To stop the application run:
+
+```console
+docker-compose down
+```
